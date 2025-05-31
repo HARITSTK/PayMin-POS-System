@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/src/output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/font-awesome/css/font-awesome.min.css" />
+    <title>PayMin</title>
+  </head>
+  <body>
+    <main
+      class="flex items-center justify-between h-screen bg-[#E6EEFD] p-5 font-poppins font-light w-full overflow-hidden relative"
+    >
+      <!-- Firstscreen -->
+      <section
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center"
+        id="firstScreen"
+      >
+        <div class="flex flex-1 flex-col items-center justify-center">
+          <img src="/src/assets/logo.png" alt="logo" width="300" />
+          <p class="mt-4 tracking-wide text-textColor">
+            Click Any Where to Login
+          </p>
+        </div>
+
+        <p class="mt-auto mb-2 text-textColor">
+          © 2025 PayMin. All Rights Reserved.
+        </p>
+      </section>
+
+      <!-- Login Page -->
+      <section
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
+        id="loginPage"
+      >
+        <div
+          class="flex flex-1 flex-col items-center justify-center relative z-10 w-auto h-auto"
+        >
+          <img src="/src/assets/logo.png" alt="" width="200" class="mx-auto" />
+
+          <p class="text-gray-600 mb-6 text-center">
+            easy to use and user friendly
+          </p>
+          <form id="loginForm" class="space-y-4 flex flex-col items-center">
+            <div>
+              <label class="block text-gray-700">Username</label>
+              <input
+                type="text"
+                id="username"
+                class="w-[20em] p-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F36A3D]"
+              />
+              <p id="usernameError" class="text-red-500 text-sm mt-1 hidden">
+                Please enter your username.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="w-[20em] p-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F36A3D]"
+              />
+              <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">
+                Please enter your password.
+              </p>
+            </div>
+            <button
+              type="submit"
+              class="w-[10em] mt-5 bg-[#F36A3D] text-white p-2 rounded-lg hover:bg-[#d55830] mx-auto"
+            >
+              Login
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            <span class="text-gray-600">Don't have an account?</span>
+            <a
+              href="/src/pages/setupPage.html"
+              class="text-[#F36A3D] hover:underline font-medium ml-1"
+            >
+              Create one
+            </a>
+          </div>
+        </div>
+        <p class="text-center text-textColor mt-auto">
+          © 2025 PayMin. All Rights Reserved.
+        </p>
+      </section>
+
+      <!-- Register -->
+      <section
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
+        id="registerPage"
+      >
+        <div
+          class="flex flex-1 flex-col items-center justify-center relative z-10 w-auto h-auto"
+        >
+          <img src="/dist/logo-01.png" alt="" width="200" class="mx-auto" />
+
+          <p class="text-gray-600 mb-6 text-center">
+            easy to use and user friendly
+          </p>
+          <form
+            id="newAccountForm"
+            class="space-y-4 flex flex-col items-center"
+          >
+            <div>
+              <label class="block text-gray-700">Username</label>
+              <input
+                type="text"
+                id="newUsername"
+                class="w-[20em] p-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F36A3D]"
+              />
+            </div>
+            <div>
+              <label class="block text-gray-700">Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                class="w-[20em] p-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F36A3D]"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-[10em] mt-5 bg-[#F36A3D] text-white p-2 rounded-lg hover:bg-[#d55830] mx-auto"
+            >
+              Set Up
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            <span class="text-gray-600">Already have Account?</span>
+            <a
+              href="/src/pages/loginPage.html"
+              class="text-[#F36A3D] hover:underline font-medium ml-1"
+            >
+              Back to Login
+            </a>
+          </div>
+        </div>
+        <p class="text-center text-gray-400 mt-auto">
+          © 2025 PayMin. All Rights Reserved.
+        </p>
+      </section>
+
+      <!-- Login Successful -->
+      <section
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
+        id="loginSuccessPage"
+      >
+        <div
+          class="flex flex-1 flex-col items-center justify-center relative z-20"
+        >
+          <p class="mt-4 tracking-wide text-primary font-bold text-[60pt]">
+            <span class="text-textColor">Login</span> Successful
+          </p>
+        </div>
+
+        <p class="mt-auto mb-2 text-textColor">
+          © 2025 PayMin. All Rights Reserved.
+        </p>
+      </section>
+
+      <!-- Welcome User -->
+      <section
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
+        id="welcomePage"
+      >
+        <div
+          class="flex flex-1 flex-col items-center justify-center relative z-10"
+        >
+          <p class="mt-4 tracking-wide text-primary font-bold text-[60pt]">
+            <span class="text-textColor">Welcome</span> User
+          </p>
+        </div>
+
+        <p class="mt-auto mb-2 text-textColor">
+          © 2025 PayMin. All Rights Reserved.
+        </p>
+      </section>
+    </main>
+
+    <script src="/src/js/login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+#navbar-list ul li:last-child {
+  margin-top: 20px;
+}
+
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
