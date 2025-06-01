@@ -23,5 +23,9 @@ Route::get('/Home', [Admin::class, 'home'])->name('Home');
 Route::get('/Item', [Admin::class, 'item'])->name('Item');
 Route::get('/Order', [Admin::class, 'order'])->name('Order');
 Route::get('/Report', [Admin::class, 'report'])->name('Report');
+
 Route::get('/Master', [Admin::class, 'master'])->name('Master');
+Route::post('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
+Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
+
 Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');

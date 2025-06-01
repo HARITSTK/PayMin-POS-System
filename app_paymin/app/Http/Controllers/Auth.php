@@ -43,7 +43,7 @@ class Auth extends BaseController
             'password.min' => 'Password harus memiliki minimal 8 karakter!',
         ])->validate();
 
-        Mdl_Auth::adddata($validatedData);
+        Mdl_Auth::adddatasetup($validatedData);
 
         return redirect()->route('Auth')->with('message', 'Set up berhasil dibuat, silahkan login dengan akun yang dibuat');
     }
