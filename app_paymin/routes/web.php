@@ -27,5 +27,6 @@ Route::get('/Report', [Admin::class, 'report'])->name('Report');
 Route::get('/Master', [Admin::class, 'master'])->name('Master');
 Route::post('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
 Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
+Route::post('/edit-master/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
 
 Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');

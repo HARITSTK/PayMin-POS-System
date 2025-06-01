@@ -87,13 +87,25 @@ class Admin extends BaseController
     public function SysEditMaster(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'nuallable|string|max:255',
-            'username' => 'nuallable|string|max:255',
-            'role' => 'nuallable|in:admin,kasir',
-            'password' => 'nullable|string|min:8',
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'role' => 'required|in:admin,kasir',
+            'password' => 'nullable|string|min:6',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user = Mdl_Admin::CekId($id);
+        $user = Mdl_Admin::findOrFail($id);
+
+        if ($request->hasFile('foto')) {
+            if ($user->foto) {
+                Storage::delete('public/foto/' . $user->foto);
+            }
+
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/foto', $filename);
+            $user->foto = $filename;
+        }
 
         $user->name = $validatedData['name'];
         $user->username = $validatedData['username'];
@@ -105,8 +117,9 @@ class Admin extends BaseController
 
         $user->save();
 
-        return redirect()->back()->with('success', 'Data user berhasil diperbarui.');
+        return redirect()->route('user.index')->with('success', 'User berhasil diupdate');
     }
+
 
 
     public function setting() {

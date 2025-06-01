@@ -241,7 +241,7 @@
             <div
                 class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
                 <!-- Modal Content -->
-                <form action="{{ route('SysEditMaster', $user->id) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('SysEditMaster', $md->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <h1 class="text-3xl font-bold text-red-500 mb-2">Edit Master</h1>
                     <div class="flex flex-col items-center">
