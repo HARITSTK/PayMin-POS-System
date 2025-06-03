@@ -3,8 +3,19 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Admin;
+use App\Http\Middleware\AuthMiddleware;
 
-// Route::get('/', [Auth::class, 'Login'])->name('Login')->middleware('CekDataApp');
+Route::middleware([AuthMiddleware::class])->group(function () {
+    Route::get('/Home', [Admin::class, 'home'])->name('Home');
+    Route::get('/Item', [Admin::class, 'item'])->name('Item');
+    Route::get('/Order', [Admin::class, 'order'])->name('Order');
+    Route::get('/Report', [Admin::class, 'report'])->name('Report');
+    Route::get('/Master', [Admin::class, 'master'])->name('Master');
+    Route::post('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
+    Route::post('/SysEditMaster/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
+    Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
+    Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');
+});
 
 Route::get('/', function () {
     return view('fpay');
@@ -18,15 +29,3 @@ Route::get('/Logout', function () {
     session()->flush();
     return redirect('/Auth');
 })->name('Logout');
-
-Route::get('/Home', [Admin::class, 'home'])->name('Home');
-Route::get('/Item', [Admin::class, 'item'])->name('Item');
-Route::get('/Order', [Admin::class, 'order'])->name('Order');
-Route::get('/Report', [Admin::class, 'report'])->name('Report');
-
-Route::get('/Master', [Admin::class, 'master'])->name('Master');
-Route::post('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
-Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
-Route::post('/edit-master/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
-
-Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');
