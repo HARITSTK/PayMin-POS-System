@@ -1,22 +1,16 @@
-// Function to show the modal order
+// Function to show the modal
 function showModal(modalId) {
   const modal = document.getElementById(modalId);
   const modalContent = modal.querySelector(".modal-content");
 
   modal.classList.remove("hidden");
-  setTimeout(() => {
-    modalContent.classList.remove("opacity-0", "scale-95");
-  }, 10);
 }
 
 function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   const modalContent = modal.querySelector(".modal-content");
 
-  modalContent.classList.add("opacity-0", "scale-95");
-  setTimeout(() => {
-    modal.classList.add("hidden");
-  }, 10);
+  modal.classList.add("hidden");
 }
 
 function orderNext() {
@@ -112,13 +106,19 @@ function showPaymentSuccessModal() {
     paymentSuccess.classList.add("hidden");
   }, 3500);
 
-  const asideFinish = document.getElementById("sidebarFinish");
-  asideFinish.classList.add("hidden");
+  const invoiceModal = document.getElementById("modalInvoice");
+  invoiceModal.classList.add("hidden");
 
-  orderList.classList.remove(
-    "grid-cols-1",
-    "sm:grid-cols-2",
-    "lg:grid-cols-3",
-    "xl:grid-cols-4"
-  );
+  const paymentAside = document.getElementById("sidebarPayment");
+  paymentAside.classList.add("hidden");
+
+  const finishAside = document.getElementById("sidebarFinish");
+  finishAside.classList.remove("hidden");
+
+  // orderList.classList.remove(
+  //   "grid-cols-1",
+  //   "sm:grid-cols-2",
+  //   "lg:grid-cols-3",
+  //   "xl:grid-cols-4"
+  // );
 }

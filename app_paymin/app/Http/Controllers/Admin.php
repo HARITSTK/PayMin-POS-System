@@ -71,6 +71,7 @@ class Admin extends BaseController
     public function SysDeleteMaster(Request $request)
     {
         $user = Mdl_Admin::find($request->id);
+        dd($user);
         if ($user) {
             // Hapus photo kalau ada
             if ($user->photo) {
@@ -87,29 +88,99 @@ class Admin extends BaseController
     public function SysEditMaster(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'nuallable|string|max:255',
-            'username' => 'nuallable|string|max:255',
-            'role' => 'nuallable|in:admin,kasir',
-            'password' => 'nullable|string|min:8',
+            'name' => 'nullable|max:255',
+            'username' => 'nullable|max:255', 
+            'role' => 'nullable|in:admin,kasir',
+            'password' => 'nullable|min:8',
         ]);
 
+        
         $user = Mdl_Admin::CekId($id);
-
+        // dd($user);
+        
+        if (!$user) {
+            return redirect()->back()->with('message', 'User tidak ditemukan.');
+        }
+        
         $user->name = $validatedData['name'];
-        $user->username = $validatedData['username'];
+        $user->username = $validatedData['username']; 
         $user->role = $validatedData['role'];
+        $user->update_at = date('Y-m-d H:i:s');
 
         if (!empty($validatedData['password'])) {
             $user->password = Hash::make($validatedData['password']);
         }
 
         $user->save();
-
-        return redirect()->back()->with('success', 'Data user berhasil diperbarui.');
+        
+        return redirect()->back()->with('message', 'Data user berhasil diperbarui.');
     }
 
-
     public function setting() {
-        return view('adminpage/setting');
+        $userId = session('user_id');
+        $user = Mdl_Admin::where('id', $userId)->first();
+
+        session([
+            // 'user_id' => $user->id,
+            'username_admin' => $user->username,
+            'name_admin' => $user->name,
+            'role_admin' => $user->role,
+            'bio_admin' => $user->bio,
+        ]);
+        
+        return view('adminpage/setting', compact('user'));
+    }
+
+    public function SysEditProfile(Request $request) {        
+        $userId = session('user_id');
+        $user = Mdl_Admin::find($userId);
+        
+        if (!$user) {
+            return redirect()->back()->with('message', 'User tidak ditemukan.');
+        }
+
+        $validatedData = $request->validate([
+            'name' => 'nullable|max:255',
+            'username' => 'nullable|max:255', 
+            'bio' => 'nullable',
+        ]);
+        
+        $user->name = $validatedData['name'];
+        $user->username = $validatedData['username'];
+        $user->bio = $validatedData['bio'];
+        $user->save();
+
+        session([
+            'name_admin' => $user->name,
+            'username_admin' => $user->username,
+            'bio_admin' => $user->bio,
+        ]);
+        
+        return redirect()->back()->with('message', 'Data user berhasil diperbarui.');
+    }
+
+    public function SysUpdatePassword(Request $request) {
+        $request->validate([
+        'old_password' => 'required',
+        'password1' => 'required|min:6',
+        'password2' => 'required|same:new_password',
+    ]);
+
+    $userId = session('user_id');
+    $user = Mdl_Admin::find($userId);
+
+    if (!$user) {
+        return back()->with('message', 'User tidak ditemukan.');
+    }
+
+    if (!password_verify($request->oldpassword, $user->password)) {
+        return back()->with('message', 'Password lama tidak sesuai.');
+    }
+
+    $user->password = hash::make($request->password1);
+    $user->save();
+
+    return back()->with('message', 'Password berhasil diperbarui.');
+
     }
 }

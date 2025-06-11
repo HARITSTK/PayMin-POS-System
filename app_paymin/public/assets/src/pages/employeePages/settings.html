@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../../output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/settings.css" />
+    <link
+      rel="shortcut icon"
+      href="../../assets/logoMin.png"
+      type="image/x-icon"
+    />
+    <title>PayMin</title>
+
+    <!-- Google Icons -->
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+  </head>
+  <body>
+    <main
+      class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins"
+    >
+      <nav
+        id="navbar"
+        class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
+      >
+        <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
+          <!-- Daftar item navigasi utama -->
+          <li>
+            <div class="flex items-center justify-center mb-2">
+              <img
+                src="../../assets/logoMin.png"
+                alt="Logo"
+                class="w-20 h-20 rounded-full"
+              />
+            </div>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="home.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-home fa-2x"></i>
+
+              <p class="text-sm">Home</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="order.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-cart-plus fa-2x"></i>
+              <p class="text-sm">Orders</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="report.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-file-text-o fa-2x"></i>
+              <p class="text-sm">Report</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="items.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-th fa-2x"></i>
+              <p class="text-sm">Items</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="member.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
+              <p class="text-sm">Member</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="settings.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-cog fa-2x"></i>
+              <p class="text-sm">Settings</p>
+            </a>
+          </li>
+          <span class="highlight-span mx-auto shadow-2xl"></span>
+          <li
+            class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
+            onclick="showModal('logoutModal')"
+          >
+            <a class="flex flex-col items-center justify-center">
+              <i class="fa fa-sign-out fa-2x"></i>
+              <p class="text-sm">Logout</p></a
+            >
+          </li>
+        </ul>
+
+        <!-- Logout Modal -->
+        <div
+          class="fixed inset-0 backdrop-blur-md bg-opacity-30 flex items-center justify-center z-50 hidden"
+          id="logoutModal"
+        >
+          <!-- Modal box -->
+          <div
+            class="bg-white rounded-xl p-6 w-72 text-center modal-content shadow-lg"
+          >
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+              Do you want to Logout?
+            </h3>
+
+            <div class="text-4xl mb-5">
+              <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-center gap-4">
+              <button
+                class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+                onclick="closeModal('logoutModal')"
+              >
+                Cancel
+              </button>
+              <button
+                class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
+                onclick="window.location.href='login.html'"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Main Content -->
+      <section class="h-full w-full p-11 box-border overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <h1 class="text-[36pt] font-bold text-[#353535]">Settings</h1>
+        </div>
+        <div class="flex items-center w-full h-full p-4 gap-12">
+          <!-- Navigation -->
+          <div
+            class="flex flex-col items-center w-auto h-full bg-white rounded-lg shadow-4xl flex-1"
+          >
+            <!-- Your Restaurant -->
+            <div
+              class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
+              onclick="showYourRestaurant()"
+            >
+              <div
+                class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
+              >
+                <span class="material-symbols-outlined"> shopping_bag </span>
+              </div>
+              <div>
+                <h1 class="text-lg font-medium">Your Restaurant</h1>
+                <p class="font-light">Dark and Light mode, Font size</p>
+              </div>
+            </div>
+            <!-- Security -->
+            <div
+              class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
+              onclick="showSecurity()"
+            >
+              <div
+                class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
+              >
+                <span class="material-symbols-outlined"> lock </span>
+              </div>
+              <div>
+                <h1 class="text-lg font-medium">Security</h1>
+                <p class="font-light">Configure Password, PIN, etc</p>
+              </div>
+            </div>
+            <!-- About Us -->
+            <div
+              class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
+              onclick="showAboutUs()"
+            >
+              <div
+                class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
+              >
+                <span class="material-symbols-outlined"> error </span>
+              </div>
+              <div>
+                <h1 class="text-lg font-medium">About Us</h1>
+                <p class="font-light">Find out more about Posly</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile -->
+          <div
+            class="bg-white rounded-xl shadow-md p-6 flex-2 mx-auto flex flex-col h-full w-full"
+            id="yourRestaurant"
+          >
+            <!-- Title -->
+            <h2 class="text-sm font-semibold text-gray-700 mb-4">
+              Your Profile
+            </h2>
+
+            <!-- Profile Info -->
+            <div class="flex h-auto w-full mx-5 items-center">
+              <!-- Profile Picture -->
+              <div class="relative w-40 h-40 mb-2">
+                <img
+                  src=""
+                  alt="Profile"
+                  class="rounded-full w-full h-full object-cover bg-gray-200"
+                />
+                <!-- Edit Icon -->
+                <button
+                  class="absolute bottom-1 right-1 bg-primary text-white rounded-full p-1.5 shadow-md hover:bg-orange-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536M9 11l3.536-3.536a2 2 0 012.828 0l1.172 1.172a2 2 0 010 2.828L13 15l-4 1 1-4z"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Name & Date -->
+              <div class="flex flex-col justify-center ml-4 text-lg">
+                <p class="font-semibold text-gray-800">Daveton Aljabar</p>
+                <p class="text-gray-500">Last updated: 12/05/2024</p>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-200 my-6"></div>
+
+            <!-- Buttons -->
+            <div class="flex justify-end space-x-2 mt-auto">
+              <button
+                class="border border-orange-500 text-orange-500 rounded px-4 py-2 hover:bg-orange-50 text-sm font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                class="bg-gradient-to-r from-orange-500 to-orange-700 text-white rounded px-4 py-2 hover:from-orange-600 hover:to-orange-800 text-sm font-medium"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+          <!-- Security -->
+          <div
+            class="bg-white rounded-xl p-6 h-full flex-2 shadow-4xl hidden"
+            id="security"
+          >
+            <!-- Header -->
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">Security</h2>
+            <p class="text-sm text-gray-500 mb-6">
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+              accusant ium doloremque laudantium, totam remad aperiam eaque ipsa
+              quae ab illo inventore.
+            </p>
+
+            <!-- Change Password Section -->
+            <form class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Old Password</label
+                >
+                <input
+                  type="password"
+                  placeholder="Enter old password"
+                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >New Password</label
+                >
+                <input
+                  type="password"
+                  placeholder="Enter new password"
+                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Configure Password</label
+                >
+                <input
+                  type="password"
+                  placeholder="Enter new password"
+                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <!-- Buttons -->
+              <div class="flex justify-end space-x-4 pt-4">
+                <button
+                  type="button"
+                  class="border border-primary text-priborder-primary px-4 py-2 rounded-md text-sm hover:bg-red-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-orange-600"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- About Us -->
+          <div
+            class="bg-white rounded-xl p-6 h-full flex-2 shadow-4xl hidden"
+            id="aboutUs"
+          >
+            <!-- Header -->
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">About Us</h2>
+
+            <!-- Logo and Name -->
+            <div class="flex items-center space-x-2 mb-4">
+              <img
+                src="../../assets/logoMin.png"
+                alt="Logo"
+                class="w-10 h-10 rounded-sm"
+              />
+              <span class="text-2xl font-bold">
+                <span class="text-gray-800">Pay</span
+                ><span class="text-primary">Min</span>
+              </span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+              PayMin is a smart and easy-to-use Point of Sale (POS) system
+              designed to help small businesses manage sales, inventory, and
+              payments in one place. From retail stores to cafés, PayMin makes
+              transactions fast, inventory tracking simple, and reporting clear.
+            </p>
+
+            <p class="text-sm text-gray-600 leading-relaxed mb-4">
+              Our mission is to make business operations more efficient and
+              accessible for everyone. With PayMin, you can focus less on
+              managing tools — and more on growing your business. Simple.
+              Reliable. Built for your business.
+            </p>
+
+            <p class="text-sm font-semibold text-gray-800">
+              Simple. Reliable. Built for your business.
+            </p>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div
+          class="fixed inset-0 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+          <!-- Modal -->
+          <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+            <h2 class="text-xl font-semibold text-center mb-4">
+              Change your profile
+            </h2>
+            <p class="text-sm text-center text-gray-500 mb-6">
+              Upload your image
+            </p>
+
+            <!-- Upload Area -->
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center text-center space-y-2 cursor-pointer hover:border-gray-400 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-10 w-10 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4-4m0 0l-4 4m4-4v12"
+                />
+              </svg>
+              <p class="text-sm text-gray-500">Drag and drop here</p>
+              <p class="text-xs text-gray-400">—OR—</p>
+              <button
+                class="bg-primary text-white text-sm px-4 py-2 rounded transition"
+              >
+                Browse Files
+              </button>
+            </div>
+
+            <!-- Optional footer buttons -->
+            <div class="mt-6 flex justify-end space-x-3">
+              <button class="text-gray-500 hover:text-gray-700 text-sm">
+                Cancel
+              </button>
+              <button
+                class="bg-primary text-white text-sm px-4 py-2 rounded transition hover:bg-orange-600"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="../../js/settings.js"></script>
+  </body>
+</html>

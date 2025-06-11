@@ -3,8 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/src/output.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/src/font-awesome/css/font-awesome.min.css" />
+    <link href="../output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <link
+      rel="shortcut icon"
+      href="../assets/logoMin.png"
+      type="image/x-icon"
+    />
     <title>PayMin</title>
   </head>
   <body>
@@ -13,11 +19,11 @@
     >
       <!-- Firstscreen -->
       <section
-        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center"
+        class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center cursor-pointer"
         id="firstScreen"
       >
         <div class="flex flex-1 flex-col items-center justify-center">
-          <img src="/src/assets/logo.png" alt="logo" width="300" />
+          <img src="../assets/logo.png" alt="logo" width="300" />
           <p class="mt-4 tracking-wide text-textColor">
             Click Any Where to Login
           </p>
@@ -36,7 +42,7 @@
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-10 w-auto h-auto"
         >
-          <img src="/src/assets/logo.png" alt="" width="200" class="mx-auto" />
+          <img src="../assets/logo.png" alt="" width="200" class="mx-auto" />
 
           <p class="text-gray-600 mb-6 text-center">
             easy to use and user friendly
@@ -67,6 +73,7 @@
             <button
               type="submit"
               class="w-[10em] mt-5 bg-[#F36A3D] text-white p-2 rounded-lg hover:bg-[#d55830] mx-auto"
+              onclick="loginSuccessfull()"
             >
               Login
             </button>
@@ -75,8 +82,8 @@
           <div class="mt-6 text-center">
             <span class="text-gray-600">Don't have an account?</span>
             <a
-              href="/src/pages/setupPage.html"
-              class="text-[#F36A3D] hover:underline font-medium ml-1"
+              class="text-[#F36A3D] hover:underline font-medium ml-1 cursor-pointer"
+              onclick="register()"
             >
               Create one
             </a>
@@ -90,12 +97,12 @@
       <!-- Register -->
       <section
         class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
-        id="registerPage"
+        id="register"
       >
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-10 w-auto h-auto"
         >
-          <img src="/dist/logo-01.png" alt="" width="200" class="mx-auto" />
+          <img src="../assets/logo.png" alt="" width="200" class="mx-auto" />
 
           <p class="text-gray-600 mb-6 text-center">
             easy to use and user friendly
@@ -131,8 +138,8 @@
           <div class="mt-6 text-center">
             <span class="text-gray-600">Already have Account?</span>
             <a
-              href="/src/pages/loginPage.html"
-              class="text-[#F36A3D] hover:underline font-medium ml-1"
+              class="text-[#F36A3D] hover:underline font-medium ml-1 cursor-pointer"
+              onclick="login()"
             >
               Back to Login
             </a>
@@ -146,7 +153,7 @@
       <!-- Login Successful -->
       <section
         class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
-        id="loginSuccessPage"
+        id="loginSuccess"
       >
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-20"
@@ -164,7 +171,7 @@
       <!-- Welcome User -->
       <section
         class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center hidden"
-        id="welcomePage"
+        id="welcomeUser"
       >
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-10"
@@ -180,6 +187,6 @@
       </section>
     </main>
 
-    <script src="/src/js/login.js"></script>
+    <script src="../js/login.js"></script>
   </body>
 </html>

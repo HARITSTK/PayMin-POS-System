@@ -25,7 +25,8 @@
 </head>
 
 <body>
-    <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
+    <main
+        class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD] relative overflow-hidden">
         <!-- Navbar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <div class="flex items-center justify-center mb-2">
@@ -33,21 +34,20 @@
             </div>
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
                 <!-- Daftar item navigasi utama -->
+                <!-- <li>
+                    <div class="flex items-center justify-center mb-2">
+                        <img src="assets/src/assets/logoMin.png" alt="Logo" class="w-20 h-20 rounded-full" />
+                    </div>
+                </li> -->
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="/src/pages/home.html" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
                     </a>
                 </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Order') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-cart-plus fa-2x"></i>
-                        <p class="text-sm">Orders</p>
-                    </a>
-                </li>
+
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
                     <a href="{{ route('Report') }}" class="flex flex-col items-center justify-center">
@@ -64,8 +64,15 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
+                    <a href="{{ route('Member') }}" class="flex flex-col items-center justify-center">
+                        <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
+                        <p class="text-sm">Member</p>
+                    </a>
+                </li>
+                <li
+                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
                     <a href="{{ route('Master') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-key fa-2x"></i>
+                        <i class="fa fa-key fa-2x" aria-hidden="true"></i>
                         <p class="text-sm">Master</p>
                     </a>
                 </li>
@@ -77,9 +84,9 @@
                     </a>
                 </li>
                 <span class="highlight-span mx-auto shadow-2xl"></span>
-                <li
-                    class="flex flex-col items-center justify-center mt-[4em] text-[#8B8B8B] hover:text-red-400 cursor-pointer">
-                    <a class="flex flex-col items-center justify-center" onclick="showModal('modalLogout')">
+                <li class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
+                    onclick="showModal('modalLogout')">
+                    <a class="flex flex-col items-center justify-center">
                         <i class="fa fa-sign-out fa-2x"></i>
                         <p class="text-sm">Logout</p>
                     </a>
@@ -118,7 +125,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                 <i class="fa fa-search"></i>
                             </span>
-                            <input type="text" placeholder="Find Items"
+                            <input type="text" placeholder="Find Items" id="searchInput" onkeyup="searchTable()"
                                 class="border border-gray-300 rounded-2xl pl-10 pr-4 py-3 bg-white w-full focus:outline-none focus:ring-2 focus:ring-primary" />
                         </div>
                     </form>
@@ -129,7 +136,7 @@
 
             <div class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl">
                 <div class="overflow-y-auto h-full mb-4 rounded-2xl">
-                    <table class="table-auto w-full">
+                    <table class="table-auto w-full" id="dataTable">
                         <thead class="border-b-2 border-tertiary text-white bg-[#747474] h-[3rem] w-full">
                             <tr class="text-center text-sm rounded-lg">
                                 <th class="p-6">Action</th>
@@ -140,7 +147,7 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="tableBody">
                             @foreach($masterdata as $md)
                             <tr class="border-b border-tertiary h-[3rem] text-center">
                                 <td class="p-3 w-[12em]">
@@ -149,16 +156,16 @@
                                             class="bg-[#4682EC] text-white px-4 py-2 flex justify-between items-center hover:opacity-80 transition-all duration-200 cursor-pointer rounded-l-2xl"
                                             onclick="showViewModal(this)" data-id="{{ $md->id }}"
                                             data-name="{{ $md->name }}" data-username="{{ $md->username }}"
-                                            data-role="{{ $md->role }}" data-photo="{{ $md->photo }}">
+                                            data-role="{{ $md->role }}" data-photo="{{ $md->photo }}"
+                                            data-bio="{{ $md->bio }}" data-created_at="{{ $md->created_at }}"
+                                            data-updated_at="{{ $md->updated_at }}">
                                             <div class="flex items-center">
                                                 <span class="material-symbols-outlined">visibility</span>
                                             </div>
                                         </button>
                                         <button
                                             class="bg-[#F0AD4E] text-white px-4 py-2 flex justify-between items-center hover:opacity-80 transition-all duration-200 cursor-pointer"
-                                            onclick="fillAndShowEditModal(this)" data-id="{{ $md->id }}"
-                                            data-name="{{ $md->name }}" data-username="{{ $md->username }}"
-                                            data-role="{{ $md->role }}">
+                                            onclick="showModal('modalEditItem_{{ $md->id }}')">
                                             <div class="flex items-center">
                                                 <span class="material-symbols-outlined">edit</span>
                                             </div>
@@ -184,11 +191,84 @@
                                     </button>
                                     @else
                                     <button class="bg-tertiary text-white py-2 px-6 cursor-pointer rounded-full">
-                                        Kasir
+                                        Karyawan
                                     </button>
                                     @endif
                                 </td>
                             </tr>
+                            <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+                                id="modalEditItem_{{ $md->id }}">
+                                <div
+                                    class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
+                                    <!-- Form dengan action yang benar untuk user ini -->
+                                    <form action="{{ route('SysEditMaster', $md->id) }}" method="post"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <h1 class="text-3xl font-bold text-red-500 mb-2">Edit Master</h1>
+                                        <div class="flex flex-col items-center">
+                                            <div
+                                                class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center">
+                                                <svg class="w-16 h-16 text-white" viewBox="0 0 24 24"
+                                                    fill="currentColor">
+                                                    <path
+                                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                                </svg>
+                                            </div>
+                                            <button
+                                                class="flex items-center mt-2 text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer hover:text-gray-900 transition-colors duration-200"
+                                                type="button">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                </svg>
+                                                <span class="text-sm font-medium">Edit Picture</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <label class="block text-sm font-medium text-gray-700">Status</label>
+                                            <select name="role"
+                                                class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                                <option value="" hidden>{{ $md->role }}</option>
+                                                <option value="admin" {{ $md->role == 'admin' ? 'selected' : '' }}>Admin
+                                                </option>
+                                                <option value="kasir" {{ $md->role == 'karyawan' ? 'selected' : '' }}>karyawan
+                                                </option>
+                                            </select>
+
+                                            <label class="block text-sm font-medium text-gray-700 mt-4">Employee
+                                                ID</label>
+                                            <input type="number" name="id" readonly value="{{ $md->id }}"
+                                                class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+
+                                            <label class="block text-sm font-medium text-gray-700 mt-4">Nama</label>
+                                            <input type="text" name="name" value="{{ $md->name }}"
+                                                class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+
+                                            <label class="block text-sm font-medium text-gray-700 mt-4">Username</label>
+                                            <input type="text" name="username" value="{{ $md->username }}"
+                                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+
+                                            <label class="block text-sm font-medium text-gray-700 mt-4">Password</label>
+                                            <input type="password" name="password"
+                                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                                        </div>
+                                        <div class="mt-6 flex justify-center gap-x-4">
+                                            <button type="button"
+                                                class="border-2 border-primary text-primary px-4 py-2 rounded"
+                                                onclick="closeModal('modalEditItem_{{ $md->id }}')">
+                                                Close
+                                            </button>
+                                            <button class="bg-primary text-white px-4 py-2 rounded" type="submit">
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -234,79 +314,6 @@
             </div>
         </section>
 
-        <!-- Modal Edit Item -->
-        <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
-            id="modalEditItem">
-            <!-- Modal Container -->
-            <div
-                class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
-                <!-- Modal Content -->
-                <form action="{{ route('SysEditMaster', $md->id) }}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    <h1 class="text-3xl font-bold text-red-500 mb-2">Edit Master</h1>
-                    <div class="flex flex-col items-center">
-                        <!-- Profile Picture Circle -->
-                        <div
-                            class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center">
-                            <!-- User Icon Silhouette -->
-                            <svg class="w-16 h-16 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                            </svg>
-                        </div>
-                        <!-- Edit Button (now a proper button element) -->
-                        <button
-                            class="flex items-center mt-2 text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer hover:text-gray-900 transition-colors duration-200"
-                            onclick="">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                            <span class="text-sm font-medium">Edit Picture</span>
-                        </button>
-                    </div>
-
-                    <div class="mt-4">
-                        <label for="itemName" class="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="role" id="editRole"
-                            class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
-                            <option value="" hidden></option>
-                            <option value="admin">Admin</option>
-                            <option value="kasir">Kasir</option>
-                        </select>
-                        <label for="itemName" class="block text-sm font-medium text-gray-700 mt-4">Employee ID</label>
-                        <input type="number" id="editId"
-                            class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
-                            placeholder="#098712" disabled />
-
-                        <label for="itemName" class="block text-sm font-medium text-gray-700 mt-4">Nama</label>
-                        <input type="text" id="editName"
-                            class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Username</label>
-                        <input type="text" id="editUsername"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <label for="itemPrice" class="block text-sm font-medium text-gray-700 mt-4">Password</label>
-                        <input type="password" id="editPassword"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="mt-6 flex justify-center gap-x-4">
-                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                            onclick="closeModal('modalEditItem')">
-                            Close
-                        </button>
-                        <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn">
-                            Save Changes
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
             id="modalAddItem">
             <!-- Modal Container -->
@@ -347,7 +354,7 @@
                             class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
                             <option hidden></option>
                             <option value="admin">admin</option>
-                            <option value="kasir">kasir</option>
+                            <option value="karyawan">karyawan</option>
                         </select>
 
                         <label for="itemName" class="block text-sm font-medium text-gray-700 mt-4">Employee ID</label>
@@ -434,7 +441,7 @@
 
                     <!-- Name and Role -->
                     <h2 class="text-lg font-medium text-gray-800 mb-1" id="modalViewName">Nama</h2>
-                    <div id="modalViewRole">
+                    <div id="modalViewRole" class="">
                         Role
                     </div>
 
@@ -453,6 +460,26 @@
                         <div class="flex justify-between gap-x-8">
                             <span class="text-gray-700">Username</span>
                             <span class="text-gray-500" id="modalViewUsername">username</span>
+                        </div>
+
+                        <div class="flex justify-between gap-x-8">
+                            <span class="text-gray-700">Created At</span>
+                            <span class="text-gray-500" id="modalViewCreatedAt">Created At</span>
+                        </div>
+
+                        <div class="flex justify-between gap-x-8">
+                            <span class="text-gray-700">Last Updated</span>
+                            <span class="text-gray-500" id="modalViewUpdatedAt">Last Updated</span>
+                        </div>
+
+                        <div class="flex justify-between gap-x-8">
+                            <span class="text-gray-700">Bio</span>
+                            <!-- <span class="text-gray-500" id="modalViewBio">Bio</span> -->
+                        </div>
+
+                        <div class="flex justify-between gap-x-8">
+                            <!-- <span class="text-gray-700">Bio</span> -->
+                            <span class="text-gray-500" id="modalViewBio">Bio</span>
                         </div>
                     </div>
                 </div>
@@ -494,6 +521,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- Alert Notification -->
+        @if (Session::has('message'))
+        <div id="auto-dismiss-alert"
+            class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+            role="alert">
+            <div class="flex items-center gap-x-2">
+                <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+                <div class="flex-1">
+                    <strong>{{ Session::get('message') }}</strong>
+                </div>
+                <button type="button" class="text-white hover:text-gray-300 ml-2"
+                    onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <script>
+        // Menghilangkan alert setelah 5 detik (5000 ms)
+        setTimeout(() => {
+            const alert = document.getElementById('auto-dismiss-alert');
+            if (alert) {
+                alert.remove();
+            }
+        }, 5000);
+        </script>
+        @endif
+
+
     </main>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/src/js/script.js"></script>
@@ -544,7 +601,10 @@
         const id = button.getAttribute('data-id');
         const name = button.getAttribute('data-name');
         const username = button.getAttribute('data-username');
+        const bio = button.getAttribute('data-bio');
         const role = button.getAttribute('data-role');
+        const updated_at = button.getAttribute('data-updated_at');
+        const created_at = button.getAttribute('data-created_at');
         const photo = button.getAttribute('data-photo');
 
         // Set teks
@@ -552,6 +612,9 @@
         document.getElementById('modalViewName').textContent = name;
         document.getElementById('modalViewNameDetail').textContent = name;
         document.getElementById('modalViewUsername').textContent = username;
+        document.getElementById('modalViewCreatedAt').textContent = created_at;
+        document.getElementById('modalViewUpdatedAt').textContent = updated_at;
+        document.getElementById('modalViewBio').textContent = bio;
 
         const roleEl = document.getElementById('modalViewRole');
         roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
@@ -571,25 +634,25 @@
         showModal('modalViewItem');
     }
 
-    function fillAndShowEditModal(button) {
-        // Ambil data dari tombol
-        const id = button.getAttribute('data-id');
-        const name = button.getAttribute('data-name');
-        const username = button.getAttribute('data-username');
-        const role = button.getAttribute('data-role');
+    // function fillAndShowEditModal(button) {
+    //     // Ambil data dari tombol
+    //     const id = button.getAttribute('data-id');
+    //     const name = button.getAttribute('data-name');
+    //     const username = button.getAttribute('data-username');
+    //     const role = button.getAttribute('data-role');
 
-        // Set nilai ke dalam modal
-        document.getElementById('editId').value = id;
-        document.getElementById('editName').value = name;
-        document.getElementById('editUsername').value = username;
-        document.getElementById('editRole').value = role;
+    //     // Set nilai ke dalam modal
+    //     document.getElementById('editId').value = id;
+    //     document.getElementById('editName').value = name;
+    //     document.getElementById('editUsername').value = username;
+    //     document.getElementById('editRole').value = role;
 
-        // Kosongkan password (opsional)
-        document.getElementById('editPassword').value = '';
+    //     // Kosongkan password (opsional)
+    //     document.getElementById('editPassword').value = '';
 
-        // Tampilkan modal
-        showModal('modalEditItem');
-    }
+    //     // Tampilkan modal
+    //     showModal('modalEditItem');
+    // }
 
     function showModal(id) {
         document.getElementById(id).classList.remove('hidden');
@@ -597,6 +660,64 @@
 
     function closeModal(id) {
         document.getElementById(id).classList.add('hidden');
+    }
+
+    function searchTable() {
+        // Ambil input pencarian
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById('dataTable');
+        const tbody = document.getElementById('tableBody');
+        const rows = tbody.getElementsByTagName('tr');
+        const noResults = document.getElementById('noResults');
+
+        let visibleRows = 0;
+
+        // Loop melalui semua baris tabel
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const cells = row.getElementsByTagName('td');
+            let found = false;
+
+            // Cari di kolom yang dapat dicari (skip kolom Actions - index 0)
+            for (let j = 1; j < cells.length; j++) {
+                const cellText = cells[j].textContent || cells[j].innerText;
+                if (cellText.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+
+            // Tampilkan atau sembunyikan baris
+            if (found || filter === '') {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        }
+
+        // Tampilkan pesan "No Results" jika tidak ada data yang ditemukan
+        if (visibleRows === 0 && filter !== '') {
+            noResults.classList.remove('hidden');
+            table.querySelector('tbody').style.display = 'none';
+        } else {
+            noResults.classList.add('hidden');
+            table.querySelector('tbody').style.display = '';
+        }
+    }
+
+    // Optional: Add debounce untuk performa yang lebih baik
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
     </script>
 </body>

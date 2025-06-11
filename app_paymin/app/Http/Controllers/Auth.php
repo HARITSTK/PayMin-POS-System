@@ -81,12 +81,13 @@ class Auth extends BaseController
         if ($user->role == 'admin') {
             session([
                 'user_id' => $user->id,
-                'username_admin' => $user->username_user,
-                'nama_admin' => $user->nama_user,
+                'username_admin' => $user->username,
+                'name_admin' => $user->name,
                 'role_admin' => $user->role,
+                'bio_admin' => $user->bio,
             ]);
             return redirect()->route('Home');
-        } elseif ($user->role == 'kasir') {
+        } elseif ($user->role == 'karyawan') {
             // session([
             //     'user_id' => $user->id,
             //     'username_kasir' => $user->username_user,

@@ -7,14 +7,18 @@ use App\Http\Middleware\AuthMiddleware;
 
 Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/Home', [Admin::class, 'home'])->name('Home');
-    Route::get('/Item', [Admin::class, 'item'])->name('Item');
-    Route::get('/Order', [Admin::class, 'order'])->name('Order');
     Route::get('/Report', [Admin::class, 'report'])->name('Report');
+    Route::get('/Item', [Admin::class, 'item'])->name('Item');
+    Route::get('/Member', [Admin::class, 'member'])->name('Member');
     Route::get('/Master', [Admin::class, 'master'])->name('Master');
     Route::post('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
-    Route::post('/SysEditMaster/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
+    Route::put('/SysEditMaster/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
     Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
     Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');
+    Route::put('/SysEditProfile', [Admin::class, 'SysEditProfile'])->name('SysEditProfile');
+    Route::put('/SysUpdatePassword', [Admin::class, 'SysUpdatePassword'])->name('SysUpdatePassword');
+
+    Route::get('/Order', [Admin::class, 'order'])->name('Order');
 });
 
 Route::get('/', function () {
