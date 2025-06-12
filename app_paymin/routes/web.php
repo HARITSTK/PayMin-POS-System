@@ -5,6 +5,23 @@ use App\Http\Controllers\Auth;
 use App\Http\Controllers\Admin;
 use App\Http\Middleware\AuthMiddleware;
 
+Route::get('/', function () {
+    return view('fpay');
+});
+
+Route::get('/Auth', [Auth::class, 'check'])->name('Auth');
+Route::post('/SysSetup', [Auth::class, 'SysSetup'])->name('SysSetup');
+Route::post('/SysLogin', [Auth::class, 'SysLogin'])->name('SysLogin');
+
+Route::get('/Logout', function () {
+    session()->flush();
+    return redirect('/Auth')->with('message', 'Logout Successful.');
+})->name('Logout');
+
+
+Route::get('/exportCSVMaster', [Admin::class, 'exportCSVMaster'])->name('exportCSVMaster');
+
+
 Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/Home', [Admin::class, 'home'])->name('Home');
     Route::get('/Report', [Admin::class, 'report'])->name('Report');
@@ -20,16 +37,3 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
     Route::get('/Order', [Admin::class, 'order'])->name('Order');
 });
-
-Route::get('/', function () {
-    return view('fpay');
-});
-
-Route::get('/Auth', [Auth::class, 'check'])->name('Auth');
-Route::post('/SysSetup', [Auth::class, 'SysSetup'])->name('SysSetup');
-Route::post('/SysLogin', [Auth::class, 'SysLogin'])->name('SysLogin');
-
-Route::get('/Logout', function () {
-    session()->flush();
-    return redirect('/Auth');
-})->name('Logout');

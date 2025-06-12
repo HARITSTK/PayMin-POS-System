@@ -13,6 +13,39 @@
 </head>
 
 <body>
+    @if (Session::has('message'))
+    <div id="auto-dismiss-alert"
+        class="fixed top-4 right-4 bg-primary text-white px-4 py-3 rounded shadow-lg z-50 w-fit min-w-[250px] opacity-0 transition-opacity duration-300"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+    const alert = document.getElementById('auto-dismiss-alert');
+    if (alert) {
+        // Muncul pelan
+        setTimeout(() => {
+            alert.classList.remove('opacity-0');
+        }, 100);
+
+        // Menghilang setelah 5 detik
+        setTimeout(() => {
+            alert.classList.add('opacity-0');
+            setTimeout(() => alert.remove(), 300); // Setelah animasi selesai
+        }, 5000);
+    }
+    </script>
+    @endif
+
     <main class="flex items-center justify-between h-screen bg-[#E6EEFD] p-5 font-poppins font-light">
         <div class="w-full h-full absolute z-2 left-0 opacity-[15%]">
             <img src="assets/src/assets/bgLoginPaymin-01.png" alt="Illustration" class="w-full h-auto" />
@@ -70,6 +103,7 @@
             </p>
         </section>
     </main>
+
 
     <script src="/src/js/script.js"></script>
     <script>

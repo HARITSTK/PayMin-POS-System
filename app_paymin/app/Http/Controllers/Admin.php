@@ -8,11 +8,15 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
 
 class Admin extends BaseController
 {
     public function home() {
-        return view('adminpage/home');
+        $userId = session('user_id');
+        $user = Mdl_Admin::where('id', $userId)->first();
+        
+        return view('adminpage/home',  compact('user'));
     }
  
     public function order() {
@@ -71,9 +75,8 @@ class Admin extends BaseController
     public function SysDeleteMaster(Request $request)
     {
         $user = Mdl_Admin::find($request->id);
-        dd($user);
+        // dd($user);
         if ($user) {
-            // Hapus photo kalau ada
             if ($user->photo) {
                 // Storage::delete('public/uploads/photos/' . $user->photo);
             }
@@ -105,7 +108,7 @@ class Admin extends BaseController
         $user->name = $validatedData['name'];
         $user->username = $validatedData['username']; 
         $user->role = $validatedData['role'];
-        $user->update_at = date('Y-m-d H:i:s');
+        $user->updated_at = date('Y-m-d H:i:s');
 
         if (!empty($validatedData['password'])) {
             $user->password = Hash::make($validatedData['password']);
@@ -116,17 +119,48 @@ class Admin extends BaseController
         return redirect()->back()->with('message', 'Data user berhasil diperbarui.');
     }
 
+    public function exportCSVMaster()
+    {
+        $fileName = 'Master_Data_' . now()->format('Ymd_His') . '.csv';
+        $users = Mdl_Admin::all();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Name', 'Username', 'Role', 'Is Active', 'Created At', 'Updated At', 'Bio'];
+
+        $callback = function () use ($users, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($users as $user) {
+                fputcsv($file, [
+                    $user->name,
+                    $user->username,
+                    // $user->password,
+                    $user->role,
+                    $user->is_active ? 'Active' : 'Inactive',
+                    $user->created_at->format('Y-m-d H:i:s'),
+                    $user->updated_at->format('Y-m-d H:i:s'),
+                    $user->bio ?? '-',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
+    }
+
+
     public function setting() {
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
-
-        session([
-            // 'user_id' => $user->id,
-            'username_admin' => $user->username,
-            'name_admin' => $user->name,
-            'role_admin' => $user->role,
-            'bio_admin' => $user->bio,
-        ]);
         
         return view('adminpage/setting', compact('user'));
     }
@@ -160,27 +194,37 @@ class Admin extends BaseController
     }
 
     public function SysUpdatePassword(Request $request) {
-        $request->validate([
-        'old_password' => 'required',
-        'password1' => 'required|min:6',
-        'password2' => 'required|same:new_password',
-    ]);
+        
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'new_password_repeat' => 'required|same:new_password',
+        ]);
+        
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors()->first());
+        }
 
-    $userId = session('user_id');
-    $user = Mdl_Admin::find($userId);
+        $userId = session('user_id');
+        $user = Mdl_Admin::find($userId);
 
-    if (!$user) {
-        return back()->with('message', 'User tidak ditemukan.');
+        if (!$user) {
+            return back()->with('message', 'User not found.');
+        }
+
+        if (!password_verify($request->old_password, $user->password)) {
+            return back()->with('message', 'Old Password is incorrect.');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('message', 'Password successfully updated.');
+
     }
 
-    if (!password_verify($request->oldpassword, $user->password)) {
-        return back()->with('message', 'Password lama tidak sesuai.');
-    }
-
-    $user->password = hash::make($request->password1);
-    $user->save();
-
-    return back()->with('message', 'Password berhasil diperbarui.');
-
+    public function member() {
+        $member = Mdl_Admin::showmember();
+        return view('adminpage/member', compact('member'));
     }
 }

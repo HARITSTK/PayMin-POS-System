@@ -109,6 +109,33 @@
             </div>
         </nav>
         <!-- Main Content -->
+        <!-- Alert Notification -->
+        @if (Session::has('message'))
+        <div id="auto-dismiss-alert"
+            class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+            role="alert">
+            <div class="flex items-center gap-x-2">
+                <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+                <div class="flex-1">
+                    <strong>{{ Session::get('message') }}</strong>
+                </div>
+                <button type="button" class="text-white hover:text-gray-300 ml-2"
+                    onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+
+        <script>
+        setTimeout(() => {
+            const alert = document.getElementById('auto-dismiss-alert');
+            if (alert) {
+                alert.remove();
+            }
+        }, 5000);
+        </script>
+        @endif
+
         <section class="h-full w-full p-11 box-border overflow-y-auto">
             <div class="flex items-center justify-between">
                 <h1 class="text-[36pt] font-bold text-[#353535]">Settings</h1>
@@ -215,23 +242,49 @@
                     <form class="space-y-4" action="{{ route('SysUpdatePassword') }}" method="post">
                         @csrf
                         @method('PUT')
-                        <div>
+                        @php
+                        $showEye = '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+                        </svg>';
+                        @endphp
+
+                        <div class="relative">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Old Password</label>
-                            <input type="password" placeholder="Enter old password" name="oldpassword"
+                            <input type="password" id="old_password" placeholder="Enter old password"
+                                name="old_password"
                                 class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                            <span onclick="togglePassword('old_password', this)"
+                                class="absolute right-3 top-9 cursor-pointer text-gray-600">
+                                {!! $showEye !!}
+                            </span>
                         </div>
 
-                        <div>
+                        <div class="relative mt-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                            <input type="password" placeholder="Enter new password" name="password1"
+                            <input type="password" id="new_password" placeholder="Enter new password"
+                                name="new_password"
                                 class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                            <span onclick="togglePassword('new_password', this)"
+                                class="absolute right-3 top-9 cursor-pointer text-gray-600">
+                                {!! $showEye !!}
+                            </span>
                         </div>
 
-                        <div>
+                        <div class="relative mt-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">New Repeat Password</label>
-                            <input type="password" placeholder="Enter new repeat password" name="password2"
+                            <input type="password" id="new_password_repeat" placeholder="Enter new repeat password"
+                                name="new_password_repeat"
                                 class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                            <span onclick="togglePassword('new_password_repeat', this)"
+                                class="absolute right-3 top-9 cursor-pointer text-gray-600">
+                                {!! $showEye !!}
+                            </span>
                         </div>
+
 
                         <!-- Buttons -->
                         <div class="flex justify-end space-x-4 pt-4">

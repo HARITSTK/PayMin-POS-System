@@ -7,8 +7,7 @@
     <link href="assets/src/output.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/src/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="assets/src/css/home.css" />
-    <link rel="shortcut icon" href="assets/src/assets/logoMin.png" type="image/x-icon">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="shortcut icon" href="assets/src/assets/logoMin.png" type="image/x-icon" />
     <title>PayMin</title>
 
     <!-- Swiper -->
@@ -27,26 +26,22 @@
     <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
         <!-- Navigation Bar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
-            <div class="flex items-center justify-center mb-2">
-                <img src="assets/src/assets/logoMin.png" alt="Logo" class="w-20 h-w-20 rounded-full" />
-            </div>
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
                 <!-- Daftar item navigasi utama -->
+                <li>
+                    <div class="flex items-center justify-center mb-2">
+                        <img src="assets/src/assets/logoMin.png" alt="Logo" class="w-20 h-20 rounded-full" />
+                    </div>
+                </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
                     </a>
                 </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Order') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-cart-plus fa-2x"></i>
-                        <p class="text-sm">Orders</p>
-                    </a>
-                </li>
+
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
                     <a href="{{ route('Report') }}" class="flex flex-col items-center justify-center">
@@ -63,8 +58,15 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
+                    <a href="{{ route('Member') }}" class="flex flex-col items-center justify-center">
+                        <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
+                        <p class="text-sm">Member</p>
+                    </a>
+                </li>
+                <li
+                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
                     <a href="{{ route('Master') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-key fa-2x"></i>
+                        <i class="fa fa-key fa-2x" aria-hidden="true"></i>
                         <p class="text-sm">Master</p>
                     </a>
                 </li>
@@ -76,21 +78,50 @@
                     </a>
                 </li>
                 <span class="highlight-span mx-auto shadow-2xl"></span>
-                <li
-                    class="flex flex-col items-center justify-center mt-[4em] text-[#8B8B8B] hover:text-red-400 cursor-pointer">
-                    <a class="flex flex-col items-center justify-center" onclick="showModal('modalLogout')">
+                <li class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
+                    onclick="showModal('modalLogout')">
+                    <a class="flex flex-col items-center justify-center">
                         <i class="fa fa-sign-out fa-2x"></i>
                         <p class="text-sm">Logout</p>
                     </a>
                 </li>
             </ul>
+
+            <!-- Logout Modal -->
+            <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+                id="modalLogout">
+                <!-- Modal Container -->
+                <div
+                    class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
+
+                    <!-- Modal Content -->
+                    <div class="mt-4 flex flex-col gap-y-2 py-2">
+                        <h1 class="text-3xl font-bold text-red-500 mb-2">Logout</h1>
+                        <p class="text-lg text-gray-800">
+                            Are you sure for logout and destroy all session?.
+                        </p>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="mt-6 flex justify-end gap-x-4">
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
+                            onclick="closeModal('modalLogout')">
+                            Close
+                        </button>
+                        <a class="bg-primary text-white px-4 py-2 rounded" href="{{ route('Logout') }}">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </nav>
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
             <!-- Page Title -->
             <div class="mb-8">
                 <h1 class="text-[36pt] font-bold text-[#353535]">
-                    Welcome to Dashboard 
+                    <span class="font-medium">Welcome</span> {{ $user->name }} !
                 </h1>
             </div>
 
@@ -368,56 +399,9 @@
                 </div>
             </div>
         </section>
-        <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
-            id="modalLogout">
-            <!-- Modal Container -->
-            <div
-                class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
-
-                <!-- Modal Content -->
-                <div class="mt-4 flex flex-col gap-y-2 py-2">
-                    <h1 class="text-3xl font-bold text-red-500 mb-2">Logout</h1>
-                    <p class="text-lg text-gray-800">
-                        Are you sure for logout and destroy all session?.
-                    </p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="mt-6 flex justify-end gap-x-4">
-                    <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                        onclick="closeModal('modalLogout')">
-                        Close
-                    </button>
-                    <a class="bg-primary text-white px-4 py-2 rounded" href="{{ route('Logout') }}">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="/src/js/home.js"></script>
-    <script>
-    function showModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const modalContent = modal.querySelector(".modal-content");
-
-        modal.classList.remove("hidden");
-        setTimeout(() => {
-            modalContent.classList.remove("opacity-0", "scale-95");
-        }, 10);
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const modalContent = modal.querySelector(".modal-content");
-
-        modalContent.classList.add("opacity-0", "scale-95");
-        setTimeout(() => {
-            modal.classList.add("hidden");
-        }, 10);
-    }
-    </script>
+    <script src="assets/src/js/home.js"></script>
 </body>
 
 </html>

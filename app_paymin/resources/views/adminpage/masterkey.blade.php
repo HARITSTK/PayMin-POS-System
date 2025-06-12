@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="assets/src/output.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/src/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="assets/src/pages/master.html" />
-
+    <link rel="stylesheet" href="assets/src/css/masterkey.css" />
     <link rel="shortcut icon" href="assets/src/assets/logoMin.png" type="image/x-icon" />
-
     <title>PayMin</title>
+
+    <link rel="shortcut icon" href="/src/assets/logoMin.png" type="image/x-icon" />
 
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -25,20 +25,16 @@
 </head>
 
 <body>
-    <main
-        class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD] relative overflow-hidden">
+    <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
         <!-- Navbar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
-            <div class="flex items-center justify-center mb-2">
-                <img src="assets/src/assets/logoMin.png" alt="Logo" class="w-20 h-w-20 rounded-full" />
-            </div>
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
                 <!-- Daftar item navigasi utama -->
-                <!-- <li>
+                <li>
                     <div class="flex items-center justify-center mb-2">
                         <img src="assets/src/assets/logoMin.png" alt="Logo" class="w-20 h-20 rounded-full" />
                     </div>
-                </li> -->
+                </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
                     <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
@@ -85,13 +81,41 @@
                 </li>
                 <span class="highlight-span mx-auto shadow-2xl"></span>
                 <li class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
-                    onclick="showModal('modalLogout')">
+                    onclick="showModal('logoutModal')">
                     <a class="flex flex-col items-center justify-center">
                         <i class="fa fa-sign-out fa-2x"></i>
                         <p class="text-sm">Logout</p>
                     </a>
                 </li>
             </ul>
+
+            <!-- Logout Modal -->
+            <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+                id="modalLogout">
+                <!-- Modal Container -->
+                <div
+                    class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
+
+                    <!-- Modal Content -->
+                    <div class="mt-4 flex flex-col gap-y-2 py-2">
+                        <h1 class="text-3xl font-bold text-red-500 mb-2">Logout</h1>
+                        <p class="text-lg text-gray-800">
+                            Are you sure for logout and destroy all session?.
+                        </p>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="mt-6 flex justify-end gap-x-4">
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
+                            onclick="closeModal('modalLogout')">
+                            Close
+                        </button>
+                        <a class="bg-primary text-white px-4 py-2 rounded" href="{{ route('Logout') }}">
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
         </nav>
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
@@ -111,14 +135,13 @@
 
                 <!-- Tombol CSV (col-1) -->
                 <div class="col-span-1">
-                    <button
-                        class="text-textColor px-4 py-2 bg-white shadow-sm rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200"
-                        onclick="showModal('')">
-                        <span class="material-symbols-outlined">download</span> CSV
-                    </button>
+                    <a class="text-textColor px-4 py-2 bg-white shadow-sm rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200"
+                        href="{{ route('exportCSVMaster') }}"> <span class="material-symbols-outlined">download</span>
+                        CSV
+                    </a>
                 </div>
 
-                <!-- Form Search (col-10) -->
+                <!-- Form Search -->
                 <div class="col-span-9">
                     <form class="w-full">
                         <div class="relative w-full">
@@ -235,7 +258,8 @@
                                                 <option value="" hidden>{{ $md->role }}</option>
                                                 <option value="admin" {{ $md->role == 'admin' ? 'selected' : '' }}>Admin
                                                 </option>
-                                                <option value="kasir" {{ $md->role == 'karyawan' ? 'selected' : '' }}>karyawan
+                                                <option value="kasir" {{ $md->role == 'karyawan' ? 'selected' : '' }}>
+                                                    karyawan
                                                 </option>
                                             </select>
 
@@ -273,11 +297,19 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Footer Pagination -->
+                </tbody>
+                @if($masterdata->isEmpty())
+                <div id="noDataDiv"
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                    <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                    <p class="my-12 text-lg">
+                        We can’t find any item matching your search
+                    </p>
+                </div>
+                @endif
                 <div class="absolute bottom-0 left-0 right-0 flex justify-end items-center p-4 bg-white rounded-b-2xl">
                     <!-- Pagination -->
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">Page</span>
                         <button
                             class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
@@ -311,42 +343,51 @@
                         </button>
                     </div>
                 </div>
+                </table>
             </div>
-        </section>
 
+            <!-- Footer Pagination -->
+
+
+
+        </section>
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
             id="modalAddItem">
             <!-- Modal Container -->
             <div
                 class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
                 <!-- Modal Content -->
-                <h1 class="text-3xl font-bold text-red-500 mb-2">Add Master</h1>
+                <h1 class="text-3xl font-bold text-primary mb-2">Add New</h1>
                 <form action="{{ route('SysAddMaster') }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="flex flex-col items-center">
                         <!-- Profile Picture Circle -->
-                        <div class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 overflow-hidden">
-                            <img id="previewImage" src="assets/src/assets/user.png"
-                                class="w-full h-full object-cover rounded-full">
+                        <div
+                            class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center">
+                            <!-- User Icon Silhouette -->
+                            <svg class="w-16 h-16 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg>
                         </div>
 
                         <!-- Hidden File Input -->
                         <input type="file" id="profilePictureInput" name="photo" accept="image/png" class="hidden"
                             onchange="handleImageUpload(event)">
 
-                        <!-- Edit Button -->
-                        <button type="button"
+                        <!-- Edit Button (now a proper button element) -->
+                        <button
                             class="flex items-center mt-2 text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer hover:text-gray-900 transition-colors duration-200"
-                            onclick="document.getElementById('profilePictureInput').click()">
-                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
+                            onclick="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg> -->
+                            </svg>
                             <span class="text-sm font-medium">Edit Picture</span>
                         </button>
                     </div>
-
 
                     <div class="mt-4">
                         <label for="itemName" class="block text-sm font-medium text-gray-700">Posision</label>
@@ -381,7 +422,7 @@
                             onclick="closeModal('modalAddItem')">
                             Discard
                         </button>
-                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded" id="submitBtn">
+                        <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
                             Add New
                         </button>
                     </div>
@@ -398,8 +439,9 @@
                     @csrf
                     <input type="hidden" name="id" id="deleteIdInput">
 
+                    <!-- Modal Content -->
                     <div class="mt-4 flex flex-col gap-y-2 py-2">
-                        <h1 class="text-3xl font-bold text-red-500 mb-2">Delete Master</h1>
+                        <h1 class="text-3xl font-bold text-primary mb-2">Delete User</h1>
                         <p class="text-lg text-gray-800">
                             Deleting <span class="font-bold">Master ID #<span id="deleteIdText">000000</span></span>.
                             This
@@ -409,12 +451,12 @@
 
                     <!-- Modal Footer -->
                     <div class="mt-6 flex justify-end gap-x-4">
-                        <button class="border-2 border-primary text-primary px-4 py-2 rounded" type="button"
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
                             onclick="closeModal('modalDeleteItem')">
                             Close
                         </button>
-                        <button class="bg-primary text-white px-4 py-2 rounded" type="submit">
-                            Delete
+                        <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
+                            Save Changes
                         </button>
                     </div>
                 </form>
@@ -427,8 +469,8 @@
             <div
                 class="bg-white rounded-xl shadow-lg w-96 p-6 mx-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
                 <!-- Modal Header -->
-                <h1 class="text-2xl font-bold text-red-500 text-center mb-4">
-                    View Master
+                <h1 class="text-2xl font-bold text-primary text-center mb-4">
+                    User Profile
                 </h1>
 
                 <!-- Modal Content -->
@@ -487,41 +529,13 @@
                 <!-- Modal Footer -->
                 <div class="flex justify-center">
                     <button
-                        class="border border-red-500 text-red-500 px-8 py-2 rounded hover:bg-red-50 transition-colors duration-200"
+                        class="border border-primary text-primary px-8 py-2 rounded hover:bg-red-50 transition-colors duration-200"
                         onclick="closeModal('modalViewItem')">
                         Close
                     </button>
                 </div>
             </div>
         </div>
-        <!-- </div> -->
-        <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
-            id="modalLogout">
-            <!-- Modal Container -->
-            <div
-                class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
-
-                <!-- Modal Content -->
-                <div class="mt-4 flex flex-col gap-y-2 py-2">
-                    <h1 class="text-3xl font-bold text-red-500 mb-2">Logout</h1>
-                    <p class="text-lg text-gray-800">
-                        Are you sure for logout and destroy all session?.
-                    </p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="mt-6 flex justify-end gap-x-4">
-                    <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                        onclick="closeModal('modalLogout')">
-                        Close
-                    </button>
-                    <a class="bg-primary text-white px-4 py-2 rounded" href="{{ route('Logout') }}">
-                        Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-
         <!-- Alert Notification -->
         @if (Session::has('message'))
         <div id="auto-dismiss-alert"
@@ -538,9 +552,7 @@
                 </button>
             </div>
         </div>
-
         <script>
-        // Menghilangkan alert setelah 5 detik (5000 ms)
         setTimeout(() => {
             const alert = document.getElementById('auto-dismiss-alert');
             if (alert) {
@@ -549,177 +561,9 @@
         }, 5000);
         </script>
         @endif
-
-
+        <!-- </div> -->
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="/src/js/script.js"></script>
-    <script>
-    function showModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const modalContent = modal.querySelector(".modal-content");
-
-        modal.classList.remove("hidden");
-        setTimeout(() => {
-            modalContent.classList.remove("opacity-0", "scale-95");
-        }, 10);
-    }
-
-    function closeModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const modalContent = modal.querySelector(".modal-content");
-
-        modalContent.classList.add("opacity-0", "scale-95");
-        setTimeout(() => {
-            modal.classList.add("hidden");
-        }, 10);
-    }
-
-    function handleImageUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        // Hanya izinkan PNG
-        if (file.type !== "image/png") {
-            alert("Hanya file PNG yang diperbolehkan!");
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('previewImage').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function setDeleteId(id) {
-        document.getElementById('deleteIdInput').value = id;
-        document.getElementById('deleteIdText').innerText = id;
-    }
-
-    function showViewModal(button) {
-        const id = button.getAttribute('data-id');
-        const name = button.getAttribute('data-name');
-        const username = button.getAttribute('data-username');
-        const bio = button.getAttribute('data-bio');
-        const role = button.getAttribute('data-role');
-        const updated_at = button.getAttribute('data-updated_at');
-        const created_at = button.getAttribute('data-created_at');
-        const photo = button.getAttribute('data-photo');
-
-        // Set teks
-        document.getElementById('modalViewId').textContent = `#${id}`;
-        document.getElementById('modalViewName').textContent = name;
-        document.getElementById('modalViewNameDetail').textContent = name;
-        document.getElementById('modalViewUsername').textContent = username;
-        document.getElementById('modalViewCreatedAt').textContent = created_at;
-        document.getElementById('modalViewUpdatedAt').textContent = updated_at;
-        document.getElementById('modalViewBio').textContent = bio;
-
-        const roleEl = document.getElementById('modalViewRole');
-        roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
-        roleEl.className = role === 'admin' ?
-            'bg-primary-500 text-white text-xs px-4 py-1 rounded-full mb-6 inline-block' :
-            'bg-tertiary-500 text-white text-xs px-4 py-1 rounded-full mb-6 inline-block';
-
-        // Set foto
-        const photoEl = document.getElementById('modalViewPhoto');
-        if (photo) {
-            photoEl.src = `/storage/uploads/photos/${photo}`;
-        } else {
-            photoEl.src = `/assets/src/assets/user.png`;
-        }
-
-        // Tampilkan modal
-        showModal('modalViewItem');
-    }
-
-    // function fillAndShowEditModal(button) {
-    //     // Ambil data dari tombol
-    //     const id = button.getAttribute('data-id');
-    //     const name = button.getAttribute('data-name');
-    //     const username = button.getAttribute('data-username');
-    //     const role = button.getAttribute('data-role');
-
-    //     // Set nilai ke dalam modal
-    //     document.getElementById('editId').value = id;
-    //     document.getElementById('editName').value = name;
-    //     document.getElementById('editUsername').value = username;
-    //     document.getElementById('editRole').value = role;
-
-    //     // Kosongkan password (opsional)
-    //     document.getElementById('editPassword').value = '';
-
-    //     // Tampilkan modal
-    //     showModal('modalEditItem');
-    // }
-
-    function showModal(id) {
-        document.getElementById(id).classList.remove('hidden');
-    }
-
-    function closeModal(id) {
-        document.getElementById(id).classList.add('hidden');
-    }
-
-    function searchTable() {
-        // Ambil input pencarian
-        const input = document.getElementById('searchInput');
-        const filter = input.value.toUpperCase();
-        const table = document.getElementById('dataTable');
-        const tbody = document.getElementById('tableBody');
-        const rows = tbody.getElementsByTagName('tr');
-        const noResults = document.getElementById('noResults');
-
-        let visibleRows = 0;
-
-        // Loop melalui semua baris tabel
-        for (let i = 0; i < rows.length; i++) {
-            const row = rows[i];
-            const cells = row.getElementsByTagName('td');
-            let found = false;
-
-            // Cari di kolom yang dapat dicari (skip kolom Actions - index 0)
-            for (let j = 1; j < cells.length; j++) {
-                const cellText = cells[j].textContent || cells[j].innerText;
-                if (cellText.toUpperCase().indexOf(filter) > -1) {
-                    found = true;
-                    break;
-                }
-            }
-
-            // Tampilkan atau sembunyikan baris
-            if (found || filter === '') {
-                row.style.display = '';
-                visibleRows++;
-            } else {
-                row.style.display = 'none';
-            }
-        }
-
-        // Tampilkan pesan "No Results" jika tidak ada data yang ditemukan
-        if (visibleRows === 0 && filter !== '') {
-            noResults.classList.remove('hidden');
-            table.querySelector('tbody').style.display = 'none';
-        } else {
-            noResults.classList.add('hidden');
-            table.querySelector('tbody').style.display = '';
-        }
-    }
-
-    // Optional: Add debounce untuk performa yang lebih baik
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    </script>
+    <script src="assets/src/js/masterkey.js"></script>
 </body>
 
 </html>
