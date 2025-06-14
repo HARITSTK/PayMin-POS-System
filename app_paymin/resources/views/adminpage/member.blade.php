@@ -124,11 +124,10 @@
             <div class="flex gap-4 w-full justify-between items-center">
                 <!-- Tombol CSV (col-1) -->
                 <div class="">
-                    <button
-                        class="text-textColor px-4 py-2 bg-white shadow-sm rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200"
-                        onclick="showModal('')">
+                    <a href="{{ route('exportCSVMember') }}"
+                        class="text-textColor px-4 py-2 bg-white shadow-sm rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200">
                         <span class="material-symbols-outlined">download</span> CSV
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Form Search (col-10) -->
@@ -138,7 +137,7 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                 <i class="fa fa-search"></i>
                             </span>
-                            <input type="text" placeholder="Find Members"
+                            <input type="text" placeholder="Find Members" id="searchInput" onkeyup="searchTable()"
                                 class="border border-gray-300 rounded-2xl pl-10 pr-4 py-3 bg-white w-full focus:outline-none focus:ring-2 focus:ring-primary" />
                         </div>
                     </form>
@@ -149,7 +148,7 @@
 
             <div class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl">
                 <div class="overflow-y-auto h-full mb-4 rounded-2xl">
-                    <table class="table-auto w-full">
+                    <table class="table-auto w-full" id="dataTable">
                         <thead class="border-b-2 border-tertiary text-white bg-[#747474] h-[3rem] w-full">
                             <tr class="text-center text-sm rounded-lg">
                                 <th class="p-6">Member ID</th>
@@ -162,7 +161,7 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody id="tableBody">
                             @foreach ($members as $m)
                             <tr class="border-b border-tertiary h-[3rem] text-center hidden">
                                 <td class="p-3">#00000009</td>
@@ -177,37 +176,20 @@
                                     </button>
                                 </td>
                             </tr>
-                            <tr class="border-b border-tertiary h-[3rem] text-center hidden">
-                                <td class="p-3">#00000009</td>
-                                <td class="p-3">Ridho&Harits</td>
-                                <td class="p-3">23/05/2025</td>
-                                <td class="p-3 font-bold">Rp 200.000</td>
-                                <td class="p-3">1</td>
-                                <td class="p-3">082248386580</td>
-                                <td class="p-3">
-                                    <button class="bg-[#6A5DDE] text-white h-10 w-32 cursor-pointer rounded-full">
-                                        Platinum
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-tertiary h-[3rem] text-center hidden">
-                                <td class="p-3">#00000009</td>
-                                <td class="p-3">Ridho&Harits</td>
-                                <td class="p-3">23/05/2025</td>
-                                <td class="p-3 font-bold">Rp 200.000</td>
-                                <td class="p-3">1</td>
-                                <td class="p-3">082248386580</td>
-                                <td class="p-3">
-                                    <button class="bg-[#ABABAB] text-white h-10 w-32 cursor-pointer rounded-full">
-                                        Silver
-                                    </button>
-                                </td>
-                            </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <!-- Search icon -->
+                    @if ($members)
                     <div
+                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                        <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                        <p class="my-12 text-lg">
+                            We can’t find any item matching your search
+                        </p>
+                    </div>
+                    @endif
+                    <div id="noData" style="display: none;"
                         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
                         <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                         <p class="my-12 text-lg">
@@ -500,7 +482,7 @@
         </script>
         @endif
     </main>
-    <script src="assets/src/js/masterkey.js"></script>
+    <script src="assets/src/js/member.js"></script>
 </body>
 
 </html>

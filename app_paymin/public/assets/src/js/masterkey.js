@@ -14,42 +14,28 @@ function closeModal(modalId) {
 }
 
 function searchTable() {
-    const input = document.getElementById("searchInput");
-    const filter = input.value.toUpperCase();
-    const tbody = document.getElementById("tableBody");
-    const rows = tbody.getElementsByTagName("tr");
-    const noDataDiv = document.getElementById("noDataDiv");
-
-    let visibleRows = 0;
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const tableBody = document.getElementById("tableBody");
+    const rows = tableBody.getElementsByTagName("tr");
+    let visibleCount = 0;
 
     for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
-        const cells = row.getElementsByTagName("td");
-        let found = false;
+        const text = row.innerText.toLowerCase();
 
-        for (let j = 0; j < cells.length; j++) {
-            const cellText = cells[j].textContent || cells[j].innerText;
-            if (cellText.toUpperCase().includes(filter)) {
-                found = true;
-                break;
-            }
-        }
-
-        if (found) {
+        if (text.includes(input)) {
             row.style.display = "";
-            visibleRows++;
+            visibleCount++;
         } else {
             row.style.display = "none";
         }
     }
 
-    // Tampilkan atau sembunyikan tbody dan pesan kosong
-    if (visibleRows === 0 && filter !== "") {
-        tbody.classList.add("hidden");
-        noDataDiv.classList.remove("hidden");
+    const noData = document.getElementById("noData");
+    if (visibleCount === 0) {
+        noData.style.display = "flex";
     } else {
-        tbody.classList.remove("hidden");
-        noDataDiv.classList.add("hidden");
+        noData.style.display = "none";
     }
 }
 
@@ -94,8 +80,8 @@ function showViewModal(button) {
     roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
     roleEl.className =
         role === "admin"
-            ? "bg-primary-500 text-white text-xs px-4 py-1 rounded-full mb-6 inline-block"
-            : "bg-tertiary-500 text-white text-xs px-4 py-1 rounded-full mb-6 inline-block";
+            ? "bg-primary text-white text-xs px-4 py-1 rounded-full mb-6 inline-block"
+            : "bg-tertiary text-white text-xs px-4 py-1 rounded-full mb-6 inline-block";
 
     // Set foto
     const photoEl = document.getElementById("modalViewPhoto");

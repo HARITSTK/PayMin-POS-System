@@ -3,34 +3,101 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mdl_Admin;
+use App\Models\Mdl_Member;
+use App\Models\Mdl_Sales;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Admin extends BaseController
 {
+    // DASHBOARD / HOME
     public function home() {
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
+
+        $today = Carbon::today();
+
+        $admissionFee = DB::table('payments')
+            ->whereDate('created_at', $today)
+            ->sum('amount');
         
-        return view('adminpage/home',  compact('user'));
-    }
- 
-    public function order() {
-        return view('adminpage/order');
+        return view('adminpage/home',  compact('user', 'admissionFee'));
     }
 
+    // ITEM
     public function item() {
         return view('adminpage/items');
     }
  
+
+    // REPORT
     public function report() {
-        return view('adminpage/orderhistory');
+        $user = Mdl_Admin::all();
+        // $user = Mdl_Sales::with('users')->get();
+        $sales = Mdl_Sales::all();
+        $sales = Mdl_Sales::with('user')->get();
+
+        $today = Carbon::today();
+
+        $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+
+        $admissionFee = DB::table('payments')
+            ->whereDate('created_at', $today)
+            ->sum('amount');
+
+        $moneyOut = DB::table('expenses')
+            ->whereDate('created_at', $today)
+            ->sum('amount');
+
+        return view('adminpage/report', compact('user', 'sales', 'beginningBalance', 'admissionFee', 'moneyOut'));
     }
 
+    public function exportCSVReport()
+    {
+        $fileName = 'Report_Data_' . now()->format('Ymd_His') . '.csv';
+        $users = Mdl_Sales::all();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['id:Username', 'customer id', 'total', 'payment', 'sale date', 'type', 'quantity'];
+
+        $callback = function () use ($users, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($users as $user) {
+                fputcsv($file, [
+                    $user->user_id,
+                    $user->customer_id,
+                    $user->total,
+                    $user->payment,
+                    $user->sale_date->format('Y-m-d H:i:s'),
+                    $user->type,
+                    $user->quantity,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
+    }
+
+
+
+    // MASTER
     public function master() {
         $masterdata = Mdl_Admin::all();
 
@@ -93,7 +160,7 @@ class Admin extends BaseController
         $validatedData = $request->validate([
             'name' => 'nullable|max:255',
             'username' => 'nullable|max:255', 
-            'role' => 'nullable|in:admin,kasir',
+            'role' => 'nullable|in:admin,karyawan',
             'password' => 'nullable|min:8',
         ]);
 
@@ -158,6 +225,8 @@ class Admin extends BaseController
     }
 
 
+
+    // PROFILE / SETTINGS
     public function setting() {
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
@@ -223,8 +292,48 @@ class Admin extends BaseController
 
     }
 
+
+
+    // MEMBERSHIP
     public function member() {
-        $member = Mdl_Admin::showmember();
-        return view('adminpage/member', compact('member'));
+        $members = Mdl_Admin::all();
+        return view('adminpage/member', compact('members'));
+    }
+
+
+    public function exportCSVMember() {
+        $fileName = 'Membership_Data_' . now()->format('Ymd_His') . '.csv';
+        $users = Mdl_Member::all();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Customer id', 'Membership Type', 'Amount', 'Point', 'Created At', 'Updated At'];
+
+        $callback = function () use ($users, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($users as $user) {
+                fputcsv($file, [
+                    $user->customer_id,
+                    $user->membership_type,
+                    $user->membership_date->format('Y-m-d H:i:s'),
+                    $user->amount,
+                    $user->points,
+                    $user->created_at->format('Y-m-d H:i:s'),
+                    $user->updated_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }

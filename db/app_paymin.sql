@@ -19,6 +19,20 @@
 CREATE DATABASE IF NOT EXISTS `app_paymin` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `app_paymin`;
 
+-- Dumping structure for table app_paymin.balances
+CREATE TABLE IF NOT EXISTS `balances` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `beginning_balance` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `date` (`date`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.balances: ~1 rows (approximately)
+REPLACE INTO `balances` (`id`, `date`, `beginning_balance`, `created_at`) VALUES
+	(1, '2025-06-13', 1000000.00, '2025-06-13 03:55:44');
+
 -- Dumping structure for table app_paymin.cache
 CREATE TABLE IF NOT EXISTS `cache` (
   `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -38,6 +52,44 @@ CREATE TABLE IF NOT EXISTS `cache_locks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table app_paymin.cache_locks: ~0 rows (approximately)
+
+-- Dumping structure for table app_paymin.categories
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.categories: ~0 rows (approximately)
+
+-- Dumping structure for table app_paymin.customers
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `address` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.customers: ~1 rows (approximately)
+REPLACE INTO `customers` (`id`, `name`, `phone`, `address`, `created_at`) VALUES
+	(1, 'test', '123232', 'asdasdasd', '2025-06-13 02:35:30');
+
+-- Dumping structure for table app_paymin.expenses
+CREATE TABLE IF NOT EXISTS `expenses` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `amount` decimal(12,2) NOT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `description` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.expenses: ~0 rows (approximately)
 
 -- Dumping structure for table app_paymin.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -86,6 +138,23 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
 
 -- Dumping data for table app_paymin.job_batches: ~0 rows (approximately)
 
+-- Dumping structure for table app_paymin.members
+CREATE TABLE IF NOT EXISTS `members` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `customer_id` int DEFAULT NULL,
+  `membership_date` date NOT NULL,
+  `membership_type` enum('Silver','Gold','Platinum') NOT NULL,
+  `amount` decimal(10,2) DEFAULT '0.00',
+  `points` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `members_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.members: ~0 rows (approximately)
+
 -- Dumping structure for table app_paymin.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -94,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.migrations: ~9 rows (approximately)
+-- Dumping data for table app_paymin.migrations: ~7 rows (approximately)
 REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '0001_01_01_000000_create_users_table', 1),
 	(2, '0001_01_01_000001_create_cache_table', 1),
@@ -116,6 +185,76 @@ CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
 
 -- Dumping data for table app_paymin.password_reset_tokens: ~0 rows (approximately)
 
+-- Dumping structure for table app_paymin.payments
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sale_id` int DEFAULT NULL,
+  `payment_method` enum('cash','card','ewallet') DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `payments_sale_fk` (`sale_id`),
+  CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `payments_sale_fk` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.payments: ~0 rows (approximately)
+
+-- Dumping structure for table app_paymin.products
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `stock` int DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.products: ~0 rows (approximately)
+
+-- Dumping structure for table app_paymin.sales
+CREATE TABLE IF NOT EXISTS `sales` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL,
+  `payment` enum('cash') DEFAULT NULL,
+  `change_amount` decimal(10,2) DEFAULT NULL,
+  `sale_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `type` enum('dine_in','take_away') DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `customer_id` (`customer_id`),
+  CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.sales: ~1 rows (approximately)
+REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `payment`, `change_amount`, `sale_date`, `type`, `quantity`) VALUES
+	(2, 454453, 1, 2222.00, 'cash', NULL, '2025-06-13 02:43:28', 'take_away', 2);
+
+-- Dumping structure for table app_paymin.sale_items
+CREATE TABLE IF NOT EXISTS `sale_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sale_id` int DEFAULT NULL,
+  `product_id` int DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sale_id` (`sale_id`),
+  KEY `product_id` (`product_id`),
+  CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table app_paymin.sale_items: ~0 rows (approximately)
+
 -- Dumping structure for table app_paymin.sessions
 CREATE TABLE IF NOT EXISTS `sessions` (
   `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -129,13 +268,9 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.sessions: ~5 rows (approximately)
+-- Dumping data for table app_paymin.sessions: ~1 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('0HklThL9LR9I6aIw3XEjPMb07Jh1XJ0qlIHxaDIw', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiblRKSzB5ZVg4SW1tVFRDOHMwTDl1RDl4U201ak1UVUFRdHRNNDcxNCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9NYXN0ZXIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjc6InVzZXJfaWQiO047czoxNDoidXNlcm5hbWVfYWRtaW4iO3M6NToiYWRtaW4iO3M6MTA6Im5hbWFfYWRtaW4iO3M6NToiYWRtaW4iO3M6MTA6InJvbGVfYWRtaW4iO047fQ==', 1748111178),
-	('2cZhXGkDDTvdbKCAp9pgwOHIcfxzC0vrKadTur4W', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo3OntzOjY6Il90b2tlbiI7czo0MDoiQ0oydHVMY29Vb0ZSOVFEYTlSeTdQd0JSVTY4ZWdzOThYQTNMa01UNiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9NYXN0ZXIiO31zOjc6InVzZXJfaWQiO2k6MTtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7TjtzOjEwOiJuYW1hX2FkbWluIjtOO3M6MTA6InJvbGVfYWRtaW4iO3M6NToiYWRtaW4iO30=', 1748451819),
-	('4B28exiCFp3hdxJMYs8j2Bx1VZrz1MnURmV1sLSY', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiTHhrOVRmZ1NKZk02a2xhMEJ3TE5pQ0J2dkhsdGlFUGpOekhreldPaSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9BdXRoIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6Mjp7aTowO3M6NjoiZXJyb3JzIjtpOjE7czoxMDoiX29sZF9pbnB1dCI7fXM6MzoibmV3IjthOjA6e319czo2OiJlcnJvcnMiO086MzE6IklsbHVtaW5hdGVcU3VwcG9ydFxWaWV3RXJyb3JCYWciOjE6e3M6NzoiACoAYmFncyI7YToxOntzOjc6ImRlZmF1bHQiO086Mjk6IklsbHVtaW5hdGVcU3VwcG9ydFxNZXNzYWdlQmFnIjoyOntzOjExOiIAKgBtZXNzYWdlcyI7YToxOntzOjg6InBhc3N3b3JkIjthOjE6e2k6MDtzOjE1OiJQYXNzd29yZCBzYWxhaCEiO319czo5OiIAKgBmb3JtYXQiO3M6ODoiOm1lc3NhZ2UiO319fXM6MTA6Il9vbGRfaW5wdXQiO2E6Mzp7czo2OiJfdG9rZW4iO3M6NDA6Ikx4azlUZmdTSmZNNmtsYTBCd0xOaUNCdnZIbHRpRVBqTnpIa3pXT2kiO3M6ODoidXNlcm5hbWUiO3M6NToiYWRtaW4iO3M6ODoicGFzc3dvcmQiO3M6ODoiYWRtaW4xMjMiO319', 1748352021),
-	('hrfsHFAanqKG4V1AL99jQO6nQHFbUlXOL830WIkP', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQ2hYU3pWemhxR0ZLQUNZdTZKREpKVGVjeW82YmpXbkNEQ2w0dHJrRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9BdXRoIjt9fQ==', 1748441283),
-	('YMsQb6xSUubcLIjRNB2VEOYzNgfcNP0ddT2y9ugY', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjRQbXg0OVJJNG40dkZncUdROGFLbkZJSER5ZmNzQTJGZ3E3SDVGZSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1748339545);
+	('d98nNpYoUWE6UYTa1MLyDrDMZcum82zLS564qXDr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoibzRnekZiV1hjUnFZdVZLV3VtTVJucnNaVUpjWm9ibGw1UnJRb2N4eCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Ib21lIjt9czo3OiJ1c2VyX2lkIjtpOjY3NTg3MTtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMDoibmFtZV9hZG1pbiI7czoxMDoiYWRtaW4ga2VjZSI7czoxMDoicm9sZV9hZG1pbiI7czo1OiJhZG1pbiI7czo5OiJiaW9fYWRtaW4iO3M6MzoidGVzIjt9', 1749787453);
 
 -- Dumping structure for table app_paymin.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -144,16 +279,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bio` text COLLATE utf8mb4_unicode_ci,
-  `role` enum('admin','kasir') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('admin','karyawan') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` enum('Y','N') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1253411 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.users: ~1 rows (approximately)
-REPLACE INTO `users` (`id`, `username`, `name`, `password`, `bio`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
-	(1, 'admin', 'admin', '$2y$12$AamrEc6L22ohVx59GIcBiu/uIy3KSiIZEmFlUpLYUzff0tgBm4.g.', NULL, 'admin', 'Y', NULL, NULL);
+-- Dumping data for table app_paymin.users: ~2 rows (approximately)
+REPLACE INTO `users` (`id`, `username`, `name`, `password`, `bio`, `role`, `is_active`, `created_at`, `updated_at`, `photo`) VALUES
+	(454453, 'karyawan', 'karyawan', '$2y$12$414hpCNtd3JixW.3F5Xx8O4JU8KrRcZzVl4DmBkePi.fnMrJC9f..', NULL, 'karyawan', 'Y', '2025-06-12 23:35:38', '2025-06-13 07:37:13', NULL),
+	(675871, 'admin', 'admin kece', '$2y$12$.JRHaqAKDiYavLB7PUJqyePhUH.k17p7ElP5ZaBwDYkkhIEBdr.pm', 'tes', 'admin', 'Y', '2025-06-12 23:32:46', '2025-06-13 07:46:35', NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

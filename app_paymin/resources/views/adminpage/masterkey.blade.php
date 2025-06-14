@@ -258,7 +258,8 @@
                                                 <option value="" hidden>{{ $md->role }}</option>
                                                 <option value="admin" {{ $md->role == 'admin' ? 'selected' : '' }}>Admin
                                                 </option>
-                                                <option value="kasir" {{ $md->role == 'karyawan' ? 'selected' : '' }}>
+                                                <option value="karyawan"
+                                                    {{ $md->role == 'karyawan' ? 'selected' : '' }}>
                                                     karyawan
                                                 </option>
                                             </select>
@@ -298,51 +299,22 @@
                     </table>
                 </div>
                 </tbody>
-                @if($masterdata->isEmpty())
-                <div id="noDataDiv"
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                <!-- @if($masterdata->isEmpty()) -->
+                <!-- <div id="noDataDiv" 
+                    class="hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
                     <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                     <p class="my-12 text-lg">
                         We can’t find any item matching your search
                     </p>
+                </div> -->
+                <!-- @endif -->
+                <div id="noData" style="display: none;"
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
+                    <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                    <p class="my-12 text-lg text-center">We can’t find any item matching your search</p>
                 </div>
-                @endif
-                <div class="absolute bottom-0 left-0 right-0 flex justify-end items-center p-4 bg-white rounded-b-2xl">
-                    <!-- Pagination -->
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-500">Page</span>
-                        <button
-                            class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                            aria-label="Previous page">
-                            <span class="material-symbols-outlined">chevron_left</span>
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold">
-                            1
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold">
-                            2
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold">
-                            3
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold">
-                            4
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold">
-                            5
-                        </button>
-                        <button
-                            class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                            aria-label="Next page">
-                            <span class="material-symbols-outlined">chevron_right</span>
-                        </button>
-                    </div>
-                </div>
+
+                
                 </table>
             </div>
 
