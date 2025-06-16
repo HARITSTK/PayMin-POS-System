@@ -29,3 +29,33 @@ function uploadImage() {
   imageView.style.backgroundRepeat = "no-repeat";
   imageView.textContent = "";
 }
+
+function searchTable() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".itemCard");
+    const noData = document.getElementById("noData");
+
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const itemNameEl = card.querySelector(".item-name"); // cari elemen nama item
+        const itemName = itemNameEl ? itemNameEl.innerText.toLowerCase() : "";
+
+        if (itemName.includes(input)) {
+            card.style.display = "";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    if (visibleCount === 0) {
+        noData.classList.remove("hidden");
+        noData.style.display = "flex";
+    } else {
+        noData.classList.add("hidden");
+        noData.style.display = "none";
+    }
+}
+
+

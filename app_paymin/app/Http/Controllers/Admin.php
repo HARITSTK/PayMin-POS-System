@@ -21,18 +21,51 @@ class Admin extends BaseController
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
 
-        $today = Carbon::today();
+        $admissionFee = DB::table('payments')->sum('amount');
+        $TotalItems = DB::table('products')->count();
+        $TotalCustomers = DB::table('customers')->count();
 
-        $admissionFee = DB::table('payments')
-            ->whereDate('created_at', $today)
-            ->sum('amount');
+        $products = DB::table('products')->get();
+
+        $salesGrowth = DB::table('sale_items')
+            ->join('sales', 'sale_items.sale_id', '=', 'sales.id')
+            ->join('products', 'sale_items.product_id', '=', 'products.id')
+            ->where('sales.sale_date', '>=', Carbon::now()->subDays(7))
+            ->select('products.name', 'products.stock', DB::raw('SUM(sale_items.quantity) as total_quantity'))
+            ->groupBy('products.id', 'products.name', 'products.stock')
+            ->orderByDesc('total_quantity')
+            ->take(7) 
+            ->get();
+
+        $lowStocks = DB::table('products')
+            ->where('stock', '<=', 5)
+            ->get();
+
+        $ordersToday = DB::table('sales')
+            ->whereDate('sale_date', Carbon::today())
+            ->get();
         
-        return view('adminpage/home',  compact('user', 'admissionFee'));
+        return view('adminpage/home',  compact('user', 'admissionFee', 'TotalItems', 'TotalCustomers', 'TotalCustomers', 'products', 'lowStocks', 'ordersToday', 'salesGrowth'));
     }
 
     // ITEM
     public function item() {
-        return view('adminpage/items');
+
+        $outOfStock = DB::table('products')
+            ->where('stock', '<=', 0)
+            ->count();
+
+        $lowStock = DB::table('products')
+            ->where('stock', '<=', 5)
+            ->where('stock', '>', 0)
+            ->count();
+
+        $totalProducts = DB::table('products')->count();
+
+        $categories = DB::table('categories')->get();
+        $products = DB::table('products')->get();
+
+        return view('adminpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'categories', 'products'));
     }
  
 

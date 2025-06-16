@@ -226,6 +226,7 @@
                         <thead class="border-b-2 border-tertiary text-white bg-[#747474] h-[3rem] w-full">
                             <tr class="text-center text-sm rounded-lg">
                                 <th class="p-6">Transaction ID</th>
+                                <th class="p-6">Cassa</th>
                                 <th class="p-6">Date</th>
                                 <th class="p-6">Amount</th>
                                 <th class="p-6">Orders</th>
@@ -238,7 +239,8 @@
                             @foreach($sales as $sl)
                             <tr class="border-b border-tertiary h-[3rem] text-center" data-date="2025-05-23"
                                 data-user="{{  optional($sl->user)->username }}">
-                                <td class="p-4">#{{ $sl->user_id }}</td>
+                                <td class="p-4">#{{ $sl->id }}</td>
+                                <td class="p-4">{{ optional($sl->user)->username }}</td>
                                 <td class="p-4">{{ $sl->sale_date }}</td>
                                 <td class="p-4 font-bold">{{ $sl->quantity }}</td>
                                 <td class="p-4">Rp. {{ $sl->total }}</td>

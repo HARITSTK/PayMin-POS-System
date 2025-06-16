@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Karyawan;
 use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', function () {
@@ -25,6 +26,7 @@ Route::get('/exportCSVReport', [Admin::class, 'exportCSVReport'])->name('exportC
 
 
 Route::middleware([AuthMiddleware::class])->group(function () {
+
     Route::get('/Home', [Admin::class, 'home'])->name('Home');
     Route::get('/Report', [Admin::class, 'report'])->name('Report');
     Route::get('/Item', [Admin::class, 'item'])->name('Item');
@@ -36,6 +38,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');
     Route::put('/SysEditProfile', [Admin::class, 'SysEditProfile'])->name('SysEditProfile');
     Route::put('/SysUpdatePassword', [Admin::class, 'SysUpdatePassword'])->name('SysUpdatePassword');
-
-    Route::get('/Order', [Admin::class, 'order'])->name('Order');
+    
+    Route::get('/HomeKaryawan', [Karyawan::class, 'home'])->name('HomeKaryawan');
+    Route::get('/OrderKaryawan', [Karyawan::class, 'order'])->name('OrderKaryawan');
+    Route::get('/ReportKaryawan', [Karyawan::class, 'report'])->name('ReportKaryawan');
+    Route::get('/ItemKaryawan', [Karyawan::class, 'item'])->name('ItemKaryawan');
+    Route::get('/MemberKaryawan', [Karyawan::class, 'member'])->name('MemberKaryawan');
+    Route::get('/SettingKaryawan', [Karyawan::class, 'setting'])->name('SettingKaryawan');
+    
 });

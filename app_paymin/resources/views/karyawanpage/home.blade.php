@@ -24,6 +24,102 @@
 
 <body>
     <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
+        <!-- <nav
+        id="navbar"
+        class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
+      >
+        <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
+
+          <li>
+            <div class="flex items-center justify-center mb-2">
+              <img
+                src="assets/src/assets/logoMin.png"
+                alt="Logo"
+                class="w-20 h-20 rounded-full"
+              />
+            </div>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="home.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-home fa-2x"></i>
+
+              <p class="text-sm">Home</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="order.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-cart-plus fa-2x"></i>
+              <p class="text-sm">Orders</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="report.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-file-text-o fa-2x"></i>
+              <p class="text-sm">Report</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="items.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-th fa-2x"></i>
+              <p class="text-sm">Items</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="master.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-key fa-2x"></i>
+              <p class="text-sm">Master</p>
+            </a>
+          </li>
+          <li
+            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
+          >
+            <a
+              href="settings.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-cog fa-2x"></i>
+              <p class="text-sm">Settings</p>
+            </a>
+          </li>
+          <span class="highlight-span mx-auto shadow-2xl"></span>
+          <li
+            class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
+          >
+            <a
+              href="login.html"
+              class="flex flex-col items-center justify-center"
+            >
+              <i class="fa fa-sign-out fa-2x"></i>
+              <p class="text-sm">Logout</p></a
+            >
+          </li>
+        </ul>
+      </nav> -->
         <!-- Navigation Bar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
@@ -35,44 +131,43 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('HomeKaryawan') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
                     </a>
                 </li>
-
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Report') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('OrderKaryawan') }}" class="flex flex-col items-center justify-center">
+                        <i class="fa fa-cart-plus fa-2x"></i>
+                        <p class="text-sm">Orders</p>
+                    </a>
+                </li>
+                <li
+                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
+                    <a href="{{ route('ReportKaryawan') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-file-text-o fa-2x"></i>
                         <p class="text-sm">Report</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Item') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('ItemKaryawan') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-th fa-2x"></i>
                         <p class="text-sm">Items</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Member') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('MemberKaryawan') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
                         <p class="text-sm">Member</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Master') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-key fa-2x" aria-hidden="true"></i>
-                        <p class="text-sm">Master</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Setting') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('SettingKaryawan') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-cog fa-2x"></i>
                         <p class="text-sm">Settings</p>
                     </a>
@@ -114,7 +209,6 @@
                     </div>
                 </div>
             </div>
-
         </nav>
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">

@@ -88,13 +88,14 @@ class Auth extends BaseController
             ]);
             return redirect()->route('Home');
         } elseif ($user->role == 'karyawan') {
-            // session([
-            //     'user_id' => $user->id,
-            //     'username_kasir' => $user->username_user,
-            //     'nama_kasir' => $user->nama_user,
-            //     'role_kasir' => $user->role,
-            // ]);
-            // return redirect()->route('Dashboardkasir');
+            session([
+                'user_id' => $user->id,
+                'username_karyawan' => $user->username,
+                'name_karyawan' => $user->name,
+                'role_karyawan' => $user->role,
+                'bio_karyawan' => $user->bio,
+            ]);
+            return redirect()->route('HomeKaryawan');
         } else {
             return back()->withErrors(['username' => 'Akun tidak memiliki role!'])->withInput();
         }

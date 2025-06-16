@@ -81,7 +81,7 @@
                 </li>
                 <span class="highlight-span mx-auto shadow-2xl"></span>
                 <li class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
-                    onclick="showModal('logoutModal')">
+                    onclick="showModal('modalLogout')">
                     <a class="flex flex-col items-center justify-center">
                         <i class="fa fa-sign-out fa-2x"></i>
                         <p class="text-sm">Logout</p>
