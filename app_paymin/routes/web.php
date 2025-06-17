@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth;
 use App\Http\Controllers\Admin;
-use App\Http\Controllers\Karyawan;
+use App\Http\Controllers\Cassier;
 use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/', function () {
@@ -27,23 +27,23 @@ Route::get('/exportCSVReport', [Admin::class, 'exportCSVReport'])->name('exportC
 
 Route::middleware([AuthMiddleware::class])->group(function () {
 
-    Route::get('/Home', [Admin::class, 'home'])->name('Home');
-    Route::get('/Report', [Admin::class, 'report'])->name('Report');
-    Route::get('/Item', [Admin::class, 'item'])->name('Item');
-    Route::get('/Member', [Admin::class, 'member'])->name('Member');
-    Route::get('/Master', [Admin::class, 'master'])->name('Master');
-    Route::put('/SysAddMaster', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
-    Route::put('/SysEditMaster/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
-    Route::post('/delete-master', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
-    Route::get('/Setting', [Admin::class, 'setting'])->name('Setting');
-    Route::put('/SysEditProfile', [Admin::class, 'SysEditProfile'])->name('SysEditProfile');
-    Route::put('/SysUpdatePassword', [Admin::class, 'SysUpdatePassword'])->name('SysUpdatePassword');
+    Route::get('/HomeAdmin', [Admin::class, 'home'])->name('Home');
+    Route::get('/ReportAdmin', [Admin::class, 'report'])->name('Report');
+    Route::get('/ItemAdmin', [Admin::class, 'item'])->name('Item');
+    Route::get('/MemberAdmin', [Admin::class, 'member'])->name('Member');
+    Route::get('/MasterAdmin', [Admin::class, 'master'])->name('Master');
+    Route::put('/SysAddMasterAdmin', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
+    Route::put('/SysEditMasterAdmin/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
+    Route::post('/delete-masterAdmin', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
+    Route::get('/SettingAdmin', [Admin::class, 'setting'])->name('Setting');
+    Route::put('/SysEditProfileAdmin', [Admin::class, 'SysEditProfile'])->name('SysEditProfile');
+    Route::put('/SysUpdatePasswordAdmin', [Admin::class, 'SysUpdatePassword'])->name('SysUpdatePassword');
     
-    Route::get('/HomeKaryawan', [Karyawan::class, 'home'])->name('HomeKaryawan');
-    Route::get('/OrderKaryawan', [Karyawan::class, 'order'])->name('OrderKaryawan');
-    Route::get('/ReportKaryawan', [Karyawan::class, 'report'])->name('ReportKaryawan');
-    Route::get('/ItemKaryawan', [Karyawan::class, 'item'])->name('ItemKaryawan');
-    Route::get('/MemberKaryawan', [Karyawan::class, 'member'])->name('MemberKaryawan');
-    Route::get('/SettingKaryawan', [Karyawan::class, 'setting'])->name('SettingKaryawan');
+    Route::get('/HomeCassier', [Cassier::class, 'home'])->name('HomeCassier');
+    Route::get('/OrderCassier', [Cassier::class, 'order'])->name('OrderCassier');
+    Route::get('/ReportCassier', [Cassier::class, 'report'])->name('ReportCassier');
+    Route::get('/ItemCassier', [Cassier::class, 'item'])->name('ItemCassier');
+    Route::get('/MemberCassier', [Cassier::class, 'member'])->name('MemberCassier');
+    Route::get('/SettingCassier', [Cassier::class, 'setting'])->name('SettingCassier');
     
 });

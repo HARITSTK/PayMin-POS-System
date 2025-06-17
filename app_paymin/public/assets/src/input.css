@@ -14,3 +14,9 @@
   --breakpoint-2xl: 100rem;
   --breakpoint-3xl: 120rem;
 }
+
+button {
+  @apply cursor-pointer;
+}
+
+/* bg-linear-[180deg,_#FF5733,_#BB482F] */

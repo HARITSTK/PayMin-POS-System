@@ -81,7 +81,7 @@
                 </li>
                 <span class="highlight-span mx-auto shadow-2xl"></span>
                 <li class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
-                    onclick="showModal('logoutModal')">
+                    onclick="showModal('modalLogout')">
                     <a class="flex flex-col items-center justify-center">
                         <i class="fa fa-sign-out fa-2x"></i>
                         <p class="text-sm">Logout</p>
@@ -90,23 +90,25 @@
             </ul>
 
             <!-- Logout Modal -->
-            <div class="fixed inset-0 backdrop-blur-md bg-opacity-30 flex items-center justify-center z-50 hidden"
-                id="logoutModal">
-                <!-- Modal box -->
-                <div class="bg-white rounded-xl p-6 w-72 text-center modal-content shadow-lg">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                        Do you want to Logout?
-                    </h3>
+            <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+                id="modalLogout">
+                <!-- Modal Container -->
+                <div
+                    class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
 
-                    <div class="text-4xl mb-5">
-                        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                    <!-- Modal Content -->
+                    <div class="mt-4 flex flex-col gap-y-2 py-2">
+                        <h1 class="text-3xl font-bold text-red-500 mb-2">Logout</h1>
+                        <p class="text-lg text-gray-800">
+                            Are you sure for logout and destroy all session?.
+                        </p>
                     </div>
 
-                    <!-- Buttons -->
-                    <div class="flex justify-center gap-4">
-                        <button class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
-                            onclick="closeModal('logoutModal')">
-                            Cancel
+                    <!-- Modal Footer -->
+                    <div class="mt-6 flex justify-end gap-x-4">
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
+                            onclick="closeModal('modalLogout')">
+                            Close
                         </button>
                         <a class="bg-primary text-white px-4 py-2 rounded" href="{{ route('Logout') }}">
                             Logout

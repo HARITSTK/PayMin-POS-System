@@ -35,7 +35,7 @@
     <main
       class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]"
     >
-      <!-- Navbar -->
+      <!-- Navigation Bar -->
       <nav
         id="navbar"
         class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
@@ -140,7 +140,7 @@
           <div
             class="bg-white rounded-xl p-6 w-72 text-center modal-content shadow-lg"
           >
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <h3 class="text-lg font-semibold text-textColor mb-4">
               Do you want to Logout?
             </h3>
 
@@ -158,7 +158,7 @@
               </button>
               <button
                 class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
-                onclick="window.location.href='login.html'"
+                onclick="window.location.href='../login.html'"
               >
                 Yes
               </button>
@@ -168,54 +168,33 @@
       </nav>
       <!-- Main Content -->
       <section class="h-full w-full p-11 box-border overflow-y-auto">
-        <div class="mb-8">
+        <div class="mb-8 flex justify-between items-center">
           <h1 class="text-[36pt] font-bold text-[#353535]">Orders History</h1>
+          <p>Data Up to 04:40 AM May 22, 2023</p>
         </div>
 
-        <div class="flex gap-x-4">
-          <div class="relative md:w-2/12 w-[15%]">
-            <button
-              id="sortingDropdown"
-              type="button"
-              class="flex justify-between items-center w-full px-5 py-2.5 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 cursor-pointer"
+        <div class="flex gap-x-4 items-center">
+          <div class="relative inline-block w-48 h-full">
+            <select
+              class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary"
             >
-              <span>Sorting By</span>
-              <span
-                class="border-gray-500 border-r-2 border-b-2 p-1 rotate-45 transition-transform duration-200"
-                id="arrow"
-              ></span>
-            </button>
-            <!-- Dropdown Menu -->
+              <option>All</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select>
+
+            <!-- Dropdown Arrow Icon -->
             <div
-              id="sortingMenu"
-              class="absolute top-full left-0 w-full mt-1 bg-white rounded-xl shadow-md z-10 hidden overflow-hidden"
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600"
             >
-              <div
-                class="dropdown-item py-4 px-5 cursor-pointer text-lg text-gray-800 bg-white hover:bg-primary hover:text-white"
-              >
-                By Year
-              </div>
-              <div
-                class="dropdown-item py-4 px-5 cursor-pointer text-lg text-gray-800 bg-white hover:bg-primary hover:text-white"
-              >
-                By Month
-              </div>
-              <div
-                class="dropdown-item py-4 px-5 cursor-pointer text-lg text-gray-800 bg-white hover:bg-primary hover:text-white"
-              >
-                By Weeks
-              </div>
-              <div
-                class="dropdown-item py-4 px-5 cursor-pointer text-lg text-gray-800 bg-white hover:bg-primary hover:text-white"
-              >
-                By Day
-              </div>
+              <span class="material-symbols-outlined"> arrow_drop_down </span>
             </div>
           </div>
 
           <button
             id="sortingDropdown"
-            class="flex justify-between items-center w-[10%] px-5 py-2.5 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 cursor-pointer"
+            class="flex justify-between items-center w-auto px-2 py-1 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 gap-x-4"
           >
             <i class="fa fa-download" aria-hidden="true"></i>
             <span>CSV</span>
@@ -227,7 +206,7 @@
           <div class="bg-white rounded-lg shadow-4xl w-full">
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Beginning balance</p>
+              <p class="text-xl text-gray-500">Total Income</p>
               <p class="text-3xl font-bold text-gray-800">Rp. 200.000</p>
             </div>
           </div>
@@ -236,7 +215,7 @@
           <div class="bg-white rounded-lg shadow-4xl w-full">
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Admission fee</p>
+              <p class="text-xl text-gray-500">Total Items sell</p>
               <p class="text-3xl font-bold text-gray-800">+Rp. 200.000</p>
             </div>
           </div>
@@ -245,248 +224,209 @@
           <div class="bg-white rounded-lg shadow-4xl w-full">
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Money Out</p>
+              <p class="text-xl text-gray-500">Total Costumers</p>
               <p class="text-3xl font-bold text-gray-800">-Rp. 200.000</p>
             </div>
           </div>
         </div>
 
-        <div class="flex md:flex-row md:justify-between w-full">
-          <div class="relative flex items-center">
-            <div class="relative w-60">
-              <select
-                class="appearance-none w-full bg-white border border-gray-300 text-gray-900 text-base px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option>Daveton Aljabar</option>
-                <option>Fiki Prasetyo</option>
-                <option>Harits Operation</option>
-                <option>Risky Ridho</option>
-              </select>
-            </div>
-            <!-- Chevron icon -->
-            <div
-              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+        <div class="flex gap-4 items-center">
+          <div class="relative inline-block w-48 flex-1">
+            <select
+              class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary"
             >
-              <span class="material-symbols-outlined">
-                keyboard_arrow_down
-              </span>
+              <option>All</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+            </select>
+
+            <!-- Dropdown Arrow Icon -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600"
+            >
+              <span class="material-symbols-outlined"> arrow_drop_down </span>
             </div>
           </div>
-          <!-- Search Form - 4/12 columns -->
-          <form class="flex items-center gap-2 md:w-4/12 mb-4 md:mb-0">
-            <div class="relative w-full">
-              <span
-                class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-              >
-                <i class="fa fa-search"></i>
-              </span>
-              <input
-                type="text"
-                placeholder="Find Items"
-                class="border border-gray-300 rounded-2xl pl-10 pr-4 py-3 bg-white w-full focus:outline-none focus:ring-2 focus:ring-primary"
-              />
+
+          <div class="relative inline-block w-48">
+            <select
+              class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary"
+            >
+              <option>Pilih shift</option>
+              <option>
+                Pagi <br />
+                09:00-16:00
+              </option>
+              <option>Malam 16:00-22:00</option>
+            </select>
+
+            <!-- Dropdown Arrow Icon -->
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600"
+            >
+              <span class="material-symbols-outlined"> arrow_drop_down </span>
             </div>
-          </form>
+          </div>
+
+          <!-- Find order searching -->
+          <div
+            class="flex items-center gap-x-3 flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white"
+          >
+            <span class="material-symbols-outlined text-gray-500">search</span>
+            <input
+              type="text"
+              placeholder="Find Order"
+              class="w-full outline-none text-gray-700 placeholder-gray-400 bg-transparent"
+            />
+          </div>
         </div>
 
-        <!-- REPORT TABLE -->
+        <!-- Report Table Default (All) -->
         <div
-          class="bg-white shadow-4xl h-[40em] mt-3 w-full relative rounded-2xl"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl hidden"
         >
-          <div class="overflow-y-auto h-full mb-4 rounded-2xl">
-            <table class="table-auto w-full">
-              <thead
-                class="border-b-2 border-tertiary text-white bg-[#747474] h-[3rem] w-full"
-              >
-                <tr class="text-center text-sm rounded-lg">
-                  <th class="p-6">Transaction ID</th>
-                  <th class="p-6">Date</th>
-                  <th class="p-6">Amount</th>
-                  <th class="p-6">Orders</th>
-                  <th class="p-6">Payment Method</th>
-                  <th class="p-6">Types Orders</th>
-                </tr>
-              </thead>
+          <div class="w-full h-full flex flex-col overflow-hidden">
+            <div class="overflow-y-auto flex-1 rounded-2xl">
+              <table class="table-auto w-full">
+                <thead
+                  class="sticky top-0 z-10 bg-[#747474] text-white h-12 text-sm text-center"
+                >
+                  <tr>
+                    <th class="p-3">Action</th>
+                    <th class="p-3">Name</th>
+                    <th class="p-3">Date</th>
+                    <th class="p-3">Shift</th>
+                    <th class="p-3">Amount Order</th>
+                    <th class="p-3">Amount Total</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center text-sm text-textColor">
+                  <tr class="border-b border-gray-200">
+                    <td class="p-3">
+                      <div class="flex justify-center">
+                        <button
+                          class="bg-[#4682EC] text-white px-3 py-2 shadow flex justify-center items-center rounded-l-xl"
+                          onclick="showModal('modalViewItem')"
+                        >
+                          <span class="material-symbols-outlined">
+                            visibility
+                          </span>
+                        </button>
+                        <button
+                          class="bg-[#D9534F] text-white px-3 py-2 shadow flex justify-center items-center rounded-r-xl"
+                          onclick="showModal('modalDeleteItem')"
+                        >
+                          <span class="material-symbols-outlined">
+                            cancel
+                          </span>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="p-3">Davetron Aljibar</td>
+                    <td class="p-3">23/05/2025</td>
+                    <td class="p-3">Siang</td>
+                    <td class="p-3 font-bold">56</td>
+                    <td class="p-3">Rp200.000.000</td>
+                  </tr>
+                </tbody>
+              </table>
 
-              <tbody class="hidden">
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-
-              <!-- Search icon -->
               <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden"
               >
-                <i class="fa fa-search fa-5x" aria-hidden="true"></i>
-                <p class="my-12 text-lg">
+                <i
+                  class="fa fa-search fa-5x text-gray-400"
+                  aria-hidden="true"
+                ></i>
+                <p class="my-4 text-lg text-gray-500">
                   We can’t find any item matching your search
                 </p>
               </div>
-            </table>
-          </div>
-
-          <!-- Footer Pagination -->
-          <div
-            class="absolute bottom-0 left-0 right-0 flex justify-between items-center p-4 bg-white rounded-b-2xl"
-          >
-            <button
-              class="bg-primary text-textColor px-4 py-2 rounded-lg mr-2 flex justify-between items-center hover:opacity-80 transition-all duration-200"
-              onclick="showModal('modalAddItem')"
-            >
-              Delete Selected Rows
-              <div class="ml-2 flex items-center">
-                <span class="material-symbols-outlined"> cancel </span>
-              </div>
-            </button>
-
-            <!-- Pagination -->
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-500">Page</span>
-              <button
-                class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                aria-label="Previous page"
-              >
-                <span class="material-symbols-outlined">chevron_left</span>
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                1
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                2
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                3
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                4
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                5
-              </button>
-
-              <button
-                class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                aria-label="Next page"
-              >
-                <span class="material-symbols-outlined">chevron_right</span>
-              </button>
             </div>
           </div>
         </div>
-        <!-- REPORT TABLE END -->
+
+        <!-- Report Table Selected Karyawan -->
+        <div
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl"
+        >
+          <div class="w-full h-full flex flex-col overflow-hidden">
+            <div class="overflow-y-auto flex-1 rounded-2xl">
+              <table class="table-auto w-full">
+                <thead
+                  class="sticky top-0 z-10 bg-[#747474] text-white h-12 text-sm text-center"
+                >
+                  <tr>
+                    <th class="p-3">Action</th>
+                    <th class="p-3">Transaction ID</th>
+                    <th class="p-3">Date</th>
+                    <th class="p-3">Price</th>
+                    <th class="p-3">Order</th>
+                    <th class="p-3">Payment Method</th>
+                    <th class="p-3">Types Orders</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center text-sm text-textColor">
+                  <tr
+                    class="border-b border-gray-200 bg-white hover:bg-[#e0e0e0] cursor-pointer"
+                  >
+                    <td class="p-3">
+                      <div class="flex justify-center">
+                        <button
+                          class="bg-[#4682EC] text-white px-3 py-2 shadow flex justify-center items-center rounded-l-xl"
+                          onclick="showModal('modalViewItem')"
+                        >
+                          <span class="material-symbols-outlined">
+                            visibility
+                          </span>
+                        </button>
+                        <button
+                          class="bg-[#D9534F] text-white px-3 py-2 shadow flex justify-center items-center rounded-r-xl"
+                          onclick="showModal('modalDeleteItem')"
+                        >
+                          <span class="material-symbols-outlined">
+                            cancel
+                          </span>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="p-3">#0000009</td>
+                    <td class="p-3">23/05/2025</td>
+                    <td class="p-3">Rp.20.000</td>
+                    <td class="p-3 font-bold">56</td>
+                    <td class="p-3">Cash</td>
+                    <td class="p-3">
+                      <span
+                        class="inline-block bg-primary text-white font-semibold px-3 py-2 w-[80%] rounded-full"
+                      >
+                        Go Away
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden"
+              >
+                <i
+                  class="fa fa-search fa-5x text-gray-400"
+                  aria-hidden="true"
+                ></i>
+                <p class="my-4 text-lg text-gray-500">
+                  We can’t find any item matching your search
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- Modal Delete Item -->
       <div
         class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
-        id="modalAddItem"
-        id="modalAddItem"
+        id="modalDeleteItem"
       >
         <!-- Modal Container -->
         <div
@@ -506,7 +446,7 @@
           <div class="mt-6 flex justify-end gap-x-4">
             <button
               class="border-2 border-primary text-primary px-4 py-2 rounded"
-              onclick="closeModal('modalAddItem')"
+              onclick="closeModal('modalDeleteItem')"
             >
               Close
             </button>
@@ -515,6 +455,70 @@
               id="submitBtn"
             >
               Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal View Item -->
+      <div
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        id="modalViewItem"
+      >
+        <!-- Modal Box -->
+        <div
+          class="bg-white w-[400px] h-[500px] absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-lg p-6 overflow-y-auto"
+        >
+          <!-- Title -->
+          <h2 class="text-center text-xl font-bold text-primary mb-1">
+            Detail Transaction
+          </h2>
+          <p class="text-center font-semibold text-gray-800 mb-4">
+            Transaction ID <span class="font-bold">#00000009</span>
+          </p>
+
+          <!-- Transaction Details -->
+          <div class="space-y-4 text-sm text-gray-800">
+            <div class="flex justify-between border-b pb-1">
+              <span>Casier Name</span>
+              <span class="font-medium">Davetron Aljabar</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span>Date Transaction</span>
+              <span class="font-medium">23/05/2025</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span>Nama Costumer</span>
+              <span class="font-medium">Dave Aljabar</span>
+            </div>
+            <div class="border-b pb-1">
+              <span class="block mb-1">Item Name</span>
+              <div class="text-right leading-tight font-medium">
+                <p>Steak Sapi Bakar 1x</p>
+                <p>Ayam Kentang 2x</p>
+                <p>Energen Es 1x</p>
+              </div>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span>Payment Method</span>
+              <span class="font-medium">Cash</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span>Type Orders</span>
+              <span class="font-medium">Go Away</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Amount</span>
+              <span class="font-medium">Rp20.000</span>
+            </div>
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <button
+              class="border-2 border-primary text-primary px-2 py-1 rounded hover:bg-primary hover:text-white"
+              onclick="closeModal('modalViewItem')"
+            >
+              Close
             </button>
           </div>
         </div>

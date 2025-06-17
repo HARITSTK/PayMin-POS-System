@@ -230,6 +230,19 @@
                             </div>
                             @endforeach
                         </div>
+                        <!-- Items empty -->
+                        @if ($products->IsEmpty())
+                        <div class="flex flex-col items-center justify-center h-full">
+                            <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
+                                cancel
+                            </span>
+                            <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
+                                <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
+                                <span class="font-light text-[11pt]">Start by adding your first product to manage your
+                                    inventory.</span>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <!-- Sales Growth -->

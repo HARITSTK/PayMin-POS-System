@@ -142,8 +142,7 @@ CREATE TABLE IF NOT EXISTS `job_batches` (
 CREATE TABLE IF NOT EXISTS `members` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
-  `membership_date` date NOT NULL,
-  `membership_type` enum('Silver','Gold','Platinum') NOT NULL,
+  `type` enum('Silver','Gold','Platinum') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `amount` decimal(10,2) DEFAULT '0.00',
   `points` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -222,7 +221,6 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `user_id` int DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
   `total` decimal(10,2) DEFAULT NULL,
-  `payment` enum('cash') DEFAULT NULL,
   `change_amount` decimal(10,2) DEFAULT NULL,
   `sale_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` enum('dine_in','take_away') DEFAULT NULL,
@@ -235,8 +233,6 @@ CREATE TABLE IF NOT EXISTS `sales` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.sales: ~1 rows (approximately)
-REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `payment`, `change_amount`, `sale_date`, `type`, `quantity`) VALUES
-	(2, 454453, 1, 2222.00, 'cash', NULL, '2025-06-13 02:43:28', 'take_away', 2);
 
 -- Dumping structure for table app_paymin.sale_items
 CREATE TABLE IF NOT EXISTS `sale_items` (
@@ -268,9 +264,9 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.sessions: ~1 rows (approximately)
+-- Dumping data for table app_paymin.sessions: ~4 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('d98nNpYoUWE6UYTa1MLyDrDMZcum82zLS564qXDr', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoibzRnekZiV1hjUnFZdVZLV3VtTVJucnNaVUpjWm9ibGw1UnJRb2N4eCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Ib21lIjt9czo3OiJ1c2VyX2lkIjtpOjY3NTg3MTtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMDoibmFtZV9hZG1pbiI7czoxMDoiYWRtaW4ga2VjZSI7czoxMDoicm9sZV9hZG1pbiI7czo1OiJhZG1pbiI7czo5OiJiaW9fYWRtaW4iO3M6MzoidGVzIjt9', 1749787453);
+	('jFKDiHye4GsjeE5lQ5TYAuFNo2ozlKMAg0YLwC8X', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiTmtNV2UxdGJ5NDZxWko5WmJ6VWlDWHkxWGRFaEtWZExCYlB1dEdkRCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Ib21lQWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjc6InVzZXJfaWQiO2k6NTE5ODQxO3M6MTQ6InVzZXJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJyb2xlX2FkbWluIjtzOjU6ImFkbWluIjtzOjk6ImJpb19hZG1pbiI7Tjt9', 1750179330);
 
 -- Dumping structure for table app_paymin.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -278,19 +274,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bio` text COLLATE utf8mb4_unicode_ci,
-  `role` enum('admin','karyawan') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('admin','cassier','kithcen','storage','waiters') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` enum('Y','N') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1253411 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table app_paymin.users: ~2 rows (approximately)
-REPLACE INTO `users` (`id`, `username`, `name`, `password`, `bio`, `role`, `is_active`, `created_at`, `updated_at`, `photo`) VALUES
-	(454453, 'karyawan', 'karyawan', '$2y$12$414hpCNtd3JixW.3F5Xx8O4JU8KrRcZzVl4DmBkePi.fnMrJC9f..', NULL, 'karyawan', 'Y', '2025-06-12 23:35:38', '2025-06-13 07:37:13', NULL),
-	(675871, 'admin', 'admin kece', '$2y$12$.JRHaqAKDiYavLB7PUJqyePhUH.k17p7ElP5ZaBwDYkkhIEBdr.pm', 'tes', 'admin', 'Y', '2025-06-12 23:32:46', '2025-06-13 07:46:35', NULL);
+REPLACE INTO `users` (`id`, `username`, `name`, `password`, `email`, `photo`, `bio`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
+	(519841, 'admin', 'admin', '$2y$12$HbZeTeT5VlEo35/hCRCN/eN3zz5.F/Be8CL08dx4Ey.FL020CdBU2', NULL, NULL, NULL, 'admin', 'Y', '2025-06-17 23:40:28', '2025-06-17 23:40:28');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

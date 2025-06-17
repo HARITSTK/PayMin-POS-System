@@ -83,19 +83,48 @@ class Auth extends BaseController
                 'user_id' => $user->id,
                 'username_admin' => $user->username,
                 'name_admin' => $user->name,
+                'email_admin' => $user->email,
+                'photo_admin' => $user->photo,
                 'role_admin' => $user->role,
                 'bio_admin' => $user->bio,
             ]);
             return redirect()->route('Home');
-        } elseif ($user->role == 'karyawan') {
-            session([
-                'user_id' => $user->id,
-                'username_karyawan' => $user->username,
-                'name_karyawan' => $user->name,
-                'role_karyawan' => $user->role,
-                'bio_karyawan' => $user->bio,
-            ]);
-            return redirect()->route('HomeKaryawan');
+        } elseif ($user->role == 'cassier') {
+            // session([
+            //     'user_id' => $user->id,
+            //     'username_karyawan' => $user->username,
+            //     'name_karyawan' => $user->name,
+            //     'role_karyawan' => $user->role,
+            //     'bio_karyawan' => $user->bio,
+            // ]);
+            // return redirect()->route('HomeKaryawan');
+        } elseif ($user->role == 'kitchen') {
+            // session([
+            //     'user_id' => $user->id,
+            //     'username_karyawan' => $user->username,
+            //     'name_karyawan' => $user->name,
+            //     'role_karyawan' => $user->role,
+            //     'bio_karyawan' => $user->bio,
+            // ]);
+            // return redirect()->route('HomeKaryawan');
+        } elseif ($user->role == 'storage') {
+            // session([
+            //     'user_id' => $user->id,
+            //     'username_karyawan' => $user->username,
+            //     'name_karyawan' => $user->name,
+            //     'role_karyawan' => $user->role,
+            //     'bio_karyawan' => $user->bio,
+            // ]);
+            // return redirect()->route('HomeKaryawan');
+        } elseif ($user->role == 'waiters') {
+            // session([
+            //     'user_id' => $user->id,
+            //     'username_karyawan' => $user->username,
+            //     'name_karyawan' => $user->name,
+            //     'role_karyawan' => $user->role,
+            //     'bio_karyawan' => $user->bio,
+            // ]);
+            // return redirect()->route('HomeKaryawan');
         } else {
             return back()->withErrors(['username' => 'Akun tidak memiliki role!'])->withInput();
         }

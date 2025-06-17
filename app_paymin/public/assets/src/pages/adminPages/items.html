@@ -23,6 +23,7 @@
     <main
       class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins"
     >
+      <!-- Navigation Bar -->
       <nav
         id="navbar"
         class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
@@ -127,7 +128,7 @@
           <div
             class="bg-white rounded-xl p-6 w-72 text-center modal-content shadow-lg"
           >
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <h3 class="text-lg font-semibold text-textColor mb-4">
               Do you want to Logout?
             </h3>
 
@@ -145,7 +146,7 @@
               </button>
               <button
                 class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
-                onclick="window.location.href='login.html'"
+                onclick="window.location.href='../login.html'"
               >
                 Yes
               </button>
@@ -192,11 +193,11 @@
         >
           <!-- Items Sorting -->
           <div
-            class="flex justify-between w-full h-auto border-gray-600 bg-white border-b-[1px] p-2"
+            class="flex justify-between w-full gap-x-2 h-auto border-gray-600 bg-white border-b-[1px] p-2"
           >
             <ul class="flex flex-row items-center gap-3">
               <li
-                class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]"
+                class="border-2 border-gray-400 rounded-2xl hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F] px-5 py-2"
               >
                 <button
                   type="button"
@@ -206,7 +207,7 @@
                 </button>
               </li>
               <li
-                class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]"
+                class="border-2 border-gray-400 rounded-2xl hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F] px-5 py-2"
               >
                 <button
                   type="button"
@@ -216,7 +217,7 @@
                 </button>
               </li>
               <li
-                class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]"
+                class="border-2 border-gray-400 rounded-2xl hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F] px-5 py-2"
               >
                 <button
                   type="button"
@@ -226,7 +227,7 @@
                 </button>
               </li>
               <li
-                class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]"
+                class="border-2 border-gray-400 rounded-2xl hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F] px-5 py-2"
               >
                 <button
                   type="button"
@@ -261,7 +262,7 @@
             >
               <!-- Add Item Card -->
               <div
-                class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl cursor-pointer hover:bg-[#FFB09F] transition-all duration-200 p-6 w-full h-[50vh] hidden"
+                class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl cursor-pointer hover:bg-[#FFB09F] transition-all duration-200 p-6 w-full h-[50vh]"
               >
                 <button
                   class="flex flex-col items-center justify-center focus:outline-none"
@@ -301,7 +302,7 @@
                     </h2>
 
                     <!-- Harga dan stok -->
-                    <p class="text-[11pt] text-gray-500 mt-1 mb-2.5">
+                    <p class="text-[11pt] text-gray-500 mt-1">
                       Rp.20.000 <span class="mx-1">|</span> 20 Stock
                     </p>
                   </div>
@@ -311,10 +312,20 @@
                     class="w-full flex justify-between items-center mt-auto h-16"
                   >
                     <button
-                      class="bg-primary h-full text-white text-lg w-full rounded-b-lg"
-                      onclick="showModal('modalPreviewItem')"
+                      class="bg-linear-[180deg,_#FF5733,_#BB482F] h-full text-white text-lg w-full rounded-bl-lg"
+                      onclick="showModal('modalEditItem')"
                     >
-                      Preview
+                      Edit menu
+                    </button>
+                    <button
+                      class="text-gray-500 bg-tertiary hover:text-gray-700 w-[40%] h-full rounded-br-lg"
+                      onclick="showModal('modalDeleteItem')"
+                    >
+                      <div
+                        class="w-full h-full transition-all duration-200 flex items-center justify-center text-white text-lg"
+                      >
+                        <span class="material-symbols-outlined"> delete </span>
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -334,40 +345,294 @@
         </div>
       </section>
 
-      <!-- Modal Preview Item -->
+      <!-- Delete Items Modal -->
       <div
-        class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
-        id="modalPreviewItem"
+        class="fixed inset-0 backdrop-blur-md bg-opacity-50 flex justify-center items-center z-50 animate-fadeIn hidden"
+        id="modalDeleteItem"
       >
+        <!-- Modal Container -->
         <div
-          class="bg-white rounded-lg shadow-lg w-[20%] h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content flex flex-col items-center"
+          class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content"
         >
-          <!-- Gambar produk -->
+          <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
+
           <img
-            src="../../assets/coffee.png"
-            alt="Product"
-            class="w-44 object-cover rounded-full border-4 border-white shadow"
+            src="/src/assets/coffee.png"
+            alt="Coffee"
+            class="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
           />
 
-          <div class="flex flex-col items-center justify-center w-full mt-auto">
-            <!-- Nama produk -->
-            <h2 class="font-semibold text-center text-gray-800 text-lg">
-              Coffe Capuchino
-            </h2>
+          <h3 class="text-lg font-semibold text-gray-800">Coffe Capuchino</h3>
+          <p class="text-sm text-gray-600">Rp 20.000 | 20 Stock</p>
 
-            <!-- Harga dan stok -->
-            <p class="text-[11pt] text-gray-500 mt-1 mb-2.5">
-              Rp.20.000 <span class="mx-1">|</span> 20 Stock
-            </p>
+          <p class="text-xs text-gray-500 mt-4">
+            Deleting items will remove all of information<br />
+            from our database. This cannot be undone.
+          </p>
+
+          <div class="flex justify-between mt-6 space-x-4">
+            <button
+              class="flex-1 border border-primary text-primary rounded-xl py-2 hover:bg-red-100 transition"
+              onclick="closeModal('modalDeleteItem')"
+            >
+              Cancel
+            </button>
+            <button
+              class="flex-1 bg-primary text-white rounded-xl py-2 hover:opacity-90 transition"
+              onclick="deleteCard('.card-container')"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Edit Item -->
+      <div
+        class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
+        id="modalEditItem"
+      >
+        <!-- Modal Container -->
+        <div
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+        >
+          <!-- Modal Header -->
+          <div class="flex flex-col w-full">
+            <h2 class="text-xl font-semibold">Edit Item</h2>
+            <p>Edit this Item</p>
           </div>
 
-          <!-- Tombol -->
-          <div class="w-full flex justify-between items-center mt-auto h-16">
-            <button
-              class="bg-primary h-full text-white text-lg w-full rounded-lg"
-              onclick="closeModal('modalPreviewItem')"
+          <!-- Modal Content -->
+          <div class="mt-4 flex justify-between gap-x-4 py-2">
+            <!-- drag and drop image -->
+            <div
+              class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
+              id="imageView"
             >
-              Back
+              <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
+              <p class="text-gray-500 mt-2 text-center">
+                Drag and drop your image here
+              </p>
+              <input
+                type="file"
+                accept="image/*"
+                class="hidden"
+                id="fileInput"
+              />
+              <label
+                for="fileInput"
+                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer"
+                >Choose File</label
+              >
+            </div>
+
+            <!-- Input fields -->
+            <div class="mt-4">
+              <label
+                for="itemName"
+                class="block text-sm font-medium text-gray-700"
+                >Item Name</label
+              >
+              <input
+                type="text"
+                id="itemName"
+                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              />
+
+              <label
+                for="itemStock"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Description Items</label
+              >
+              <input
+                type="text"
+                id="itemStock"
+                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              />
+
+              <div class="flex gap-x-4">
+                <div class="flex-1">
+                  <label
+                    for="itemPrice"
+                    class="block text-sm font-medium text-gray-700 mt-4"
+                    >Item Price</label
+                  >
+                  <input
+                    type="number"
+                    id="itemPrice"
+                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  />
+                </div>
+                <div class="flex-1">
+                  <label
+                    for="itemStockAdd"
+                    class="block text-sm font-medium text-gray-700 mt-4"
+                    >Item Stock</label
+                  >
+                  <input
+                    type="number"
+                    id="itemStockAdd"
+                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <label
+                for="itemCategory"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Item Category</label
+              >
+              <select
+                id="itemCategory"
+                class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              >
+                <option value="cake">Cake</option>
+                <option value="drink">Drink</option>
+                <option value="food">Food</option>
+                <option value="snack">Snack</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="mt-6 flex justify-end gap-x-4">
+            <button
+              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              onclick="closeModal('modalEditItem')"
+            >
+              Close
+            </button>
+            <button
+              class="bg-primary text-white px-4 py-2 rounded"
+              id="submitBtn"
+            >
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
+        id="modalAddItem"
+      >
+        <!-- Modal Container -->
+        <div
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+        >
+          <!-- Modal Header -->
+          <div class="flex flex-col w-full">
+            <h2 class="text-xl font-semibold">New Item</h2>
+            <p>Add New Item</p>
+          </div>
+
+          <!-- Modal Content -->
+          <div class="mt-4 flex justify-between gap-x-4 py-2">
+            <!-- drag and drop image -->
+            <div
+              class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
+              id="imageView"
+            >
+              <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
+              <p class="text-gray-500 mt-2 text-center">
+                Drag and drop your image here
+              </p>
+              <input
+                type="file"
+                accept="image/*"
+                class="hidden"
+                id="fileInput"
+              />
+              <label
+                for="fileInput"
+                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer"
+                >Choose File</label
+              >
+            </div>
+
+            <!-- Input fields -->
+            <div class="mt-4">
+              <label
+                for="itemName"
+                class="block text-sm font-medium text-gray-700"
+                >Item Name</label
+              >
+              <input
+                type="text"
+                id="itemName"
+                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              />
+
+              <label
+                for="itemStock"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Description Items</label
+              >
+              <input
+                type="text"
+                id="itemStock"
+                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              />
+
+              <div class="flex gap-x-4">
+                <div class="flex-1">
+                  <label
+                    for="itemPrice"
+                    class="block text-sm font-medium text-gray-700 mt-4"
+                    >Item Price</label
+                  >
+                  <input
+                    type="number"
+                    id="itemPrice"
+                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  />
+                </div>
+                <div class="flex-1">
+                  <label
+                    for="itemStockAdd"
+                    class="block text-sm font-medium text-gray-700 mt-4"
+                    >Item Stock</label
+                  >
+                  <input
+                    type="number"
+                    id="itemStockAdd"
+                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <label
+                for="itemCategory"
+                class="block text-sm font-medium text-gray-700 mt-4"
+                >Item Category</label
+              >
+              <select
+                id="itemCategory"
+                class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+              >
+                <option value="cake">Cake</option>
+                <option value="drink">Drink</option>
+                <option value="food">Food</option>
+                <option value="snack">Snack</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="mt-6 flex justify-end gap-x-4">
+            <button
+              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              onclick="closeModal('modalEditItem')"
+            >
+              Close
+            </button>
+            <button
+              class="bg-primary text-white px-4 py-2 rounded"
+              id="submitBtn"
+            >
+              Save Changes
             </button>
           </div>
         </div>

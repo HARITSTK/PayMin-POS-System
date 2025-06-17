@@ -24,6 +24,7 @@
     <main
       class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins"
     >
+      <!-- Navigation Bar -->
       <nav
         id="navbar"
         class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
@@ -128,7 +129,7 @@
           <div
             class="bg-white rounded-xl p-6 w-72 text-center modal-content shadow-lg"
           >
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            <h3 class="text-lg font-semibold text-textColor mb-4">
               Do you want to Logout?
             </h3>
 
@@ -146,7 +147,7 @@
               </button>
               <button
                 class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
-                onclick="window.location.href='login.html'"
+                onclick="window.location.href='../login.html'"
               >
                 Yes
               </button>
@@ -232,14 +233,9 @@
                 />
                 <!-- Edit Icon -->
                 <button
-                  class="absolute bottom-1 right-1 bg-primary text-white rounded-full p-1.5 shadow-md hover:bg-orange-600"
-                  onclick="showModal('uploadImageModal')"
+                  class="absolute bottom-0 right-1 bg-primary text-white rounded-full p-1 flex items-center hover:bg-orange-600"
                 >
-                  <span
-                    class="material-symbols-outlined leading-none align-middle"
-                  >
-                    edit
-                  </span>
+                  <span class="material-symbols-outlined"> edit </span>
                 </button>
               </div>
 
@@ -261,7 +257,7 @@
                 Cancel
               </button>
               <button
-                class="bg-gradient-to-r from-orange-500 to-orange-700 text-white rounded px-4 py-2 hover:from-orange-600 hover:to-orange-800 text-sm font-medium"
+                class="bg-primary text-white rounded px-4 py-2 hover:from-orange-600 hover:to-orange-800 text-sm font-medium"
               >
                 Save Changes
               </button>
@@ -319,7 +315,7 @@
               <div class="flex justify-end space-x-4 pt-4">
                 <button
                   type="button"
-                  class="border border-primary text-priborder-primary px-4 py-2 rounded-md text-sm hover:bg-red-50"
+                  class="border border-primary text-primary border-primary px-4 py-2 rounded-md text-sm hover:bg-red-50"
                 >
                   Cancel
                 </button>

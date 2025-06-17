@@ -35,13 +35,12 @@
     <main
       class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]"
     >
-      <!-- Navbar -->
       <nav
-        id="navbar"
+        id="bar"
         class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
       >
-        <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
-          <!-- Daftar item navigasi utama -->
+        <ul id="bar-list" class="flex flex-col h-full w-full relative z-10">
+          <!-- Daftar item igasi utama -->
           <li>
             <div class="flex items-center justify-center mb-2">
               <img
@@ -157,7 +156,7 @@
               </button>
               <button
                 class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
-                onclick="window.location.href='login.html'"
+                onclick="window.location.href='../login.html'"
               >
                 Yes
               </button>
@@ -187,7 +186,7 @@
             <!-- Dropdown Menu -->
             <div
               id="sortingMenu"
-              class="absolute top-full left-0 w-full mt-1 bg-white rounded-xl shadow-md z-10 hidden overflow-hidden"
+              class="absolute top-full left-0 w-full mt-1 bg-white rounded-xl shadow-md z-50 hidden overflow-hidden"
             >
               <div
                 class="dropdown-item py-4 px-5 cursor-pointer text-lg text-gray-800 bg-white hover:bg-primary hover:text-white"
@@ -268,204 +267,67 @@
           </form>
         </div>
 
-        <!-- REPORT TABLE -->
         <div
-          class="bg-white shadow-4xl h-[40em] mt-3 w-full relative rounded-2xl"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl"
         >
-          <div class="overflow-y-auto h-full mb-4 rounded-2xl">
-            <table class="table-auto w-full">
-              <thead
-                class="border-b-2 border-tertiary text-white bg-[#747474] h-[3rem] w-full"
-              >
-                <tr class="text-center text-sm rounded-lg">
-                  <th class="p-6">Transaction ID</th>
-                  <th class="p-6">Date</th>
-                  <th class="p-6">Amount</th>
-                  <th class="p-6">Orders</th>
-                  <th class="p-6">Payment Method</th>
-                  <th class="p-6">Types Orders</th>
-                </tr>
-              </thead>
-
-              <tbody class="hidden">
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b border-tertiary h-[3rem] text-center">
-                  <td class="p-4">#00000009</td>
-                  <td class="p-4">23/05/2025</td>
-                  <td class="p-4 font-bold">56</td>
-                  <td class="p-4">Rp.20.000</td>
-                  <td class="p-4">Cash</td>
-                  <td class="p-4">
-                    <button
-                      class="p-3 bg-primary rounded-lg text-white cursor-pointer w-[80%]"
-                    >
-                      Dine in
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-
-              <!-- Search icon -->
+          <div class="w-full h-full flex flex-col overflow-hidden">
+            <div class="overflow-y-auto flex-1 rounded-2xl">
+              <table class="table-auto w-full">
+                <thead
+                  class="sticky top-0 z-10 bg-[#747474] text-white border-b-2 border-tertiary h-12"
+                >
+                  <tr class="text-center text-sm">
+                    <th class="p-5">Transaction ID</th>
+                    <th class="p-5">Date</th>
+                    <th class="p-5">Amount</th>
+                    <th class="p-5">Orders</th>
+                    <th class="p-5">Payment method</th>
+                    <th class="p-5">Types Orders</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-tertiary h-[3rem] text-center">
+                    <td class="p-3">#00000009</td>
+                    <td class="p-3">23/05/2025</td>
+                    <td class="p-3">Rp.20.000</td>
+                    <td class="p-3">56</td>
+                    <td class="p-3">Cash</td>
+                    <td class="p-3">
+                      <span
+                        class="bg-primary text-white font-medium w-full px-2.5 py-0.5 rounded-full"
+                        >Dine In</span
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center"
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center hidden"
               >
                 <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                 <p class="my-12 text-lg">
                   We can’t find any item matching your search
                 </p>
               </div>
-            </table>
-          </div>
-
-          <!-- Footer Pagination -->
-          <div
-            class="absolute bottom-0 left-0 right-0 flex justify-between items-center p-4 bg-white rounded-b-2xl"
-          >
-            <button
-              class="bg-primary text-textColor px-4 py-2 rounded-lg mr-2 flex justify-between items-center hover:opacity-80 transition-all duration-200"
-              onclick="showModal('modalAddItem')"
-            >
-              Delete Selected Rows
-              <div class="ml-2 flex items-center">
-                <span class="material-symbols-outlined"> cancel </span>
-              </div>
-            </button>
-
-            <!-- Pagination -->
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-gray-500">Page</span>
-              <button
-                class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                aria-label="Previous page"
-              >
-                <span class="material-symbols-outlined">chevron_left</span>
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                1
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                2
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                3
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                4
-              </button>
-              <button
-                class="px-3 py-1 rounded hover:bg-primary text-textColor hover:text-white font-semibold"
-              >
-                5
-              </button>
-
-              <button
-                class="px-3 py-1 rounded bg-gray-200 text-gray-700 hover:bg-primary hover:text-white transition"
-                aria-label="Next page"
-              >
-                <span class="material-symbols-outlined">chevron_right</span>
-              </button>
             </div>
           </div>
+
+          <!-- Void transaction rows button -->
+          <div>
+            <button
+              class="absolute bottom-4 left-4 bg-primary text-textColor px-4 py-2 rounded-full shadow-lg transition-colors duration-300"
+              onclick="showModal('modalDeleteItem')"
+            >
+              <i class="fa fa-trash"></i> Void Transaction Row
+            </button>
+          </div>
         </div>
-        <!-- REPORT TABLE END -->
       </section>
 
       <!-- Modal Delete Item -->
       <div
         class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
-        id="modalAddItem"
-        id="modalAddItem"
+        id="modalDeleteItem"
       >
         <!-- Modal Container -->
         <div
@@ -485,7 +347,7 @@
           <div class="mt-6 flex justify-end gap-x-4">
             <button
               class="border-2 border-primary text-primary px-4 py-2 rounded"
-              onclick="closeModal('modalAddItem')"
+              onclick="closeModal('modalDeleteItem')"
             >
               Close
             </button>
