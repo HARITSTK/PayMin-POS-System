@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `balances` (
   UNIQUE KEY `date` (`date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.balances: ~1 rows (approximately)
+-- Dumping data for table app_paymin.balances: ~0 rows (approximately)
 REPLACE INTO `balances` (`id`, `date`, `beginning_balance`, `created_at`) VALUES
 	(1, '2025-06-13', 1000000.00, '2025-06-13 03:55:44');
 
@@ -61,9 +61,11 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.categories: ~0 rows (approximately)
+REPLACE INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
+	(1, 'asdasdasd', '2025-06-18 07:19:17', '2025-06-18 07:19:17');
 
 -- Dumping structure for table app_paymin.customers
 CREATE TABLE IF NOT EXISTS `customers` (
@@ -75,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.customers: ~1 rows (approximately)
+-- Dumping data for table app_paymin.customers: ~0 rows (approximately)
 REPLACE INTO `customers` (`id`, `name`, `phone`, `address`, `created_at`) VALUES
 	(1, 'test', '123232', 'asdasdasd', '2025-06-13 02:35:30');
 
@@ -162,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.migrations: ~7 rows (approximately)
+-- Dumping data for table app_paymin.migrations: ~9 rows (approximately)
 REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '0001_01_01_000000_create_users_table', 1),
 	(2, '0001_01_01_000001_create_cache_table', 1),
@@ -211,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.products: ~0 rows (approximately)
 
@@ -232,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.sales: ~1 rows (approximately)
+-- Dumping data for table app_paymin.sales: ~0 rows (approximately)
 
 -- Dumping structure for table app_paymin.sale_items
 CREATE TABLE IF NOT EXISTS `sale_items` (
@@ -264,27 +266,27 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.sessions: ~4 rows (approximately)
+-- Dumping data for table app_paymin.sessions: ~1 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('jFKDiHye4GsjeE5lQ5TYAuFNo2ozlKMAg0YLwC8X', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTo4OntzOjY6Il90b2tlbiI7czo0MDoiTmtNV2UxdGJ5NDZxWko5WmJ6VWlDWHkxWGRFaEtWZExCYlB1dEdkRCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9Ib21lQWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjc6InVzZXJfaWQiO2k6NTE5ODQxO3M6MTQ6InVzZXJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJyb2xlX2FkbWluIjtzOjU6ImFkbWluIjtzOjk6ImJpb19hZG1pbiI7Tjt9', 1750179330);
+	('v9TKrW3MgSwO6qMYJgYO3WUvPKbtsnDiOAVcxj8s', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IjBjVHQxdG1lSnF0NmFTMHhYenlaMlFLMUlxN2hlNnVDMDZnSktweWUiO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMzOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvUmVwb3J0QWRtaW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjc6InVzZXJfaWQiO2k6NTE5ODQxO3M6MTQ6InVzZXJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjExOiJlbWFpbF9hZG1pbiI7TjtzOjExOiJwaG90b19hZG1pbiI7TjtzOjEwOiJyb2xlX2FkbWluIjtzOjU6ImFkbWluIjtzOjk6ImJpb19hZG1pbiI7Tjt9', 1750306902);
 
 -- Dumping structure for table app_paymin.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bio` text COLLATE utf8mb4_unicode_ci,
+  `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `role` enum('admin','cassier','kithcen','storage','waiters') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_active` enum('Y','N') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1253411 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.users: ~2 rows (approximately)
+-- Dumping data for table app_paymin.users: ~0 rows (approximately)
 REPLACE INTO `users` (`id`, `username`, `name`, `password`, `email`, `photo`, `bio`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
 	(519841, 'admin', 'admin', '$2y$12$HbZeTeT5VlEo35/hCRCN/eN3zz5.F/Be8CL08dx4Ey.FL020CdBU2', NULL, NULL, NULL, 'admin', 'Y', '2025-06-17 23:40:28', '2025-06-17 23:40:28');
 

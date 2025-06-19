@@ -198,6 +198,16 @@
                         @endforeach
                     </div>
                 </div>
+                <!-- Items empty -->
+                <!-- <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
+                    </div>
+                </div> -->
                 <!-- Product List -->
                 <div
                     class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
@@ -218,31 +228,33 @@
 
                     <div class="h-full w-full rounded-xl">
                         <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
-                            @foreach ($products as $p)
+                            @foreach ($products as $pl)
                             <div class="flex flex-col items-center bg-white rounded-lg shadow-4xl w-auto h-full p-3">
                                 <div class="flex mx-auto w-[8rem]">
                                     <img src="assets/src/assets/coffee.png" alt="Coffee" class="object-cover w-full" />
                                 </div>
                                 <div class="flex flex-col items-center w-full my-auto">
-                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">{{ $p->name }}</span>
-                                    <span class="font-bold text-[13pt] text-[#353535]">{{ $p->price }}</span>
+                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">Coffe Latte</span>
+                                    <span class="font-bold text-[13pt] text-[#353535]">Price Rp. 12.000</span>
                                 </div>
                             </div>
                             @endforeach
+
                         </div>
                         <!-- Items empty -->
-                        @if ($products->IsEmpty())
-                        <div class="flex flex-col items-center justify-center h-full">
+                        <!-- <div class="flex flex-col items-center justify-center h-full">
+                            @if ($products->isEmpty())
                             <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
                                 cancel
                             </span>
                             <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
                                 <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
-                                <span class="font-light text-[11pt]">Start by adding your first product to manage your
+                                <span class="font-light text-[11pt]">Start by adding your first product to manage
+                                    your
                                     inventory.</span>
                             </div>
-                        </div>
-                        @endif
+                            @endif
+                        </div> -->
                     </div>
                 </div>
                 <!-- Sales Growth -->
@@ -270,6 +282,16 @@
                         @endforeach
                     </div>
                 </div>
+                <!-- Items empty -->
+                <!-- <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                        <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
+                        <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
+                    </div>
+                </div> -->
                 <!-- Orders Today -->
                 <div
                     class="col-span-2 row-span-2 col-start-3 row-start-4 bg-gradient-to-b from-white from-40% to-gray-300 to-100% border-2 border-white p-3 flex flex-col rounded-xl shadow-4xl">
@@ -293,6 +315,16 @@
                         @endforeach
                     </div>
                 </div>
+                <!-- Items empty -->
+                <!-- <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
+                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
+                    </div>
+                </div> -->
             </div>
         </section>
     </main>
