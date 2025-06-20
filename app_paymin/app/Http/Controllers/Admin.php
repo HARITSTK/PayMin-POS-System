@@ -76,19 +76,14 @@ class Admin extends BaseController
         $sales = Mdl_Sales::all();
         $sales = Mdl_Sales::with('user')->get();
 
-        $today = Carbon::today();
+        // $today = Carbon::today();
 
-        $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+        // $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+        $TotalIncome = DB::table('sales')->where('total')->count();
+        $TotalItemSell = DB::table('sale_items')->where('product_id')->count();
+        $TotalCustomers = DB::table('customers')->count();
 
-        $admissionFee = DB::table('payments')
-            ->whereDate('created_at', $today)
-            ->sum('amount');
-
-        $moneyOut = DB::table('expenses')
-            ->whereDate('created_at', $today)
-            ->sum('amount');
-
-        return view('adminpage/report', compact('user', 'sales', 'beginningBalance', 'admissionFee', 'moneyOut'));
+        return view('adminpage/report', compact('user', 'sales', 'TotalCustomers', 'TotalItemSell', 'TotalIncome'));
     }
 
     public function exportCSVReport()

@@ -151,7 +151,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Income</p>
-                        <p class="text-3xl font-bold text-gray-800">Rp. 200.000</p>
+                        <p class="text-3xl font-bold text-gray-800">Rp. {{ number_format($TotalIncome, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -160,7 +160,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Items sell</p>
-                        <p class="text-3xl font-bold text-gray-800">+Rp. 200.000</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ number_format($TotalItemSell, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -169,7 +169,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Costumers</p>
-                        <p class="text-3xl font-bold text-gray-800">-Rp. 200.000</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ number_format($TotalCustomers, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
