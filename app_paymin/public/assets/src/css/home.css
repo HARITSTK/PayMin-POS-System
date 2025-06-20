@@ -1,0 +1,9 @@
+#navbar-list ul li:last-child {
+  margin-top: 20px;
+}
+
+.swiper-slide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
