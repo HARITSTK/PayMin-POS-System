@@ -67,6 +67,19 @@ class Admin extends BaseController
 
         return view('adminpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'products'));
     }
+
+    public function SysAddItem(Request $request) {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'desc' => 'nullable',
+            'price' => 'required',
+            'stock' => 'required',
+            'category' => 'required',
+            'subcategory' => 'required',
+        ]);
+
+        
+    }
  
 
     // REPORT

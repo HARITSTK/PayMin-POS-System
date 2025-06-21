@@ -29,3 +29,35 @@ function uploadImage() {
   imageView.style.backgroundRepeat = "no-repeat";
   imageView.textContent = "";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const categorySelect = document.querySelector(".itemCategory");
+  const subCategorySelect = document.querySelector(".itemSubCategory");
+
+  const subCategories = {
+    food: ["Main Course", "Appetizer", "Side Dish", "Salad"],
+    drink: ["Hot Drink", "Cold Drink", "Juice", "Soda", "Coffee", "Tea"],
+    snack: ["Chips", "Nuts", "Cookies", "Crackers"],
+    dessert: ["Cake", "Ice Cream", "Pudding", "Pastry"],
+    signature: ["Chef Special", "House Special", "Seasonal Special"],
+    // other: ["Other"],
+  };
+
+  function updateSubCategories() {
+    const selectedCategory = categorySelect.value;
+    const options = subCategories[selectedCategory] || [""];
+
+    subCategorySelect.innerHTML = ""; // Kosongkan dulu
+
+    options.forEach(function (sub) {
+      const option = document.createElement("option");
+      option.value = sub.toLowerCase().replace(/\s+/g, "-");
+      option.textContent = sub;
+      subCategorySelect.appendChild(option);
+    });
+  }
+
+  categorySelect.addEventListener("change", updateSubCategories);
+
+  updateSubCategories();
+});

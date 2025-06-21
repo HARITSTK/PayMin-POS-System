@@ -261,7 +261,7 @@
             </div>
         </section>
         <!-- Delete Items Modal -->
-        <div class="fixed inset-0 backdrop-blur-md bg-opacity-50 flex justify-center items-center z-50 animate-fadeIn hidden"
+        <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 flex justify-center items-center z-50 animate-fadeIn hidden"
             id="modalDeleteItem">
             <!-- Modal Container -->
             <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
@@ -293,7 +293,7 @@
         </div>
 
         <!-- Modal Edit Item -->
-        <div class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
+        <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
             id="modalEditItem">
             <!-- Modal Container -->
             <div
@@ -370,7 +370,7 @@
             </div>
         </div>
 
-        <div class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
+        <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
             id="modalAddItem">
             <!-- Modal Container -->
             <div
@@ -382,68 +382,81 @@
                 </div>
 
                 <!-- Modal Content -->
-                <div class="mt-4 flex justify-between gap-x-4 py-2">
-                    <!-- drag and drop image -->
-                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
-                        id="imageView">
-                        <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
-                        <p class="text-gray-500 mt-2 text-center">
-                            Drag and drop your image here
-                        </p>
-                        <input type="file" accept="image/*" class="hidden" id="fileInput" />
-                        <label for="fileInput"
-                            class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
-                    </div>
-
-                    <!-- Input fields -->
-                    <div class="mt-4">
-                        <label for="itemName" class="block text-sm font-medium text-gray-700">Item Name</label>
-                        <input type="text" id="itemName"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Description
-                            Items</label>
-                        <input type="text" id="itemStock"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <div class="flex gap-x-4">
-                            <div class="flex-1">
-                                <label for="itemPrice" class="block text-sm font-medium text-gray-700 mt-4">Item
-                                    Price</label>
-                                <input type="number" id="itemPrice"
-                                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-                            </div>
-                            <div class="flex-1">
-                                <label for="itemStockAdd" class="block text-sm font-medium text-gray-700 mt-4">Item
-                                    Stock</label>
-                                <input type="number" id="itemStockAdd"
-                                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-                            </div>
+                <form action="{{ route('SysAddItem') }}" method="post">
+                    @csrf
+                    <div class="mt-4 flex justify-between gap-x-4 py-2">
+                        <!-- drag and drop image -->
+                        <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
+                            id="imageView">
+                            <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
+                            <p class="text-gray-500 mt-2 text-center">
+                                Drag and drop your image here
+                            </p>
+                            <input type="file" accept="image/*" class="hidden" id="fileInput" />
+                            <label for="fileInput"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
                         </div>
 
-                        <label for="itemCategory" class="block text-sm font-medium text-gray-700 mt-4">Item
-                            Category</label>
-                        <select id="itemCategory"
-                            class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
-                            <option value="cake">Cake</option>
-                            <option value="drink">Drink</option>
-                            <option value="food">Food</option>
-                            <option value="snack">Snack</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
+                        <!-- Input fields -->
+                        <div class="mt-4">
+                            <label for="itemName" class="block text-sm font-medium text-gray-700">Item Name</label>
+                            <input type="text" id="itemName" name="name"
+                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                            <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Description
+                                Items</label>
+                            <input type="text" id="itemStock" name="desc"
+                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
 
-                <!-- Modal Footer -->
-                <div class="mt-6 flex justify-end gap-x-4">
-                    <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                        onclick="closeModal('modalAddItem')">
-                        Close
-                    </button>
-                    <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn">
-                        Save Changes
-                    </button>
-                </div>
+                            <div class="flex gap-x-4">
+                                <div class="flex-1">
+                                    <label for="itemPrice" class="block text-sm font-medium text-gray-700 mt-4">Item
+                                        Price</label>
+                                    <input type="number" id="itemPrice" name="price"
+                                        class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                                </div>
+                                <div class="flex-1">
+                                    <label for="itemStockAdd" class="block text-sm font-medium text-gray-700 mt-4">Item
+                                        Stock</label>
+                                    <input type="number" id="itemStockAdd" name="stock"
+                                        class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                                </div>
+                            </div>
+                            <div class="flex gap-x-4">
+                                <div class="flex-1">
+                                    <label for="itemCategory"
+                                        class="block text-sm font-medium text-gray-700 mt-4">Category</label>
+                                    <select name="category"
+                                        class="itemCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                        <option value="food">Food</option>
+                                        <option value="drink">Drink</option>
+                                        <option value="snack">Snack</option>
+                                        <option value="dessert">Dessert</option>
+                                        <option value="signature">Signature</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex-1">
+                                    <label for="itemSubCategory"
+                                        class="block text-sm font-medium text-gray-700 mt-4">Sub
+                                        Category</label>
+                                    <select name="subcategory"
+                                        class="itemSubCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="mt-6 flex justify-end gap-x-4">
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
+                            onclick="closeModal('modalAddItem')">
+                            Close
+                        </button>
+                        <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
