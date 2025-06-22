@@ -214,18 +214,18 @@
                         <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard">
                             <div class="flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
-                                <img src="assets/src/assets/coffee.png" alt="Product"
+                                <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
                                     <!-- Nama produk -->
                                     <h2 class="item-name font-semibold text-center text-gray-800 text-lg">
-                                        Coffe Capuchino
+                                        {{ $p->name }}
                                     </h2>
 
                                     <!-- Harga dan stok -->
                                     <p class="text-[11pt] text-gray-500 mt-1 mb-2.5">
-                                        Rp.20.000 <span class="mx-1">|</span> 20 Stock
+                                        Rp. {{ $p->price }} <span class="mx-1">|</span> {{ $p->stock }} Stock
                                     </p>
                                 </div>
 
@@ -238,7 +238,7 @@
                                     </button>
                                     <button
                                         class="text-gray-500 bg-tertiary hover:text-gray-700 w-[40%] h-full rounded-br-lg"
-                                        onclick="showModal('modalDeleteItem')">
+                                        onclick="showModalDelete({{ $p->id }}, '{{ $p->name }}', '{{ $p->price }}', '{{ $p->stock }}')">
                                         <div
                                             class="w-full h-full transition-all duration-200 flex items-center justify-center text-white text-lg">
                                             <span class="material-symbols-outlined"> delete </span>
@@ -264,32 +264,37 @@
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 flex justify-center items-center z-50 animate-fadeIn hidden"
             id="modalDeleteItem">
             <!-- Modal Container -->
-            <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
-                <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
+            <form method="POST" action="{{ route('SysDeleteItem') }}">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="id" id="deleteItemId">
+                <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
+                    <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
 
-                <img src="/src/assets/coffee.png" alt="Coffee"
-                    class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
+                    <img src="/src/assets/coffee.png" alt="Coffee"
+                        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
 
-                <h3 class="text-lg font-semibold text-gray-800">Coffe Capuchino</h3>
-                <p class="text-sm text-gray-600">Rp 20.000 | 20 Stock</p>
+                    <h3 id="deleteItemName" class="text-lg font-semibold text-gray-800">produk</h3>
+                    <p class="text-sm text-gray-600">Harga | Stock</p>
 
-                <p class="text-xs text-gray-500 mt-4">
-                    Deleting items will remove all of information<br />
-                    from our database. This cannot be undone.
-                </p>
+                    <p class="text-xs text-gray-500 mt-4">
+                        Deleting items will remove all of information<br />
+                        from our database. This cannot be undone.
+                    </p>
 
-                <div class="flex justify-between mt-6 space-x-4">
-                    <button
-                        class="flex-1 border border-primary text-primary rounded-xl py-2 hover:bg-red-100 transition"
-                        onclick="closeModal('modalDeleteItem')">
-                        Cancel
-                    </button>
-                    <button class="flex-1 bg-primary text-white rounded-xl py-2 hover:opacity-90 transition"
-                        onclick="deleteCard('.card-container')">
-                        Delete
-                    </button>
+                    <div class="flex justify-between mt-6 space-x-4">
+                        <button
+                            class="flex-1 border border-primary text-primary rounded-xl py-2 hover:bg-red-100 transition"
+                            onclick="closeModal('modalDeleteItem')">
+                            Cancel
+                        </button>
+                        <button class="flex-1 bg-primary text-white rounded-xl py-2 hover:opacity-90 transition"
+                            type="submit">
+                            Delete
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <!-- Modal Edit Item -->
@@ -382,8 +387,9 @@
                 </div>
 
                 <!-- Modal Content -->
-                <form action="{{ route('SysAddItem') }}" method="post">
+                <form action="{{ route('SysAddItem') }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    <!-- @method('PUT') -->
                     <div class="mt-4 flex justify-between gap-x-4 py-2">
                         <!-- drag and drop image -->
                         <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
@@ -392,7 +398,7 @@
                             <p class="text-gray-500 mt-2 text-center">
                                 Drag and drop your image here
                             </p>
-                            <input type="file" accept="image/*" class="hidden" id="fileInput" />
+                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
                             <label for="fileInput"
                                 class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
                         </div>
@@ -425,13 +431,11 @@
                                 <div class="flex-1">
                                     <label for="itemCategory"
                                         class="block text-sm font-medium text-gray-700 mt-4">Category</label>
-                                    <select name="category"
+                                    <select name="category_id"
                                         class="itemCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
-                                        <option value="food">Food</option>
-                                        <option value="drink">Drink</option>
-                                        <option value="snack">Snack</option>
-                                        <option value="dessert">Dessert</option>
-                                        <option value="signature">Signature</option>
+                                        @foreach($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -439,7 +443,7 @@
                                     <label for="itemSubCategory"
                                         class="block text-sm font-medium text-gray-700 mt-4">Sub
                                         Category</label>
-                                    <select name="subcategory"
+                                    <select name="subcategory_id"
                                         class="itemSubCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"></select>
                                 </div>
                             </div>
@@ -460,8 +464,35 @@
             </div>
         </div>
     </main>
-
+    <!-- Alert Notification -->
+    @if (Session::has('message'))
+    <div id="auto-dismiss-alert"
+        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <script>
+    setTimeout(() => {
+        const alert = document.getElementById('auto-dismiss-alert');
+        if (alert) {
+            alert.remove();
+        }
+    }, 5000);
+    </script>
+    @endif
     <script src="assets/src/js/items.js"></script>
+    <script>
+    const subCategories = @json($subcategories);
+    </script>
 </body>
 
 </html>

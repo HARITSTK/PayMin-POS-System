@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Mdl_Admin;
 use App\Models\Mdl_Member;
 use App\Models\Mdl_Sales;
-use Illuminate\View\View;
+use App\Models\Mdl_Product;
+use App\Models\Mdl_Categories;
+use App\Models\Mdl_SubCategories;
+// use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Carbon\Carbon;
+// use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Admin extends BaseController
 {
@@ -64,22 +70,55 @@ class Admin extends BaseController
 
         // $categories = DB::table('categories')->get();
         $products = DB::table('products')->get();
+        $categories = Mdl_Categories::all();
+        $subcategories = Mdl_SubCategories::select('id', 'category_id', 'name')->get()->groupBy('category_id');
 
-        return view('adminpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'products'));
+        return view('adminpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'products', 'categories', 'subcategories'));
     }
 
     public function SysAddItem(Request $request) {
-        $validatedData = $request->validate([
+
+        $validated = $request->validate([
             'name' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'desc' => 'nullable',
-            'price' => 'required',
-            'stock' => 'required',
-            'category' => 'required',
-            'subcategory' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+            'subcategory_id' => 'required|exists:subcategories,id',
         ]);
 
-        
+        if ($request->hasFile('image')) {
+            $filename = time() . '_' . Str::slug($request->name) . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/products'), $filename);
+            $validated['image'] = $filename;
+        }
+
+        Mdl_Product::create($validated);
+
+        return redirect()->back()->with('message', 'Item berhasil ditambahkan');
+
     }
+
+    public function SysDeleteItem(Request $request)
+    {
+        $id = $request->id;
+
+        $product = Mdl_Product::findOrFail($id);
+
+        // Hapus gambar jika ada
+        if ($product->image) {
+            $path = public_path('uploads/products/' . $product->image);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+
+        $product->delete();
+
+        return redirect()->back()->with('message', 'Produk berhasil dihapus');
+    }
+
  
 
     // REPORT

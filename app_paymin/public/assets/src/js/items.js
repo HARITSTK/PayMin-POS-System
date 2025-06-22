@@ -30,34 +30,73 @@ function uploadImage() {
   imageView.textContent = "";
 }
 
+// document.addEventListener("DOMContentLoaded", function () {
+//   const categorySelect = document.querySelector(".itemCategory");
+//   const subCategorySelect = document.querySelector(".itemSubCategory");
+
+//   const subCategories = {
+//     food: ["Main Course", "Appetizer", "Side Dish", "Salad"],
+//     drink: ["Hot Drink", "Cold Drink", "Juice", "Soda", "Coffee", "Tea"],
+//     snack: ["Chips", "Nuts", "Cookies", "Crackers"],
+//     dessert: ["Cake", "Ice Cream", "Pudding", "Pastry"],
+//     signature: ["Chef Special", "House Special", "Seasonal Special"],
+//     // other: ["Other"],
+//   };
+
+//   function updateSubCategories() {
+//     const selectedCategory = categorySelect.value;
+//     const options = subCategories[selectedCategory] || [""];
+
+//     subCategorySelect.innerHTML = ""; // Kosongkan dulu
+
+//     options.forEach(function (sub) {
+//       const option = document.createElement("option");
+//       option.value = sub.toLowerCase().replace(/\s+/g, "-");
+//       option.textContent = sub;
+//       subCategorySelect.appendChild(option);
+//     });
+//   }
+
+//   categorySelect.addEventListener("change", updateSubCategories);
+
+//   updateSubCategories();
+// });
+
 document.addEventListener("DOMContentLoaded", function () {
   const categorySelect = document.querySelector(".itemCategory");
   const subCategorySelect = document.querySelector(".itemSubCategory");
 
-  const subCategories = {
-    food: ["Main Course", "Appetizer", "Side Dish", "Salad"],
-    drink: ["Hot Drink", "Cold Drink", "Juice", "Soda", "Coffee", "Tea"],
-    snack: ["Chips", "Nuts", "Cookies", "Crackers"],
-    dessert: ["Cake", "Ice Cream", "Pudding", "Pastry"],
-    signature: ["Chef Special", "House Special", "Seasonal Special"],
-    // other: ["Other"],
-  };
-
   function updateSubCategories() {
-    const selectedCategory = categorySelect.value;
-    const options = subCategories[selectedCategory] || [""];
+    const selectedCategoryId = categorySelect.value;
+    const subs = subCategories[selectedCategoryId] || [];
 
-    subCategorySelect.innerHTML = ""; // Kosongkan dulu
+    subCategorySelect.innerHTML = "";
 
-    options.forEach(function (sub) {
+    subs.forEach(function (sub) {
       const option = document.createElement("option");
-      option.value = sub.toLowerCase().replace(/\s+/g, "-");
-      option.textContent = sub;
+      option.value = sub.id; // harus ID asli dari DB
+      option.textContent = sub.name;
       subCategorySelect.appendChild(option);
     });
   }
 
   categorySelect.addEventListener("change", updateSubCategories);
 
-  updateSubCategories();
+  updateSubCategories(); // untuk load awal
 });
+
+// document.addEventListener("DOMContentLoaded", function () {
+  
+  function showModalDelete(id, name, price, stock) {
+      document.getElementById('deleteItemId').value = id;
+      document.getElementById('deleteItemName').textContent = name;
+      document.getElementById('deleteItemInfo').textContent = `Rp ${price} | ${stock} Stock`;
+
+      document.getElementById('modalDeleteItem').classList.remove('hidden');
+  }
+
+  // function closeModal(id) {
+  //     document.getElementById(id).classList.add('hidden');
+  // } 
+// });
+

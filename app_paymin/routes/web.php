@@ -31,6 +31,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/ReportAdmin', [Admin::class, 'report'])->name('Report');
     Route::get('/ItemAdmin', [Admin::class, 'item'])->name('Item');
     Route::post('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
+    Route::delete('/delete-item', [Admin::class, 'SysDeleteItem'])->name('SysDeleteItem');
     Route::get('/MemberAdmin', [Admin::class, 'member'])->name('Member');
     Route::get('/MasterAdmin', [Admin::class, 'master'])->name('Master');
     Route::put('/SysAddMasterAdmin', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
