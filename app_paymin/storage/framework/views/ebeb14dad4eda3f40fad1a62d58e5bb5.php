@@ -16,6 +16,31 @@
 </head>
 
 <body>
+    <!-- Alert Notification -->
+    <?php if(Session::has('message')): ?>
+    <div id="auto-dismiss-alert"
+        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong><?php echo e(Session::get('message')); ?></strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <script>
+    setTimeout(() => {
+        const alert = document.getElementById('auto-dismiss-alert');
+        if (alert) {
+            alert.remove();
+        }
+    }, 5000);
+    </script>
+    <?php endif; ?>
     <main class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins">
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
@@ -234,12 +259,15 @@
                                 <div class="w-full flex justify-between items-center mt-auto h-16">
                                     <button
                                         class="bg-linear-[180deg,_#FF5733,_#BB482F] h-full text-white text-lg w-full rounded-bl-lg"
-                                        onclick="showModal('modalEditItem')">
+                                        data-id="<?php echo e($p->id); ?>" data-name="<?php echo e($p->name); ?>" data-desc="<?php echo e($p->desc); ?>"
+                                        data-price="<?php echo e($p->price); ?>" data-stock="<?php echo e($p->stock); ?>"
+                                        data-category="<?php echo e($p->category_id); ?>"
+                                        data-subcategory="<?php echo e($p->subcategory_id); ?>" onclick="showModalEdit(this)">
                                         Edit menu
                                     </button>
                                     <button
                                         class="text-gray-500 bg-tertiary hover:text-gray-700 w-[40%] h-full rounded-br-lg"
-                                        onclick="showModalDelete('<?php echo e($p->id); ?>', '<?php echo e($p->name); ?>', '<?php echo e($p->price); ?>', '<?php echo e($p->stock); ?>')">
+                                        onclick="showModalDelete(<?php echo e($p->id); ?>, '<?php echo e($p->name); ?>', '<?php echo e($p->price); ?>', '<?php echo e($p->stock); ?>')">
                                         <div
                                             class="w-full h-full transition-all duration-200 flex items-center justify-center text-white text-lg">
                                             <span class="material-symbols-outlined"> delete </span>
@@ -276,7 +304,7 @@
                         class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
 
                     <h3 id="deleteItemName" class="text-lg font-semibold text-gray-800">produk</h3>
-                    <p class="text-sm text-gray-600">Harga | Stock</p>
+                    <p id="deleteItemInfo" class="text-sm text-gray-600">Harga | Stock</p>
 
                     <p class="text-xs text-gray-500 mt-4">
                         Deleting items will remove all of information<br />
@@ -301,79 +329,97 @@
         <!-- Modal Edit Item -->
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
             id="modalEditItem">
-            <!-- Modal Container -->
-            <div
-                class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
-                <!-- Modal Header -->
-                <div class="flex flex-col w-full">
-                    <h2 class="text-xl font-semibold">Edit Item</h2>
-                    <p>Edit this Item</p>
-                </div>
-
-                <!-- Modal Content -->
-                <div class="mt-4 flex justify-between gap-x-4 py-2">
-                    <!-- drag and drop image -->
-                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
-                        id="imageView">
-                        <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
-                        <p class="text-gray-500 mt-2 text-center">
-                            Drag and drop your image here
-                        </p>
-                        <input type="file" accept="image/*" class="hidden" id="fileInput" />
-                        <label for="fileInput"
-                            class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
+            <form action="<?php echo e(route('SysEditItem')); ?>" method="post" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <!-- <?php echo method_field('PUT'); ?> -->
+                <!-- Modal Container -->
+                <div
+                    class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content">
+                    <!-- Modal Header -->
+                    <div class="flex flex-col w-full">
+                        <h2 class="text-xl font-semibold">Edit Item</h2>
+                        <p>Edit this Item</p>
                     </div>
 
-                    <!-- Input fields -->
-                    <div class="mt-4">
-                        <label for="itemName" class="block text-sm font-medium text-gray-700">Item Name</label>
-                        <input type="text" id="itemName"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Description
-                            Items</label>
-                        <input type="text" id="itemStock"
-                            class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-
-                        <div class="flex gap-x-4">
-                            <div class="flex-1">
-                                <label for="itemPrice" class="block text-sm font-medium text-gray-700 mt-4">Item
-                                    Price</label>
-                                <input type="number" id="itemPrice"
-                                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-                            </div>
-                            <div class="flex-1">
-                                <label for="itemStockAdd" class="block text-sm font-medium text-gray-700 mt-4">Item
-                                    Stock</label>
-                                <input type="number" id="itemStockAdd"
-                                    class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
-                            </div>
+                    <!-- Modal Content -->
+                    <div class="mt-4 flex justify-between gap-x-4 py-2">
+                        <!-- drag and drop image -->
+                        <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
+                            id="imageView">
+                            <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
+                            <p class="text-gray-500 mt-2 text-center">
+                                Drag and drop your image here
+                            </p>
+                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
+                            <label for="fileInput"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
                         </div>
 
-                        <label for="itemCategory" class="block text-sm font-medium text-gray-700 mt-4">Item
-                            Category</label>
-                        <select id="itemCategory"
-                            class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
-                            <option value="cake">Cake</option>
-                            <option value="drink">Drink</option>
-                            <option value="food">Food</option>
-                            <option value="snack">Snack</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <!-- Input fields -->
+                        <div class="mt-4">
+                            <input type="hidden" name="id" id="edit_id">
+                            <label for="itemName" class="block text-sm font-medium text-gray-700">Item Name</label>
+                            <input type="text" id="edit_name" name="name"
+                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                            <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Description
+                                Items</label>
+                            <input type="text" id="edit_desc" name="desc"
+                                class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+
+                            <div class="flex gap-x-4">
+                                <div class="flex-1">
+                                    <label for="itemPrice" class="block text-sm font-medium text-gray-700 mt-4">Item
+                                        Price</label>
+                                    <input type="number" id="edit_price" name="price"
+                                        class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                                </div>
+                                <div class="flex-1">
+                                    <label for="itemStockAdd" class="block text-sm font-medium text-gray-700 mt-4">Item
+                                        Stock</label>
+                                    <input type="number" id="edit_stock" name="stock"
+                                        class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+                                </div>
+                            </div>
+                            <div class="flex gap-x-4">
+                                <div class="flex-1">
+                                    <label for="itemCategory"
+                                        class="block text-sm font-medium text-gray-700 mt-4">Category</label>
+                                    <select name="category_id" id="edit_category_id"
+                                        class="itemCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($cat->id); ?>"><?php echo e($cat->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+
+                                <div class="flex-1">
+                                    <label for="itemSubCategory"
+                                        class="block text-sm font-medium text-gray-700 mt-4">Sub
+                                        Category</label>
+                                    <select name="subcategory_id" id="edit_subcategory_id"
+                                        class="itemSubCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                        <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php $__currentLoopData = $group; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($sub->id); ?>"><?php echo e($sub->name); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="mt-6 flex justify-end gap-x-4">
+                        <button class="border-2 border-primary text-primary px-4 py-2 rounded"
+                            onclick="closeModal('modalEditItem')">
+                            Close
+                        </button>
+                        <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
+                            Save Changes
+                        </button>
                     </div>
                 </div>
-
-                <!-- Modal Footer -->
-                <div class="mt-6 flex justify-end gap-x-4">
-                    <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                        onclick="closeModal('modalEditItem')">
-                        Close
-                    </button>
-                    <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn">
-                        Save Changes
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
 
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
@@ -432,7 +478,7 @@
                                 <div class="flex-1">
                                     <label for="itemCategory"
                                         class="block text-sm font-medium text-gray-700 mt-4">Category</label>
-                                    <select name="category_id"
+                                    <select name="category_id"  id="categorySelect"
                                         class="itemCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
                                         <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($cat->id); ?>"><?php echo e($cat->name); ?></option>
@@ -444,7 +490,7 @@
                                     <label for="itemSubCategory"
                                         class="block text-sm font-medium text-gray-700 mt-4">Sub
                                         Category</label>
-                                    <select name="subcategory_id"
+                                    <select name="subcategory_id" id="subcategorySelect"
                                         class="itemSubCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"></select>
                                 </div>
                             </div>
@@ -465,34 +511,10 @@
             </div>
         </div>
     </main>
-    <!-- Alert Notification -->
-    <?php if(Session::has('message')): ?>
-    <div id="auto-dismiss-alert"
-        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
-        role="alert">
-        <div class="flex items-center gap-x-2">
-            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
-            <div class="flex-1">
-                <strong><?php echo e(Session::get('message')); ?></strong>
-            </div>
-            <button type="button" class="text-white hover:text-gray-300 ml-2"
-                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
-    <script>
-    setTimeout(() => {
-        const alert = document.getElementById('auto-dismiss-alert');
-        if (alert) {
-            alert.remove();
-        }
-    }, 5000);
-    </script>
-    <?php endif; ?>
+
     <script src="assets/src/js/items.js"></script>
     <script>
-    const subCategories = <?php echo json_encode($subcategories, 15, 512) ?>;
+    const subcategories = <?php echo json_encode($subcategories, 15, 512) ?>;
     </script>
 </body>
 
