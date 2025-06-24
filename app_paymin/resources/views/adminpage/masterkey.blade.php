@@ -25,6 +25,31 @@
 </head>
 
 <body>
+    <!-- Alert Notification -->
+    @if (Session::has('message'))
+    <div id="auto-dismiss-alert"
+        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <script>
+    setTimeout(() => {
+        const alert = document.getElementById('auto-dismiss-alert');
+        if (alert) {
+            alert.remove();
+        }
+    }, 5000);
+    </script>
+    @endif
     <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
         <!-- Navbar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
@@ -314,7 +339,7 @@
                     <p class="my-12 text-lg text-center">We can’t find any item matching your search</p>
                 </div>
 
-                
+
                 </table>
             </div>
 
@@ -332,7 +357,6 @@
                 <h1 class="text-3xl font-bold text-primary mb-2">Add New</h1>
                 <form action="{{ route('SysAddMaster') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
                     <div class="flex flex-col items-center">
                         <!-- Profile Picture Circle -->
                         <div
@@ -367,7 +391,10 @@
                             class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
                             <option hidden></option>
                             <option value="admin">admin</option>
-                            <option value="karyawan">karyawan</option>
+                            <option value="cassier">Cassier</option>
+                            <option value="kithcen">Kitchen</option>
+                            <option value="storage">Storage</option>
+                            <option value="waiters">Waiters</option>
                         </select>
 
                         <label for="itemName" class="block text-sm font-medium text-gray-700 mt-4">Employee ID</label>
@@ -391,7 +418,7 @@
                     <!-- Modal Footer -->
                     <div class="mt-6 flex justify-center gap-x-4">
                         <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                            onclick="closeModal('modalAddItem')">
+                            onclick="closeModal('modalAddItem')" type="button">
                             Discard
                         </button>
                         <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
@@ -508,31 +535,6 @@
                 </div>
             </div>
         </div>
-        <!-- Alert Notification -->
-        @if (Session::has('message'))
-        <div id="auto-dismiss-alert"
-            class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
-            role="alert">
-            <div class="flex items-center gap-x-2">
-                <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
-                <div class="flex-1">
-                    <strong>{{ Session::get('message') }}</strong>
-                </div>
-                <button type="button" class="text-white hover:text-gray-300 ml-2"
-                    onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
-        <script>
-        setTimeout(() => {
-            const alert = document.getElementById('auto-dismiss-alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 5000);
-        </script>
-        @endif
         <!-- </div> -->
     </main>
     <script src="assets/src/js/masterkey.js"></script>

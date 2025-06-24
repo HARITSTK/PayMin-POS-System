@@ -69,35 +69,34 @@ class Admin extends BaseController
         $totalProducts = DB::table('products')->count();
 
         // $categories = DB::table('categories')->get();
-        $products = DB::table('products')->get();
+        $products = Mdl_Product::with('category')->get();
         $categories = Mdl_Categories::all();
         $subcategories = Mdl_SubCategories::select('id', 'category_id', 'name')->get()->groupBy('category_id');
 
         return view('adminpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'products', 'categories', 'subcategories'));
     }
 
-    public function SysAddItem(Request $request) {
-
+    public function SysAddItem(Request $request)
+    {
         $validated = $request->validate([
-            'name' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'desc' => 'nullable',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'required|exists:subcategories,id',
+        'name' => 'required|string|max:100',
+        'desc' => 'nullable|string',
+        'price' => 'required|numeric',
+        'stock' => 'required|integer',
+        'category_id' => 'required|exists:categories,id',
+        'subcategory_id' => 'nullable|exists:subcategories,id',
+        // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $filename = time() . '_' . Str::slug($request->name) . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/products'), $filename);
-            $validated['image'] = $filename;
-        }
-
+        // if ($request->hasFile('image')) {
+        //     $filename = time() . '.' . $request->image->extension();
+        //     $request->image->move(public_path('uploads/products'), $filename);
+        //     $validated['image'] = $filename;
+        // }
+        
         Mdl_Product::create($validated);
-
+        
         return redirect()->back()->with('message', 'Item berhasil ditambahkan');
-
     }
 
     public function SysDeleteItem(Request $request)
@@ -222,37 +221,32 @@ class Admin extends BaseController
 
     public function SysAddMaster(Request $request)
     {
-        $validatedData = $request->validate([
-            'role' => 'required',
-            'username' => 'required|min:5',
-            'name' => 'required|min:5',
-            'password' => 'required|min:8',
-            'photo' => 'nullable|image|mimes:png|max:2048',
-        ], [
-            'role.required' => 'role harus diisi!',
-            'username.required' => 'Username harus diisi!',
-            'username.min' => 'Username harus memiliki minimal 5 karakter!',
-            'name.required' => 'Nama harus diisi!',
-            'name.min' => 'Nama harus memiliki minimal 5 karakter!',
-            'password.required' => 'Password harus diisi!',
-            'password.min' => 'Password harus memiliki minimal 8 karakter!',
-            'photo.image' => 'File harus berupa gambar!',
-            'photo.mimes' => 'Hanya gambar PNG yang diperbolehkan!',
-            'photo.max' => 'Ukuran maksimal 2MB!',
-        ]);
+        try {
 
-        if ($request->hasFile('photo')) {
-            $photoFile = $request->file('photo');
-            $photoName = uniqid() . '.' . $photoFile->getClientOriginalExtension();
-            $photoFile->storeAs('public/uploads/photos', $photoName);
-            $validatedData['photo'] = $photoName;
-        } else {
-            $validatedData['photo'] = null;
+            $validatedData = $request->validate([
+                'role' => 'required',
+                'username' => 'required|min:5',
+                'name' => 'required|min:5',
+                'password' => 'required|min:8',
+                'photo' => 'nullable|image|mimes:png|max:2048',
+            ]);
+
+            if ($request->hasFile('photo')) {
+                $photoFile = $request->file('photo');
+                $photoName = uniqid() . '.' . $photoFile->getClientOriginalExtension();
+                $photoFile->storeAs('public/uploads/photos', $photoName);
+                $validatedData['photo'] = $photoName;
+            } else {
+                $validatedData['photo'] = null;
+            }
+            
+            Mdl_Admin::AddDataMaster($validatedData);
+            
+            return redirect()->route('Master')->with('message', 'Data User berhasil ditambahkan');
+            
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', 'Gagal menambahkan data user: ' . $e->getMessage());
         }
-
-        Mdl_Admin::AddDataMaster($validatedData);
-
-        return redirect()->route('Master')->with('message', 'Data User berhasil ditambahkan');
     }
 
     public function SysDeleteMaster(Request $request)

@@ -30,12 +30,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/HomeAdmin', [Admin::class, 'home'])->name('Home');
     Route::get('/ReportAdmin', [Admin::class, 'report'])->name('Report');
     Route::get('/ItemAdmin', [Admin::class, 'item'])->name('Item');
-    Route::post('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
+    Route::put('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
     Route::post('/SysEditItem', [Admin::class, 'SysEditItem'])->name('SysEditItem');
     Route::delete('/delete-item', [Admin::class, 'SysDeleteItem'])->name('SysDeleteItem');
     Route::get('/MemberAdmin', [Admin::class, 'member'])->name('Member');
     Route::get('/MasterAdmin', [Admin::class, 'master'])->name('Master');
-    Route::put('/SysAddMasterAdmin', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
+    Route::post('/SysAddMasterAdmin', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
     Route::put('/SysEditMasterAdmin/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');
     Route::post('/delete-masterAdmin', [Admin::class, 'SysDeleteMaster'])->name('SysDeleteMaster');
     Route::get('/SettingAdmin', [Admin::class, 'setting'])->name('Setting');

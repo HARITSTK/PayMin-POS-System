@@ -170,38 +170,38 @@
                 <!-- Items Sorting -->
                 <div class="flex justify-between w-full h-auto border-gray-600 bg-white border-b-[1px] p-2">
                     <ul class="flex flex-row items-center gap-3">
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="all"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 All
                             </button>
                         </li>
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="food"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 Food
                             </button>
                         </li>
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="drink"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 Drink
                             </button>
                         </li>
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="snack"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 Snack
                             </button>
                         </li>
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="dessert"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 Dessert
                             </button>
                         </li>
-                        <li
-                            class="border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
+                        <li data-filter="signature"
+                            class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
                             <button type="button" class="w-full h-full focus:outline-none cursor-pointer">
                                 Signature
                             </button>
@@ -214,6 +214,7 @@
                                 <i class="fa fa-search"></i>
                             </span>
                             <input type="text" placeholder="Find Items" id="searchInput" onkeyup="searchTable()"
+                                value="{{ old('search') }}"
                                 class="border border-gray-300 rounded-2xl pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary" />
                         </div>
                     </form>
@@ -221,10 +222,10 @@
 
                 <!-- Items List -->
                 <div class="w-full h-[33em] overflow-y-auto p-4">
+                    <!-- Add Item Card -->
                     <div class="grid grid-cols-4 lg:grid-cols-4 auto-rows-auto gap-10 justify-items-center"
                         id="orderList">
-                        <!-- Add Item Card -->
-                        <div
+                        <div id="addItemCard"
                             class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl cursor-pointer hover:bg-[#FFB09F] transition-all duration-200 p-6 w-full h-[50vh]">
                             <button class="flex flex-col items-center justify-center focus:outline-none"
                                 onclick="showModal('modalAddItem')">
@@ -236,7 +237,8 @@
                         </div>
                         <!-- Item Card Template (Repeated) -->
                         @foreach ($products as $p)
-                        <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard">
+                        <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard"
+                            data-category="{{ strtolower($p->category->name) }}">
                             <div class="flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
                                 <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
@@ -247,6 +249,11 @@
                                     <h2 class="item-name font-semibold text-center text-gray-800 text-lg">
                                         {{ $p->name }}
                                     </h2>
+
+                                    <!-- Harga dan stok -->
+                                    <p class="text-[11pt] text-gray-500 mt-1 mb-2.5">
+                                        {{ $p->desc }}
+                                    </p>
 
                                     <!-- Harga dan stok -->
                                     <p class="text-[11pt] text-gray-500 mt-1 mb-2.5">
@@ -276,8 +283,8 @@
                             </div>
                         </div>
                         @endforeach
-
-                        <div id="noData" display="none"
+                        <!-- Search icon -->
+                        <div id="noResultsMessage"
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center hidden">
                             <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                             <p class="my-12 text-lg">
@@ -313,7 +320,7 @@
                     <div class="flex justify-between mt-6 space-x-4">
                         <button
                             class="flex-1 border border-primary text-primary rounded-xl py-2 hover:bg-red-100 transition"
-                            onclick="closeModal('modalDeleteItem')">
+                            onclick="closeModal('modalDeleteItem')" type="button">
                             Cancel
                         </button>
                         <button class="flex-1 bg-primary text-white rounded-xl py-2 hover:opacity-90 transition"
@@ -410,7 +417,7 @@
                     <!-- Modal Footer -->
                     <div class="mt-6 flex justify-end gap-x-4">
                         <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                            onclick="closeModal('modalEditItem')">
+                            onclick="closeModal('modalEditItem')" type="button">
                             Close
                         </button>
                         <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
@@ -435,7 +442,8 @@
                 <!-- Modal Content -->
                 <form action="{{ route('SysAddItem') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <!-- @method('PUT') -->
+                    @method('PUT')
+                    <!-- Modal Content -->
                     <div class="mt-4 flex justify-between gap-x-4 py-2">
                         <!-- drag and drop image -->
                         <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
@@ -454,9 +462,10 @@
                             <label for="itemName" class="block text-sm font-medium text-gray-700">Item Name</label>
                             <input type="text" id="itemName" name="name"
                                 class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
+
                             <label for="itemStock" class="block text-sm font-medium text-gray-700 mt-4">Description
                                 Items</label>
-                            <input type="text" id="itemStock" name="desc"
+                            <input type="text" id="itemDesc" name="desc"
                                 class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
 
                             <div class="flex gap-x-4">
@@ -473,24 +482,24 @@
                                         class="mt-1 p-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary" />
                                 </div>
                             </div>
+
                             <div class="flex gap-x-4">
                                 <div class="flex-1">
                                     <label for="itemCategory"
                                         class="block text-sm font-medium text-gray-700 mt-4">Category</label>
-                                    <select name="category_id"  id="categorySelect"
-                                        class="itemCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
-                                        @foreach($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    <select id="itemCategory" name="category_id"
+                                        class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
+                                        @foreach($categories as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="flex-1">
                                     <label for="itemSubCategory"
-                                        class="block text-sm font-medium text-gray-700 mt-4">Sub
-                                        Category</label>
-                                    <select name="subcategory_id" id="subcategorySelect"
-                                        class="itemSubCategory mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"></select>
+                                        class="block text-sm font-medium text-gray-700 mt-4">Sub Category</label>
+                                    <select id="itemSubCategory" name="subcategory_id"
+                                        class="mt-1 p-1 block w-full cursor-pointer border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"></select>
                                 </div>
                             </div>
                         </div>
@@ -499,7 +508,7 @@
                     <!-- Modal Footer -->
                     <div class="mt-6 flex justify-end gap-x-4">
                         <button class="border-2 border-primary text-primary px-4 py-2 rounded"
-                            onclick="closeModal('modalAddItem')">
+                            onclick="closeModal('modalAddItem')" type="button">
                             Close
                         </button>
                         <button class="bg-primary text-white px-4 py-2 rounded" id="submitBtn" type="submit">
@@ -507,14 +516,15 @@
                         </button>
                     </div>
                 </form>
+
             </div>
         </div>
     </main>
 
-    <script src="assets/src/js/items.js"></script>
     <script>
-    const subcategories = @json($subcategories);
+    const subCategories = @json($subcategories);
     </script>
+    <script src="assets/src/js/items.js"></script>
 </body>
 
 </html>

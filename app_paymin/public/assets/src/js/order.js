@@ -122,3 +122,56 @@ function showPaymentSuccessModal() {
   //   "xl:grid-cols-4"
   // );
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const itemCards = document.querySelectorAll(".itemCard");
+
+  filterButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const filter = this.getAttribute("data-filter");
+
+      itemCards.forEach(card => {
+        const category = card.getAttribute("data-category");
+
+        if (filter === "all" || category === filter) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+
+      // Optional: Tambah highlight button aktif
+      filterButtons.forEach(btn => btn.classList.remove("bg-[#FFB09F]", "text-primary", "border-primary"));
+      this.classList.add("bg-[#FFB09F]", "text-primary", "border-primary");
+    });
+  });
+});
+
+
+function searchTable() {
+  const input = document.getElementById("searchInput").value.toLowerCase().trim();
+  const cards = document.querySelectorAll(".itemCard");
+  const noResults = document.getElementById("noResultsMessage");
+
+  if (input === "") {
+      cards.forEach(card => card.classList.remove("hidden"));
+      noResults.classList.add("hidden");
+      addItemCard.classList.remove("hidden");
+      return;
+  }
+
+  let found = 0;
+  cards.forEach(card => {
+      const name = card.querySelector(".item-name")?.textContent.toLowerCase() || "";
+      const isMatch = name.includes(input);
+
+      card.classList.toggle("hidden", !isMatch);
+      if (isMatch) found++;
+  });
+
+  // Tampilkan pesan + sembunyikan add jika tidak ada hasil
+  const noMatch = found === 0;
+  noResults.classList.toggle("hidden", !noMatch);
+  addItemCard.classList.toggle("hidden", noMatch);
+}

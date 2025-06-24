@@ -44,15 +44,19 @@ class Cassier extends BaseController
             ->whereDate('sale_date', Carbon::today())
             ->get();
         
-        return view('karyawanpage/home',  compact('user', 'admissionFee', 'TotalItems', 'TotalCustomers', 'TotalCustomers', 'products', 'lowStocks', 'ordersToday', 'salesGrowth'));
+        return view('cassierpage/home',  compact('user', 'admissionFee', 'TotalItems', 'TotalCustomers', 'TotalCustomers', 'products', 'lowStocks', 'ordersToday', 'salesGrowth'));
     }
 
 
     // ORDERS
     public function order()
     {
-        return view('karyawanpage/order');
+        $product = DB::table('products')->get();
+
+        return view('cassierpage/order', compact('product'));
     }
+
+
 
     // REPORT
     public function report() {

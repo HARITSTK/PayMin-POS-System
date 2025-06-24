@@ -89,15 +89,19 @@ class Auth extends BaseController
                 'bio_admin' => $user->bio,
             ]);
             return redirect()->route('Home');
+
         } elseif ($user->role == 'cassier') {
-            // session([
-            //     'user_id' => $user->id,
-            //     'username_karyawan' => $user->username,
-            //     'name_karyawan' => $user->name,
-            //     'role_karyawan' => $user->role,
-            //     'bio_karyawan' => $user->bio,
-            // ]);
-            // return redirect()->route('HomeKaryawan');
+            session([
+                'user_id' => $user->id,
+                'username_cassier' => $user->username,
+                'name_cassier' => $user->name,
+                'email_cassier' => $user->email,
+                'photo_cassier' => $user->photo,
+                'role_cassier' => $user->role,
+                'bio_cassier' => $user->bio,
+            ]);
+            return redirect()->route('HomeCassier');
+            
         } elseif ($user->role == 'kitchen') {
             // session([
             //     'user_id' => $user->id,

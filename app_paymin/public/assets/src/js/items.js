@@ -2,17 +2,14 @@
 // Function to show the modal
 function showModal(modalId) {
   const modal = document.getElementById(modalId);
-  const modalContent = modal.querySelector(".modal-content");
-
   modal.classList.remove("hidden");
 }
 
 function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  const modalContent = modal.querySelector(".modal-content");
-
-  modal.classList.add("hidden");
+  document.getElementById(modalId).classList.add("hidden");
 }
+
+
 
 // Input file for image upload and description of card
 
@@ -31,30 +28,29 @@ function uploadImage() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const categorySelect = document.getElementById("categorySelect");
-    const subCategorySelect = document.getElementById("subcategorySelect");
+  const categorySelect = document.getElementById("itemCategory");
+  const subCategorySelect = document.getElementById("itemSubCategory");
 
-    function updateSubCategories() {
-        const selectedCategoryId = categorySelect.value;
-        const subs = subCategories[selectedCategoryId] || [];
+  function updateSubCategories() {
+    const selectedCategory = categorySelect.value;
+    const options = subCategories[selectedCategory] || [];
 
-        subCategorySelect.innerHTML = '';
+    subCategorySelect.innerHTML = '';
 
-        subs.forEach(sub => {
-            const option = document.createElement("option");
-            option.value = sub.id;
-            option.textContent = sub.name;
-            subCategorySelect.appendChild(option);
-        });
-    }
+    options.forEach(function (sub) {
+      const option = document.createElement("option");
+      option.value = sub.id;
+      option.textContent = sub.name;
+      subCategorySelect.appendChild(option);
+    });
+  }
 
-    categorySelect.addEventListener("change", updateSubCategories);
+  categorySelect.addEventListener("change", updateSubCategories);
 
-    // Isi subkategori default kalau kategori sudah terisi
-    if (categorySelect.value) {
-        updateSubCategories();
-    }
+  // Jalankan saat halaman pertama kali terbuka
+  updateSubCategories();
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     window.showModalDelete = function(id, name, price, stock) {
@@ -90,5 +86,55 @@ window.showModalEdit = function (btn) {
   document.getElementById('edit_subcategory_id').value = subcategory_id;
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const itemCards = document.querySelectorAll(".itemCard");
 
+  filterButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const filter = this.getAttribute("data-filter");
 
+      itemCards.forEach(card => {
+        const category = card.getAttribute("data-category");
+
+        if (filter === "all" || category === filter) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+
+      // Optional: Tambah highlight button aktif
+      filterButtons.forEach(btn => btn.classList.remove("bg-[#FFB09F]", "text-primary", "border-primary"));
+      this.classList.add("bg-[#FFB09F]", "text-primary", "border-primary");
+    });
+  });
+});
+
+function searchTable() {
+    const input = document.getElementById("searchInput").value.toLowerCase().trim();
+    const cards = document.querySelectorAll(".itemCard");
+    const noResults = document.getElementById("noResultsMessage");
+    const addItemCard = document.getElementById("addItemCard");
+
+    if (input === "") {
+        cards.forEach(card => card.classList.remove("hidden"));
+        noResults.classList.add("hidden");
+        addItemCard.classList.remove("hidden");
+        return;
+    }
+
+    let found = 0;
+    cards.forEach(card => {
+        const name = card.querySelector(".item-name")?.textContent.toLowerCase() || "";
+        const isMatch = name.includes(input);
+
+        card.classList.toggle("hidden", !isMatch);
+        if (isMatch) found++;
+    });
+
+    // Tampilkan pesan + sembunyikan add jika tidak ada hasil
+    const noMatch = found === 0;
+    noResults.classList.toggle("hidden", !noMatch);
+    addItemCard.classList.toggle("hidden", noMatch);
+}
