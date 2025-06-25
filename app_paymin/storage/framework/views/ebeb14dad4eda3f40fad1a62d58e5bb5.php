@@ -285,14 +285,6 @@
                             </div>
                         </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                        <div id="noData" display="none"
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center hidden">
-                            <i class="fa fa-search fa-5x" aria-hidden="true"></i>
-                            <p class="my-12 text-lg">
-                                We can’t find any item matching your search
-                            </p>
-                        </div>
                         <!-- Search icon -->
                         <div id="noResultsMessage"
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center hidden">

@@ -188,7 +188,7 @@
                     </div>
                     <button
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] w-full py-2 mt-5 rounded-lg text-white font-semibold toggleSidebarBtn"
-                        onclick="toggleSidebar('sidebarOrderedList')">
+                        onclick="addItemToOrder('{{ $p->id }}', '{{ $p->name }}', '{{ $p->price }}', 'assets/src/assets/coffee.png')">
                         Add
                     </button>
                 </div>
@@ -264,16 +264,16 @@
                 </div>
                 <div
                     class="flex font-light justify-center items-center gap-x-2 border-2 border-[#8B8B8B] rounded-xl px-4 py-2 text-[#8B8B8B] has-checked:border-primary has-checked:bg-[#fff6f4] has-checked:text-primary">
-                    <form action="/action_page.php" class="flex items-center gap-2">
+                    <form action="" class="flex items-center gap-2">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                        <label for="togo">To Go</label>
+                        <label for="togo">Take Away</label>
                         <input type="checkbox" id="togo" name="togo" value="ToGo"
                             class="appearance-none w-4 h-4 rounded-full border-2 border-[#8B8B8B] checked:bg-primary checked:border-primary focus:outline-none transition-colors duration-200" />
                     </form>
                 </div>
             </div>
             <div class="w-full px-6">
-                <p class="text-textColor text-sm">#Orders0021 | 23/05/2025 | 14:30</p>
+                <p class="text-textColor text-sm currentDateTime">#Orders0021 | 23/05/2025 | 14:30</p>
                 <hr class="w-full h-[1px] my-2 border-0 bg-tertiary" />
             </div>
 
@@ -289,7 +289,7 @@
                     <!-- Phone Number -->
                     <div>
                         <label for="phone" class="block text-gray-800 text-[11pt]">No Telephone</label>
-                        <input type="tel" id="phone" name="phone" required pattern="[0-9]{10,15}"
+                        <input type="number" id="phone" name="phone" required pattern="[0-9]{10,15}"
                             class="w-full border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1" />
                     </div>
 
@@ -298,16 +298,19 @@
                         <label for="table" class="block text-gray-800 text-[11pt]">No.Table</label>
                         <select id="table" name="table" required
                             class="w-[50%] border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1 text-[11pt]">
-                            <option value="">Select Table</option>
-                            <option value="245">245</option>
-                            <option value="246">246</option>
+                            <option value="" hidden>Select Table</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
                 </form>
             </div>
 
             <div class="w-full px-6 mt-4">
-                <p class="text-textColor text-sm">#Orders0021 | 23/05/2025 | 14:30</p>
+                <p class="text-textColor text-sm currentDateTime">#Orders0021 | 23/05/2025 | 14:30</p>
                 <hr class="w-full h-[1px] my-2 border-0 bg-tertiary" />
             </div>
             <!-- Orders -->
@@ -342,8 +345,7 @@
                         </button>
                     </div>
                     <div class="flex justify-between items-center w-full h-12 mt-2">
-                        <form action="
-              ">
+                        <form action="">
                             <input type="text"
                                 class="border border-gray-300 rounded-md bg-[#C9C9C9] p-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                                 placeholder="add note" />
@@ -734,7 +736,7 @@
         </aside>
 
         <!-- Invoice -->
-        <div class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50 hidden"
+        <div class="fixed bg-black/25 inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50 hidden"
             id="modalInvoice">
             <!-- Modal -->
             <div class="bg-white w-[50%] h-auto rounded-xl shadow-lg p-6 space-y-4">

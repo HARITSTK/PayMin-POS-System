@@ -175,3 +175,134 @@ function searchTable() {
   noResults.classList.toggle("hidden", !noMatch);
   addItemCard.classList.toggle("hidden", noMatch);
 }
+
+let orderItems = {};
+let orderNumber = "";
+
+// Format harga jadi "Rp. 20.000"
+function formatRupiah(angka) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR'
+    }).format(angka).replace(',00', '');
+}
+
+// Fungsi tambah item
+function addItemToOrder(productId, name, price, imageUrl) {
+  if (Object.keys(orderItems).length === 0) {
+      orderNumber = generateOrderNumber(); // Buat angka acak
+      updateDateTime(); // Tampilkan ke HTML
+  }
+
+  toggleSidebar('sidebarOrderedList');
+
+  if (!orderItems[productId]) {
+      orderItems[productId] = {
+          name,
+          price: parseInt(price),
+          quantity: 1,
+          imageUrl
+      };
+  } else {
+      orderItems[productId].quantity++;
+  }
+
+  renderOrderList();
+}
+
+// Tambah jumlah
+function incrementItem(productId) {
+  orderItems[productId].quantity++;
+  renderOrderList();
+}
+
+// Kurangi jumlah
+function decrementItem(productId) {
+  orderItems[productId].quantity--;
+  if (orderItems[productId].quantity <= 0) {
+      delete orderItems[productId];
+  }
+  renderOrderList();
+}
+
+function renderOrderList() {
+    const container = document.getElementById("orderedList");
+    container.innerHTML = "";
+
+    const sidebar = document.getElementById("sidebarOrderedList");
+
+    // Jika tidak ada item, sembunyikan sidebar
+    if (Object.keys(orderItems).length === 0) {
+        sidebar.classList.add("hidden");
+        return;
+    }
+
+    // Tampilkan sidebar kalau belum
+    sidebar.classList.remove("hidden");
+
+    for (const [id, item] of Object.entries(orderItems)) {
+        const total = item.price * item.quantity;
+
+        container.innerHTML += `
+            <div class="flex flex-col items-center w-full mt-2">
+                <div class="flex justify-between w-full h-[60px]">
+                    <div class="flex items-center justify-center w-[5em]">
+                        <img src="${item.imageUrl}" alt="${item.name}" class="w-full object-cover h-full" />
+                    </div>
+                    <div class="w-auto">
+                        <h1 class="text-textColor text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-[70%]">${item.name}</h1>
+                        <p class="text-textColor text-sm w-auto">${formatRupiah(item.price)}</p>
+                    </div>
+                    <div class="w-auto">
+                        <h1 class="text-primary text-2xl font-bold">${formatRupiah(total)}</h1>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-1 w-full">
+                    <button class="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center text-xl font-bold" onclick="decrementItem('${id}')">-</button>
+                    <span class="text-lg font-semibold w-8 text-center">${item.quantity}</span>
+                    <button class="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center text-xl font-bold" onclick="incrementItem('${id}')">+</button>
+                </div>
+                <div class="flex justify-between items-center w-full h-12 mt-2">
+                    <form action="">
+                        <input type="text" class="border border-gray-300 rounded-md bg-[#C9C9C9] p-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="add note" />
+                    </form>
+                    <button onclick="delete orderItems['${id}']; renderOrderList();" class="text-tertiary hover:text-red-700 h-full rounded-md border-2 border-tertiary w-[20%]">
+                        <i class="fa fa-trash fa-lg"></i>
+                    </button>
+                </div>
+                <hr class="w-full h-[1px] my-6 border-0 bg-tertiary" />
+            </div>
+        `;
+    }
+}
+
+// Buat jam dan tanggal dinamis
+function updateDateTime() {
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+
+    const formattedTime = now.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    const fullText = `${orderNumber} | ${formattedDate} | ${formattedTime}`;
+
+    document.querySelectorAll(".currentDateTime").forEach(el => {
+        el.textContent = fullText;
+    });
+}
+
+// Inisialisasi jam dan tanggal saat halaman dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    updateDateTime();
+});
+
+function generateOrderNumber() {
+    const randomNum = Math.floor(1000 + Math.random() * 9000); // 4 digit acak
+    return `#Orders${randomNum}`;
+}
