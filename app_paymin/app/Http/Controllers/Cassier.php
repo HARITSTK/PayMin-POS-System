@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mdl_Auth;
 use App\Models\Mdl_Admin;
 use App\Models\Mdl_Sales;
+use App\Models\Mdl_Customer;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -55,6 +56,117 @@ class Cassier extends BaseController
 
         return view('cassierpage/order', compact('product'));
     }
+
+ public function checkMembership(Request $request)
+    {
+        $customer = Mdl_Customer::where('name', $request->name)
+                                ->where('phone', $request->phone)
+                                ->with('member') // Eager load the relationship
+                                ->first();
+
+        // --- ADD THIS DEBUGGING LINE ---
+        \Log::info('Membership Check Request:', ['name' => $request->name, 'phone' => $request->phone]);
+        \Log::info('Customer Found:', ['customer' => $customer ? $customer->toArray() : 'null']);
+        if ($customer && $customer->member) {
+            \Log::info('Member Data:', ['member' => $customer->member->toArray()]);
+        }
+        // --------------------------------
+
+        if (!$customer || !$customer->member) {
+            return response()->json(['status' => 'not_found']);
+        }
+
+        $member = $customer->member;
+
+        return response()->json([
+            'status' => 'found',
+            'name' => $customer->name,
+            'phone' => $customer->phone,
+            'membership' => $member->type,
+            'points' => $member->points
+        ]);
+    }
+
+    public function processPayment(Request $request)
+    {
+        $request->validate([
+            'orderNumber' => 'required|string',
+            'total' => 'required|numeric|min:0',
+            'paymentMethod' => 'required|string',
+            'customerName' => 'nullable|string|max:255',
+            'customerPhone' => 'nullable|string|max:20',
+            'tableNumber' => 'nullable|integer',
+            'items' => 'required|array',
+            'items.*.name' => 'required|string',
+            'items.*.price' => 'required|numeric|min:0',
+            'items.*.quantity' => 'required|integer|min:1',
+            // 'items.*.note' => 'nullable|string', // if you want to save notes
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $order = Mdl_Order::create([
+                'order_number' => $request->orderNumber,
+                'customer_name' => $request->customerName,
+                'customer_phone' => $request->customerPhone,
+                'table_number' => $request->tableNumber,
+                'total_amount' => $request->total,
+                'payment_method' => $request->paymentMethod, // Save the selected method
+                'status' => 'completed', // Or 'pending', depending on your flow
+            ]);
+
+            foreach ($request->items as $itemData) {
+                Mdl_OrderItem::create([
+                    'order_id' => $order->id,
+                    'item_name' => $itemData['name'],
+                    'price' => $itemData['price'],
+                    'quantity' => $itemData['quantity'],
+                    // 'note' => $itemData['note'] ?? null, // if you send notes
+                ]);
+
+                // TODO: You might want to update inventory/stock here
+                //Mdl_Product::where('name', $itemData['name'])->decrement('stock', $itemData['quantity']);
+            }
+
+            if ($request->customerPhone) {
+                $customer = Mdl_Customer::where('phone', $request->customerPhone)->first();
+                if ($customer && $customer->member) {
+                    $pointsToAdd = floor($request->total / 10000); // 1 point for every 10,000 IDR
+                    $customer->member->increment('points', $pointsToAdd); // Add points to existing
+                }
+            }
+
+
+            switch ($request->paymentMethod) {
+                case 'ShopeePay':
+                case 'Qris':
+                case 'Dana':
+                    break;
+                case 'Cash':
+                    break;
+                case 'Muamalat':
+                case 'BRI':
+                case 'BCA':
+                    break;
+                default:
+                    break;
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => 'Pembayaran berhasil!', 'order_id' => $order->id]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack(); // Rollback on validation error
+            return response()->json(['message' => 'Data tidak valid.', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback on any other error
+            \Log::error('Payment processing error: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json(['message' => 'Terjadi kesalahan saat memproses pembayaran. Mohon coba lagi.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
 
 
 

@@ -23364,3 +23364,79 @@
 #18 C:\\laragon\\www\\app_paymin\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
 #19 {main}
 "} 
+[2025-06-25 15:23:42] local.ERROR: The [pcntl] extension is required to run Pail. {"exception":"[object] (RuntimeException(code: 0): The [pcntl] extension is required to run Pail. at C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Guards\\EnsurePcntlIsAvailable.php:15)
+[stacktrace]
+#0 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Console\\Commands\\PailCommand.php(46): Laravel\\Pail\\Guards\\EnsurePcntlIsAvailable::check()
+#1 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Laravel\\Pail\\Console\\Commands\\PailCommand->handle(Object(Laravel\\Pail\\ProcessFactory))
+#2 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#3 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#4 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(754): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)
+#7 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Command\\Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Pail\\Console\\Commands\\PailCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(197): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1234): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\laragon\\www\\app_paymin\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#15 {main}
+"} 
+[2025-06-25 17:59:49] local.ERROR: The [pcntl] extension is required to run Pail. {"exception":"[object] (RuntimeException(code: 0): The [pcntl] extension is required to run Pail. at C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Guards\\EnsurePcntlIsAvailable.php:15)
+[stacktrace]
+#0 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Console\\Commands\\PailCommand.php(46): Laravel\\Pail\\Guards\\EnsurePcntlIsAvailable::check()
+#1 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Laravel\\Pail\\Console\\Commands\\PailCommand->handle(Object(Laravel\\Pail\\ProcessFactory))
+#2 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#3 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#4 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(754): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)
+#7 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Command\\Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Pail\\Console\\Commands\\PailCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(197): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1234): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\laragon\\www\\app_paymin\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#15 {main}
+"} 
+[2025-06-26 11:16:34] local.ERROR: The [pcntl] extension is required to run Pail. {"exception":"[object] (RuntimeException(code: 0): The [pcntl] extension is required to run Pail. at C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Guards\\EnsurePcntlIsAvailable.php:15)
+[stacktrace]
+#0 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\pail\\src\\Console\\Commands\\PailCommand.php(46): Laravel\\Pail\\Guards\\EnsurePcntlIsAvailable::check()
+#1 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Laravel\\Pail\\Console\\Commands\\PailCommand->handle(Object(Laravel\\Pail\\ProcessFactory))
+#2 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#3 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#4 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#5 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(754): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#6 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)
+#7 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Command\\Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#9 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Laravel\\Pail\\Console\\Commands\\PailCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\laragon\\www\\app_paymin\\vendor\\symfony\\console\\Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(197): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\laragon\\www\\app_paymin\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1234): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\laragon\\www\\app_paymin\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#15 {main}
+"} 
+[2025-06-26 11:46:34] local.INFO: Membership Check Request: {"name":"test","phone":"123232"} 
+[2025-06-26 11:46:34] local.INFO: Customer Found: {"customer":{"id":1,"name":"test","phone":"123232","address":"asdasdasd","created_at":"2025-06-13T02:35:30.000000Z","member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}}} 
+[2025-06-26 11:46:34] local.INFO: Member Data: {"member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}} 
+[2025-06-26 11:47:46] local.INFO: Membership Check Request: {"name":"asd","phone":"1234"} 
+[2025-06-26 11:47:46] local.INFO: Customer Found: {"customer":"null"} 
+[2025-06-26 11:47:56] local.INFO: Membership Check Request: {"name":"test","phone":"123232"} 
+[2025-06-26 11:47:56] local.INFO: Customer Found: {"customer":{"id":1,"name":"test","phone":"123232","address":"asdasdasd","created_at":"2025-06-13T02:35:30.000000Z","member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}}} 
+[2025-06-26 11:47:56] local.INFO: Member Data: {"member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}} 
+[2025-06-26 11:51:08] local.INFO: Membership Check Request: {"name":"asd","phone":"12313"} 
+[2025-06-26 11:51:08] local.INFO: Customer Found: {"customer":"null"} 
+[2025-06-26 12:20:24] local.INFO: Membership Check Request: {"name":"test","phone":"123232"} 
+[2025-06-26 12:20:24] local.INFO: Customer Found: {"customer":{"id":1,"name":"test","phone":"123232","address":"asdasdasd","created_at":"2025-06-13T02:35:30.000000Z","member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}}} 
+[2025-06-26 12:20:24] local.INFO: Member Data: {"member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}} 
+[2025-06-26 12:47:47] local.INFO: Membership Check Request: {"name":"test","phone":"123232"} 
+[2025-06-26 12:47:48] local.INFO: Customer Found: {"customer":{"id":1,"name":"test","phone":"123232","address":"asdasdasd","created_at":"2025-06-13T02:35:30.000000Z","member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}}} 
+[2025-06-26 12:47:48] local.INFO: Member Data: {"member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}} 
+[2025-06-26 12:48:06] local.INFO: Membership Check Request: {"name":"test","phone":"123232"} 
+[2025-06-26 12:48:06] local.INFO: Customer Found: {"customer":{"id":1,"name":"test","phone":"123232","address":"asdasdasd","created_at":"2025-06-13T02:35:30.000000Z","member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}}} 
+[2025-06-26 12:48:06] local.INFO: Member Data: {"member":{"id":1,"customer_id":1,"type":"Silver","amount":"0.00","points":2,"created_at":"2025-06-26T04:30:50.000000Z","updated_at":"2025-06-26T04:30:50.000000Z"}} 

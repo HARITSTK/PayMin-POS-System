@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/src/css/order.css" />
     <link rel="shortcut icon" href="assets/src/assets/logoMin.png" type="image/x-icon" />
     <title>PayMin</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Icons -->
 
@@ -267,7 +268,7 @@
                     <form action="" class="flex items-center gap-2">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                         <label for="togo">Take Away</label>
-                        <input type="checkbox" id="togo" name="togo" value="ToGo"
+                        <input type="checkbox" id="takeaway" name="takeaway" value="ToGo"
                             class="appearance-none w-4 h-4 rounded-full border-2 border-[#8B8B8B] checked:bg-primary checked:border-primary focus:outline-none transition-colors duration-200" />
                     </form>
                 </div>
@@ -282,14 +283,14 @@
                     <!-- Customer Name -->
                     <div>
                         <label for="name" class="block text-gray-800 text-[11pt]">Costumers Name</label>
-                        <input type="text" id="name" name="name" required
+                        <input type="text" id="customerName" name="name" required
                             class="w-full border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1" />
                     </div>
 
                     <!-- Phone Number -->
                     <div>
                         <label for="phone" class="block text-gray-800 text-[11pt]">No Telephone</label>
-                        <input type="number" id="phone" name="phone" required pattern="[0-9]{10,15}"
+                        <input type="number" id="customerPhone" name="phone" required pattern="[0-9]{10,15}"
                             class="w-full border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1" />
                     </div>
 
@@ -399,7 +400,7 @@
             <!-- Select Payment -->
             <div class="w-full px-6 h-full relative overflow-y-auto" id="paymentMethod">
                 <div
-                    class="w-full h-32 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 italic text-sm hidden">
+                    class="noMembership hidden w-full h-32 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 italic text-sm">
                     No membership yet
                 </div>
 
@@ -407,9 +408,9 @@
                 <div class="w-full rounded-xl p-5 bg-linear-[-90deg,_#D9D9D9,_#B9B9B9] shadow-md relative flex items-center justify-between text-white border-[1px] border-[#929292]"
                     id="cardSilver">
                     <div class="text-sm my-2">
-                        <p>Name : <strong>Daveton Aljabar</strong></p>
-                        <p>No.Tlp : <strong>08236538337</strong></p>
-                        <p>Point : 2</p>
+                        <p>Name : <strong class="customerName">Daveton Aljabar</strong></p>
+                        <p>No.Tlp : <strong class="customerPhone">08236538337</strong></p>
+                        <p>Point : <span class="customerPoint">2</span></p>
                     </div>
                     <div class="text-xs text-right">
                         <p class="mb-4 text-gray-900 font-light">Membership</p>
@@ -581,11 +582,11 @@
             <div class="relative h-[25%] w-full flex flex-col justify-end bottom-0 p-6 shadow-continuePayment bg-white">
                 <div class="flex justify-between items-center">
                     <h1 class="text-tertiary text-lg font-light">Pajak</h1>
-                    <p class="text-textColor text-sm w-auto">Rp. 20.000</p>
+                    <p id="taxAmount" class="text-textColor text-sm w-auto">Rp. 20.000</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <h1 class="text-tertiary text-lg font-light">Subtotal</h1>
-                    <p class="text-textColor text-lg font-bold w-auto">Rp. 20.000</p>
+                    <p id="subtotalAmount" class="text-textColor text-lg font-bold w-auto">Rp. 20.000</p>
                 </div>
                 <div class="flex justify-between mt-3 w-full">
                     <button

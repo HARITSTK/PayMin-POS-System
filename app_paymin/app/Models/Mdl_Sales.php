@@ -16,4 +16,14 @@ class Mdl_Sales extends Model
     {
         return $this->belongsTo(Mdl_Admin::class, 'user_id');
     }
+
+    public function saleItems(): HasMany
+    {
+        return $this->hasMany(SaleItem::class, 'sale_id', 'id'); //
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'sale_id', 'id'); //
+    }
 }
