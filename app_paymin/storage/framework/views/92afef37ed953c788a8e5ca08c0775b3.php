@@ -237,9 +237,21 @@
                                     <button class="bg-primary text-white py-2 px-6 cursor-pointer rounded-full">
                                         Admin
                                     </button>
-                                    <?php else: ?>
+                                    <?php elseif($md->role == 'cassier'): ?>
                                     <button class="bg-tertiary text-white py-2 px-6 cursor-pointer rounded-full">
-                                        Karyawan
+                                        Cassier
+                                    </button>
+                                    <?php elseif($md->role == 'kitchen'): ?>
+                                    <button class="bg-tertiary text-white py-2 px-6 cursor-pointer rounded-full">
+                                        Kitchen
+                                    </button>
+                                    <?php elseif($md->role == 'waiters'): ?>
+                                    <button class="bg-tertiary text-white py-2 px-6 cursor-pointer rounded-full">
+                                        Waiters
+                                    </button>
+                                    <?php elseif($md->role == 'storage'): ?>
+                                    <button class="bg-tertiary text-white py-2 px-6 cursor-pointer rounded-full">
+                                        Storage
                                     </button>
                                     <?php endif; ?>
                                 </td>
@@ -281,11 +293,20 @@
                                             <select name="role"
                                                 class="mt-1 p-1 block w-[23vw] border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary">
                                                 <option value="" hidden><?php echo e($md->role); ?></option>
-                                                <option value="admin" <?php echo e($md->role == 'admin' ? 'selected' : ''); ?>>Admin
+                                                <option value="admin" <?php echo e($md->role == 'admin' ? 'selected' : ''); ?>>
+                                                    admin
                                                 </option>
-                                                <option value="karyawan"
-                                                    <?php echo e($md->role == 'karyawan' ? 'selected' : ''); ?>>
-                                                    karyawan
+                                                <option value="cassier" <?php echo e($md->role == 'cassier' ? 'selected' : ''); ?>>
+                                                    cassier
+                                                </option>
+                                                <option value="kitchen" <?php echo e($md->role == 'kitchen' ? 'selected' : ''); ?>>
+                                                    kitchen
+                                                </option>
+                                                <option value="storage" <?php echo e($md->role == 'storage' ? 'selected' : ''); ?>>
+                                                    storage
+                                                </option>
+                                                <option value="waiters" <?php echo e($md->role == 'waiters' ? 'selected' : ''); ?>>
+                                                    waiters
                                                 </option>
                                             </select>
 
@@ -392,7 +413,7 @@
                             <option hidden></option>
                             <option value="admin">admin</option>
                             <option value="cassier">Cassier</option>
-                            <option value="kithcen">Kitchen</option>
+                            <option value="kitchen">Kitchen</option>
                             <option value="storage">Storage</option>
                             <option value="waiters">Waiters</option>
                         </select>
@@ -482,9 +503,14 @@
 
                     <!-- Name and Role -->
                     <h2 class="text-lg font-medium text-gray-800 mb-1" id="modalViewName">Nama</h2>
-                    <div id="modalViewRole" class="">
-                        Role
+                    <!-- <div class="relative inline-block"> -->
+                    <!-- <span class="relative z-10 text-sm font-semibold text-white">Anggota</span>
+                        <span class="absolute inset-0 bg-gray-500 rounded-full z-0 px-2 py-[2px]"></span> -->
+                    <!-- </div> -->
+                    <div id="modalViewRole" class="bg-gray-500 text-white text-xs px-4 py-1 rounded-full mb-6">
+                        Anggota
                     </div>
+
 
                     <!-- Profile Details -->
                     <div class="w-full space-y-3 mb-6">

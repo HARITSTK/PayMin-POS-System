@@ -6,6 +6,7 @@ use App\Models\Mdl_Auth;
 use App\Models\Mdl_Admin;
 use App\Models\Mdl_Sales;
 use App\Models\Mdl_Customer;
+use App\Models\Mdl_Product;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class Cassier extends BaseController
         return view('cassierpage/order', compact('product'));
     }
 
- public function checkMembership(Request $request)
+    public function checkMembership(Request $request)
     {
         $customer = Mdl_Customer::where('name', $request->name)
                                 ->where('phone', $request->phone)
@@ -90,83 +91,107 @@ class Cassier extends BaseController
     public function processPayment(Request $request)
     {
         $request->validate([
-            'orderNumber' => 'required|string',
-            'total' => 'required|numeric|min:0',
-            'paymentMethod' => 'required|string',
-            'customerName' => 'nullable|string|max:255',
-            'customerPhone' => 'nullable|string|max:20',
-            'tableNumber' => 'nullable|integer',
-            'items' => 'required|array',
-            'items.*.name' => 'required|string',
-            'items.*.price' => 'required|numeric|min:0',
-            'items.*.quantity' => 'required|integer|min:1',
-            // 'items.*.note' => 'nullable|string', // if you want to save notes
+            // ... (existing validations)
+            'cash_received' => 'nullable|numeric|min:0', // New: for cash payments
+            'change_amount' => 'nullable|numeric', // New: for cash payments
         ]);
 
         try {
             DB::beginTransaction();
 
-            $order = Mdl_Order::create([
-                'order_number' => $request->orderNumber,
-                'customer_name' => $request->customerName,
-                'customer_phone' => $request->customerPhone,
-                'table_number' => $request->tableNumber,
-                'total_amount' => $request->total,
-                'payment_method' => $request->paymentMethod, // Save the selected method
-                'status' => 'completed', // Or 'pending', depending on your flow
+            $customer = null;
+            $customerId = null;
+            if ($request->customerPhone) {
+                $customer = Customer::firstOrCreate(
+                    ['phone' => $request->customerPhone],
+                    ['name' => $request->customerName ?? 'Guest', 'address' => null]
+                );
+                $customerId = $customer->id;
+            }
+
+            $sale = Sale::create([
+                'user_id' => auth()->id(),
+                'customer_id' => $customerId,
+                'total' => $request->total,
+                'change_amount' => $request->change_amount ?? 0.00, // Use the value from frontend
+                'sale_date' => Carbon::now(),
+                'type' => $request->sale_type,
+                'quantity' => array_sum(array_column($request->items, 'quantity')),
+                'tax_amount' => $request->tax_amount,
+                'discount_amount' => $request->discount_amount,
             ]);
 
             foreach ($request->items as $itemData) {
-                Mdl_OrderItem::create([
-                    'order_id' => $order->id,
-                    'item_name' => $itemData['name'],
-                    'price' => $itemData['price'],
+                SaleItem::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $itemData['product_id'],
                     'quantity' => $itemData['quantity'],
-                    // 'note' => $itemData['note'] ?? null, // if you send notes
+                    'price' => $itemData['price'],
+                    'subtotal' => $itemData['price'] * $itemData['quantity'],
                 ]);
-
-                // TODO: You might want to update inventory/stock here
-                //Mdl_Product::where('name', $itemData['name'])->decrement('stock', $itemData['quantity']);
+                // TODO: Product stock decrement
+                Product::where('id', $itemData['product_id'])->decrement('stock', $itemData['quantity']);
             }
 
-            if ($request->customerPhone) {
-                $customer = Mdl_Customer::where('phone', $request->customerPhone)->first();
-                if ($customer && $customer->member) {
-                    $pointsToAdd = floor($request->total / 10000); // 1 point for every 10,000 IDR
-                    $customer->member->increment('points', $pointsToAdd); // Add points to existing
-                }
-            }
+            $paymentMethodInDB = $this->mapPaymentMethodForDB($request->paymentMethod);
+            Payment::create([
+                'sale_id' => $sale->id,
+                'payment_method' => $paymentMethodInDB,
+                'amount' => $request->total, // Amount recorded in payments table is the total bill
+            ]);
 
-
-            switch ($request->paymentMethod) {
-                case 'ShopeePay':
-                case 'Qris':
-                case 'Dana':
-                    break;
-                case 'Cash':
-                    break;
-                case 'Muamalat':
-                case 'BRI':
-                case 'BCA':
-                    break;
-                default:
-                    break;
+            if ($customer && $customer->member && $request->customer_membership && $request->customer_membership !== 'not_found') {
+                $pointsToAdd = floor($request->total / 10000);
+                $customer->member->increment('points', $pointsToAdd);
             }
 
             DB::commit();
 
-            return response()->json(['message' => 'Pembayaran berhasil!', 'order_id' => $order->id]);
+            return response()->json([
+                'message' => 'Pembayaran berhasil!',
+                'order_number' => $sale->order_number,
+                'total_paid' => $sale->total,
+                'payment_method' => $request->paymentMethod,
+                'subtotal_before_discount' => $request->subtotal_before_discount,
+                'tax_amount' => $request->tax_amount,
+                'discount_amount' => $request->discount_amount,
+                'customer_membership' => $request->customer_membership,
+                'items' => $request->items,
+                'cash_received' => $request->cash_received, // Return these for display
+                'change_amount' => $request->change_amount, // Return these for display
+            ], 200);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack(); // Rollback on validation error
+            DB::rollBack();
             return response()->json(['message' => 'Data tidak valid.', 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            DB::rollBack(); // Rollback on any other error
-            \Log::error('Payment processing error: ' . $e->getMessage(), ['exception' => $e]);
+            DB::rollBack();
+            \Log::error('Payment processing error: ' . $e->getMessage(), ['exception' => $e->getTraceAsString(), 'request' => $request->all()]);
             return response()->json(['message' => 'Terjadi kesalahan saat memproses pembayaran. Mohon coba lagi.', 'error' => $e->getMessage()], 500);
         }
     }
 
+    private function mapPaymentMethodForDB(string $frontendMethod): string
+    {
+        // Based on your payment_method ENUM ('cash','card','ewallet')
+        switch ($frontendMethod) {
+            case 'Cash': return 'cash';
+            case 'ShopeePay':
+            case 'Qris':
+            case 'Dana': return 'ewallet';
+            case 'Muamalat':
+            case 'BRI':
+            case 'BCA': return 'card';
+            default: return 'ewallet'; // Default to ewallet or handle error
+        }
+    }
+
+
+    private function getProductIdFromName(string $productName): ?int
+    {
+        $product = Product::where('name', $productName)->first();
+        return $product ? $product->id : null;
+    }
 
 
 

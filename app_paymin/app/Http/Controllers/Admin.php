@@ -160,8 +160,8 @@ class Admin extends BaseController
     public function report() {
         $user = Mdl_Admin::all();
         // $user = Mdl_Sales::with('users')->get();
-        $sales = Mdl_Sales::all();
-        $sales = Mdl_Sales::with('user')->get();
+        // $sales = Mdl_Sales::all();
+        $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
 
         // $today = Carbon::today();
 
@@ -208,6 +208,19 @@ class Admin extends BaseController
         };
 
         return Response::stream($callback, 200, $headers);
+    }
+
+    public function delete(Request $request)
+    {
+        $sale = Mdl_Sales::find($request->id);
+
+        if (!$sale) {
+            return back()->with('message', 'Transaction not found.');
+        }
+
+        $sale->delete(); 
+
+        return back()->with('message', 'Transaction has been voided.');
     }
 
 
@@ -270,7 +283,7 @@ class Admin extends BaseController
         $validatedData = $request->validate([
             'name' => 'nullable|max:255',
             'username' => 'nullable|max:255', 
-            'role' => 'nullable|in:admin,karyawan',
+            'role' => 'nullable|in:admin,cassier,kitchen,storage,waiters',
             'password' => 'nullable|min:8',
         ]);
 
@@ -406,14 +419,14 @@ class Admin extends BaseController
 
     // MEMBERSHIP
     public function member() {
-        $members = Mdl_Admin::all();
+        $members = Mdl_Member::with('customer')->get();
         return view('adminpage/member', compact('members'));
     }
 
 
     public function exportCSVMember() {
         $fileName = 'Membership_Data_' . now()->format('Ymd_His') . '.csv';
-        $users = Mdl_Member::all();
+        $users = Mdl_Member::with('customer')->get();
 
         $headers = [
             "Content-type"        => "text/csv",
@@ -432,8 +445,7 @@ class Admin extends BaseController
             foreach ($users as $user) {
                 fputcsv($file, [
                     $user->customer_id,
-                    $user->membership_type,
-                    $user->membership_date->format('Y-m-d H:i:s'),
+                    $user->type,
                     $user->amount,
                     $user->points,
                     $user->created_at->format('Y-m-d H:i:s'),
@@ -445,5 +457,18 @@ class Admin extends BaseController
         };
 
         return Response::stream($callback, 200, $headers);
+    }
+    
+    public function SysDeleteMember(Request $request)
+    {
+        $member = Mdl_Member::find($request->id);
+
+        if (!$member) {
+            return redirect()->back()->with('error', 'Member not found.');
+        }
+
+        $member->delete();
+
+        return redirect()->back()->with('success', 'Member deleted successfully.');
     }
 }

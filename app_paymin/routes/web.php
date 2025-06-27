@@ -29,11 +29,13 @@ Route::middleware([AuthMiddleware::class])->group(function () {
 
     Route::get('/HomeAdmin', [Admin::class, 'home'])->name('Home');
     Route::get('/ReportAdmin', [Admin::class, 'report'])->name('Report');
+    Route::post('/transaction/delete', [Admin::class, 'delete'])->name('transaction.delete');
     Route::get('/ItemAdmin', [Admin::class, 'item'])->name('Item');
     Route::put('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
     Route::post('/SysEditItem', [Admin::class, 'SysEditItem'])->name('SysEditItem');
     Route::delete('/delete-item', [Admin::class, 'SysDeleteItem'])->name('SysDeleteItem');
     Route::get('/MemberAdmin', [Admin::class, 'member'])->name('Member');
+    Route::post('/SysDeleteMember', [Admin::class, 'SysDeleteMember'])->name('SysDeleteMember');
     Route::get('/MasterAdmin', [Admin::class, 'master'])->name('Master');
     Route::post('/SysAddMasterAdmin', [Admin::class, 'SysAddMaster'])->name('SysAddMaster');
     Route::put('/SysEditMasterAdmin/{id}', [Admin::class, 'SysEditMaster'])->name('SysEditMaster');

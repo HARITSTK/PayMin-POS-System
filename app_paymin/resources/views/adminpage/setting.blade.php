@@ -17,6 +17,32 @@
 </head>
 
 <body>
+    <!-- Alert Notification -->
+    @if (Session::has('message'))
+    <div id="auto-dismiss-alert"
+        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+    setTimeout(() => {
+        const alert = document.getElementById('auto-dismiss-alert');
+        if (alert) {
+            alert.remove();
+        }
+    }, 5000);
+    </script>
+    @endif
     <main class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins">
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
@@ -108,32 +134,7 @@
                 </div>
             </div>
         </nav>
-        <!-- Alert Notification -->
-        @if (Session::has('message'))
-        <div id="auto-dismiss-alert"
-            class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
-            role="alert">
-            <div class="flex items-center gap-x-2">
-                <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
-                <div class="flex-1">
-                    <strong>{{ Session::get('message') }}</strong>
-                </div>
-                <button type="button" class="text-white hover:text-gray-300 ml-2"
-                    onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
 
-        <script>
-        setTimeout(() => {
-            const alert = document.getElementById('auto-dismiss-alert');
-            if (alert) {
-                alert.remove();
-            }
-        }, 5000);
-        </script>
-        @endif
 
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">

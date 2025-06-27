@@ -425,7 +425,7 @@
                     <div class="text-sm my-2">
                         <p>Name : <strong>Daveton Aljabar</strong></p>
                         <p>No.Tlp : <strong>08236538337</strong></p>
-                        <p>Point : 2</p>
+                        <p>Point : >2</p>
                     </div>
                     <div class="text-xs text-right">
                         <p class="mb-4 text-gray-900 font-light">Membership</p>
@@ -638,8 +638,8 @@
                         </p>
 
                         <div class="flex justify-between text-sm mb-4">
-                            <span>#Orders0021</span>
-                            <span>23/05/2025 | 14:30</span>
+                            <span id="invoiceOrderNumber">#Orders0021</span>
+                            <span id="invoiceDateTime">23/05/2025 | 14:30</span>
                         </div>
 
                         <div class="overflow-y-auto h-[10em] mb-4">
@@ -652,7 +652,7 @@
                                         <th class="text-left">SUB TOTAL</th>
                                     </tr>
                                 </thead>
-                                <tbody class="">
+                                <tbody class="" id="finishOrderItemsTableBody">
                                     <tr class="border-b border-tertiary h-[3rem]">
                                         <td>Steak Sapi bakar</td>
                                         <td>2</td>
@@ -691,7 +691,7 @@
                             <div class="flex justify-between">
                                 <div>
                                     <h1 class="font-light text-tertiary">Payment method:</h1>
-                                    <div class="flex">
+                                    <div class="flex" id="finishPaymentMethodDisplay">
                                         <img src="assets/src/assets/paymentIcons/cash.png" alt="Cash"
                                             class="w-5 h-5 mr-2" />
                                         Cash
@@ -702,19 +702,19 @@
                                     <tbody>
                                         <tr>
                                             <td class="py-1 text-tertiary">SUBTOTAL</td>
-                                            <td class="py-1 text-right">Rp70.000</td>
+                                            <td class="py-1 text-right" id="finishSubtotal">Rp70.000</td>
                                         </tr>
                                         <tr>
                                             <td class="py-1 text-tertiary">ORDER DISCOUNT</td>
-                                            <td class="py-1 text-right">Rp0</td>
+                                            <td class="py-1 text-right" id="finishOrderDiscount">Rp0</td>
                                         </tr>
                                         <tr>
                                             <td class="py-1 text-tertiary">TAX</td>
-                                            <td class="py-1 text-right">Rp1.500</td>
+                                            <td class="py-1 text-right" id="finishTax">Rp1.500</td>
                                         </tr>
                                         <tr class="font-bold">
                                             <td class="py-1">BILL AMOUNT</td>
-                                            <td class="py-1 text-right text-primary">Rp71.500</td>
+                                            <td class="py-1 text-right text-primary" id="finishBillAmount">Rp71.500</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -744,7 +744,7 @@
                 <!-- Header -->
                 <div class="flex justify-between items-center">
                     <div class="text-sm text-gray-500">
-                        Table No.<br /><span class="text-2xl font-bold text-black">234</span>
+                        Table No.<br /><span class="text-2xl font-bold text-black" id="invoiceTableNumber">234</span>
                     </div>
                     <div class="text-center">
                         <h2 class="text-xl font-semibold">Order confirmation</h2>
@@ -755,8 +755,8 @@
 
                 <!-- Order Info -->
                 <div class="flex justify-between text-sm text-gray-500">
-                    <span>#Orders0021</span>
-                    <span>23/05/2025 | 14:30</span>
+                    <span id="invoiceOrderNumber">#Orders0021</span>
+                    <span id="invoiceDateTime">23/05/2025 | 14:30</span>
                 </div>
 
                 <!-- Table -->
@@ -766,8 +766,8 @@
                         <div>QTY</div>
                         <div class="text-right">SUBTOTAL</div>
                     </div>
-                    <div class="divide-y text-sm">
-                        <div class="grid grid-cols-4 p-2">
+                    <div class="divide-y text-sm" id="invoiceOrderItemsList">
+                        <!-- <div class="grid grid-cols-4 p-2">
                             <div class="col-span-2">Steak sapi bakar</div>
                             <div>1</div>
                             <div class="text-right">Rp20.500</div>
@@ -781,7 +781,7 @@
                             <div class="col-span-2">Energen Es</div>
                             <div>1</div>
                             <div class="text-right">Rp20.500</div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -789,10 +789,10 @@
                     <!-- Notes -->
                     <div class="flex-1">
                         <h3 class="text-sm font-semibold mb-1">NOTES</h3>
-                        <p class="text-xs text-gray-500">
-                            Lorem Ipsum has been the industry’s standard dummy text ever
+                        <p class="text-xs text-gray-500" id="invoiceNotes">
+                            <!-- Lorem Ipsum has been the industry’s standard dummy text ever
                             since the 1500s, when an unknown printer took a galley of type
-                            and scrambled it to make a type specimen book.
+                            and scrambled it to make a type specimen book. -->
                         </p>
                     </div>
 
@@ -800,36 +800,36 @@
                     <div class="text-sm space-y-1 flex-1">
                         <div class="flex justify-between">
                             <span>SUBTOTAL</span>
-                            <span>Rp70.000</span>
+                            <span id="invoiceSubtotalBeforeDiscount"></span>
                         </div>
                         <div class="flex justify-between">
                             <span>MEMBERSHIP DISCOUNT</span>
-                            <span class="text-textColor">-2.5%</span>
+                            <span class="text-textColor" id="invoiceMembershipDiscountPercentage"></span>
                         </div>
                         <div class="flex justify-between">
                             <span>TAX</span>
-                            <span>Rp2.000</span>
+                            <span id="invoiceTaxAmount"></span>
                         </div>
                         <div class="flex justify-between font-bold text-lg text-primary">
                             <span>BILL AMOUNT</span>
-                            <span>Rp71.500</span>
+                            <span id="invoiceBillAmount"></span>
                         </div>
                         <div class="flex justify-between">
                             <span>CASH</span>
-                            <span>Rp100.000</span>
+                            <span id="invoiceCashReceived"></span>
                         </div>
                         <div class="flex justify-between">
                             <span>RETURN</span>
-                            <span>Rp28.500</span>
+                            <span id="invoiceChangeAmount"></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Payment Method -->
-                <div class="flex items-center space-x-2 text-sm text-gray-600">
-                    <img src="https://img.icons8.com/color/48/000000/cash-in-hand.png" class="w-6 h-6"
+                <div class="flex items-center space-x-2 text-sm text-gray-600" id="invoicePaymentMethodDisplay">
+                    <!-- <img src="https://img.icons8.com/color/48/000000/cash-in-hand.png" class="w-6 h-6"
                         alt="Cash Icon" />
-                    <span>Cash</span>
+                    <span></span> -->
                 </div>
 
                 <!-- Buttons -->

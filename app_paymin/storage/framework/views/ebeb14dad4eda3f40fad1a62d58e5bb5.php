@@ -308,8 +308,7 @@
                 <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
                     <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
 
-                    <img src="/src/assets/coffee.png" alt="Coffee"
-                        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
+                    <img src="/src/assets/coffee.png" class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
 
                     <h3 id="deleteItemName" class="text-lg font-semibold text-gray-800">produk</h3>
                     <p id="deleteItemInfo" class="text-sm text-gray-600">Harga | Stock</p>
