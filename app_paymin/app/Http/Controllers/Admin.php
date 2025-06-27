@@ -47,9 +47,10 @@ class Admin extends BaseController
             ->where('stock', '<=', 5)
             ->get();
 
-        $ordersToday = DB::table('sales')
+        $ordersToday = Mdl_Sales::with(['saleItems.product'])
             ->whereDate('sale_date', Carbon::today())
             ->get();
+
         
         return view('adminpage/home',  compact('user', 'admissionFee', 'TotalItems', 'TotalCustomers', 'TotalCustomers', 'products', 'lowStocks', 'ordersToday', 'salesGrowth'));
     }
@@ -176,7 +177,7 @@ class Admin extends BaseController
     public function exportCSVReport()
     {
         $fileName = 'Report_Data_' . now()->format('Ymd_His') . '.csv';
-        $users = Mdl_Sales::all();
+        $users = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
 
         $headers = [
             "Content-type"        => "text/csv",

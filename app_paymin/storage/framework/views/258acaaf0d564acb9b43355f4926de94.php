@@ -150,7 +150,7 @@
 
             <div class="flex gap-x-4 items-center">
                 <div class="relative inline-block w-48 h-full">
-                    <input type="date"
+                    <input type="date" id="dateFilter" onchange="filterByDate()"
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
                     <!-- <select
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
@@ -161,9 +161,9 @@
                     </select> -->
 
                     <!-- Dropdown Arrow Icon -->
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
+                    <!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
                         <span class="material-symbols-outlined"> arrow_drop_down </span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <a id="sortingDropdown" href="<?php echo e(route('exportCSVReport')); ?>"
@@ -179,7 +179,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Income</p>
-                        <p class="text-3xl font-bold text-gray-800">Rp. <?php echo e(number_format($TotalIncome, 0, ',', '.')); ?>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalIncome">Rp.
+                            <?php echo e(number_format($TotalIncome, 0, ',', '.')); ?>
 
                         </p>
                     </div>
@@ -190,7 +191,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Items sell</p>
-                        <p class="text-3xl font-bold text-gray-800"><?php echo e(number_format($TotalItemSell, 0, ',', '.')); ?></p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalItemSell">
+                            <?php echo e(number_format($TotalItemSell, 0, ',', '.')); ?></p>
                     </div>
                 </div>
 
@@ -199,7 +201,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Costumers</p>
-                        <p class="text-3xl font-bold text-gray-800"><?php echo e(number_format($TotalCustomers, 0, ',', '.')); ?>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalCustomers">
+                            <?php echo e(number_format($TotalCustomers, 0, ',', '.')); ?>
 
                         </p>
                     </div>
@@ -212,7 +215,7 @@
                         class="appearance-none w-full bg-white border border-gray-300 text-gray-900 text-base px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                         <option>All</option>
                         <?php $__currentLoopData = $user; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option><?php echo e($s->name); ?></option>
+                        <option value="<?php echo e(strtolower($s->name)); ?>"><?php echo e($s->name); ?></option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
 
@@ -223,14 +226,11 @@
                 </div>
 
                 <div class="relative inline-block w-48">
-                    <select
+                    <select id="shiftFilter" onchange="filterByShift()"
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
-                        <option>Pilih shift</option>
-                        <option>
-                            Pagi <br />
-                            09:00-16:00
-                        </option>
-                        <option>Malam 16:00-22:00</option>
+                        <option value="all">All</option>
+                        <option value="pagi">Pagi (09:00-16:00)</option>
+                        <option value="malam">Malam (16:00-22:00)</option>
                     </select>
 
                     <!-- Dropdown Arrow Icon -->
@@ -269,7 +269,11 @@
                         <tbody class="" id="tableBody">
                             <?php $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="border-b border-tertiary h-[3rem] text-center" data-date="2025-05-23"
-                                data-user="<?php echo e(optional($sl->user)->username); ?>">
+                                data-date="<?php echo e(\Carbon\Carbon::parse($sl->sale_date)->format('Y-m-d')); ?>"
+                                data-shift="<?php echo e(strtolower($sl->user->shift ?? '-')); ?>" data-total="<?php echo e($sl->total); ?>"
+                                data-qty="<?php echo e($sl->quantity); ?>"
+                                data-customer="<?php echo e(strtolower(optional($sl->customer)->name)); ?>"
+                                data-user="<?php echo e(strtolower(optional($sl->user)->name)); ?>">
                                 <td class="p-3">
                                     <div class="flex justify-center">
                                         <button
@@ -299,8 +303,8 @@
                                 <td class="p-4">#<?php echo e($sl->id); ?></td>
                                 <td class="p-4"><?php echo e(optional($sl->user)->username); ?></td>
                                 <td class="p-4"><?php echo e($sl->user->shift ?? '-'); ?></td>
-                                <td class="p-4"><?php echo e($sl->sale_date); ?></td>
-                                <td class="p-4 font-bold"><?php echo e($sl->quantity); ?></td>
+                                <td class="p-4"><?php echo e(\Carbon\Carbon::parse($sl->sale_date)->format('d/m/Y')); ?></td>
+                                <td class="p-4"><?php echo e($sl->quantity); ?></td>
                                 <td class="p-4">Rp. <?php echo e($sl->total); ?></td>
                                 <td class="p-4"><?php echo e($sl->payments->first()->payment_method ?? '-'); ?></td>
                                 <td class="p-4">
@@ -310,7 +314,7 @@
 
                                     </button>
                                     <?php else: ?>
-                                    <button class="p-3 bg-secondary rounded-lg text-white cursor-pointer w-[80%]">
+                                    <button class="p-3 bg-tertiary rounded-lg text-white cursor-pointer w-[80%]">
                                         <?php echo e($sl->type); ?>
 
                                     </button>
@@ -329,7 +333,7 @@
                         </div>
                         <?php endif; ?>
 
-                        <div id="noData" style="display: none;"
+                        <div id="noDataRow" style="display: none;"
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
                             <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                             <p class="my-12 text-lg text-center">We can’t find any item matching your search</p>

@@ -235,8 +235,8 @@
                                     <img src="assets/src/assets/coffee.png" alt="Coffee" class="object-cover w-full" />
                                 </div>
                                 <div class="flex flex-col items-center w-full my-auto">
-                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">Coffe Latte</span>
-                                    <span class="font-bold text-[13pt] text-[#353535]">Price Rp. 12.000</span>
+                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium"><?php echo e($pl->name); ?></span>
+                                    <span class="font-bold text-[13pt] text-[#353535]">Price Rp. <?php echo e($pl->price); ?></span>
                                 </div>
                             </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -305,14 +305,18 @@
                     </div>
                     <div class="grid grid-cols-2 grid-rows-2 my-auto gap-2">
                         <?php $__currentLoopData = $ordersToday; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ot): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $ot->saleItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $it): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
                         <div
                             class="bg-white p-1 w-full rounded-lg shadow-xl flex items-center border-gray-200 border-2 box-border">
                             <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-18 h-18" />
                             <div class="flex flex-col mr-10">
-                                <span class="text-gray-500 text-base"><?php echo e($ot->name); ?></span>
-                                <span class="font-bold text-[#353535] text-lg"><?php echo e($ot->subtotal); ?></span>
+                                <span class="text-gray-500 text-base"><?php echo e($it->product->name ?? '-'); ?></span>
+                                <span
+                                    class="font-bold text-[#353535] text-lg"><?php echo e(number_format($ot->quantity ?? 0, 0, ',', '.')); ?></span>
                             </div>
                         </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>

@@ -150,7 +150,7 @@
 
             <div class="flex gap-x-4 items-center">
                 <div class="relative inline-block w-48 h-full">
-                    <input type="date"
+                    <input type="date" id="dateFilter" onchange="filterByDate()"
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
                     <!-- <select
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
@@ -161,9 +161,9 @@
                     </select> -->
 
                     <!-- Dropdown Arrow Icon -->
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
+                    <!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
                         <span class="material-symbols-outlined"> arrow_drop_down </span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <a id="sortingDropdown" href="{{ route('exportCSVReport') }}"
@@ -179,7 +179,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Income</p>
-                        <p class="text-3xl font-bold text-gray-800">Rp. {{ number_format($TotalIncome, 0, ',', '.') }}
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalIncome">Rp.
+                            {{ number_format($TotalIncome, 0, ',', '.') }}
                         </p>
                     </div>
                 </div>
@@ -189,7 +190,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Items sell</p>
-                        <p class="text-3xl font-bold text-gray-800">{{ number_format($TotalItemSell, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalItemSell">
+                            {{ number_format($TotalItemSell, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -198,7 +200,8 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Costumers</p>
-                        <p class="text-3xl font-bold text-gray-800">{{ number_format($TotalCustomers, 0, ',', '.') }}
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalCustomers">
+                            {{ number_format($TotalCustomers, 0, ',', '.') }}
                         </p>
                     </div>
                 </div>
@@ -210,7 +213,7 @@
                         class="appearance-none w-full bg-white border border-gray-300 text-gray-900 text-base px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                         <option>All</option>
                         @foreach ($user as $s)
-                        <option>{{ $s->name }}</option>
+                        <option value="{{ strtolower($s->name) }}">{{ $s->name }}</option>
                         @endforeach
                     </select>
 
@@ -221,14 +224,11 @@
                 </div>
 
                 <div class="relative inline-block w-48">
-                    <select
+                    <select id="shiftFilter" onchange="filterByShift()"
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
-                        <option>Pilih shift</option>
-                        <option>
-                            Pagi <br />
-                            09:00-16:00
-                        </option>
-                        <option>Malam 16:00-22:00</option>
+                        <option value="all">All</option>
+                        <option value="pagi">Pagi (09:00-16:00)</option>
+                        <option value="malam">Malam (16:00-22:00)</option>
                     </select>
 
                     <!-- Dropdown Arrow Icon -->
@@ -267,7 +267,11 @@
                         <tbody class="" id="tableBody">
                             @foreach($sales as $sl)
                             <tr class="border-b border-tertiary h-[3rem] text-center" data-date="2025-05-23"
-                                data-user="{{  optional($sl->user)->username }}">
+                                data-date="{{ \Carbon\Carbon::parse($sl->sale_date)->format('Y-m-d') }}"
+                                data-shift="{{ strtolower($sl->user->shift ?? '-') }}" data-total="{{ $sl->total }}"
+                                data-qty="{{ $sl->quantity }}"
+                                data-customer="{{ strtolower(optional($sl->customer)->name) }}"
+                                data-user="{{ strtolower(optional($sl->user)->name) }}">
                                 <td class="p-3">
                                     <div class="flex justify-center">
                                         <button
@@ -297,8 +301,8 @@
                                 <td class="p-4">#{{ $sl->id }}</td>
                                 <td class="p-4">{{ optional($sl->user)->username }}</td>
                                 <td class="p-4">{{ $sl->user->shift ?? '-' }}</td>
-                                <td class="p-4">{{ $sl->sale_date }}</td>
-                                <td class="p-4 font-bold">{{ $sl->quantity }}</td>
+                                <td class="p-4">{{ \Carbon\Carbon::parse($sl->sale_date)->format('d/m/Y') }}</td>
+                                <td class="p-4">{{ $sl->quantity }}</td>
                                 <td class="p-4">Rp. {{ $sl->total }}</td>
                                 <td class="p-4">{{ $sl->payments->first()->payment_method ?? '-' }}</td>
                                 <td class="p-4">
@@ -307,7 +311,7 @@
                                         {{ $sl->type }}
                                     </button>
                                     @else
-                                    <button class="p-3 bg-secondary rounded-lg text-white cursor-pointer w-[80%]">
+                                    <button class="p-3 bg-tertiary rounded-lg text-white cursor-pointer w-[80%]">
                                         {{ $sl->type }}
                                     </button>
                                     @endif
@@ -325,7 +329,7 @@
                         </div>
                         @endif
 
-                        <div id="noData" style="display: none;"
+                        <div id="noDataRow" style="display: none;"
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
                             <i class="fa fa-search fa-5x" aria-hidden="true"></i>
                             <p class="my-12 text-lg text-center">We can’t find any item matching your search</p>

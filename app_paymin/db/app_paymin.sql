@@ -202,9 +202,11 @@ CREATE TABLE IF NOT EXISTS `payments` (
   KEY `payments_sale_fk` (`sale_id`),
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
   CONSTRAINT `payments_sale_fk` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.payments: ~0 rows (approximately)
+REPLACE INTO `payments` (`id`, `sale_id`, `payment_method`, `amount`, `created_at`) VALUES
+	(2, 4, 'cash', 20000.00, '2025-06-27 10:03:48');
 
 -- Dumping structure for table app_paymin.products
 CREATE TABLE IF NOT EXISTS `products` (
@@ -245,9 +247,11 @@ CREATE TABLE IF NOT EXISTS `sales` (
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.sales: ~0 rows (approximately)
+REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `change_amount`, `sale_date`, `type`, `quantity`) VALUES
+	(4, 234083, 1, 20000.00, 0.00, '2025-06-27 10:02:53', 'take_away', 2);
 
 -- Dumping structure for table app_paymin.sale_items
 CREATE TABLE IF NOT EXISTS `sale_items` (
@@ -262,9 +266,11 @@ CREATE TABLE IF NOT EXISTS `sale_items` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
   CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.sale_items: ~0 rows (approximately)
+REPLACE INTO `sale_items` (`id`, `sale_id`, `product_id`, `quantity`, `price`, `subtotal`) VALUES
+	(2, 4, 12, 2, 10000.00, 20000.00);
 
 -- Dumping structure for table app_paymin.sessions
 CREATE TABLE IF NOT EXISTS `sessions` (
@@ -281,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Dumping data for table app_paymin.sessions: ~0 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('88I6C395lTR0A2cNcRr7iqKOHVG9dxdaSW0vQBIg', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9SZXBvcnRBZG1pbiI7fXM6NjoiX3Rva2VuIjtzOjQwOiJ3RGx2SlNEUVRqN3Rvc3VtUFNicGNHUzR2c3hYT2lhbGJqNXhWRU1ZIjtzOjc6InVzZXJfaWQiO2k6NTE5ODQxO3M6MTQ6InVzZXJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjEwOiJuYW1lX2FkbWluIjtzOjU6ImFkbWluIjtzOjExOiJlbWFpbF9hZG1pbiI7TjtzOjExOiJwaG90b19hZG1pbiI7TjtzOjEwOiJyb2xlX2FkbWluIjtzOjU6ImFkbWluIjtzOjk6ImJpb19hZG1pbiI7czo0OiJ0ZXN0Ijt9', 1750976412);
+	('lzFcZ9LIzRlounWAyVDy12CnuU1Ii6q9vgscIdGT', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IjRKQWpOUXhPa3AwbWJmbnhCU0k4a1diUXpLQlVueGZLQlA0R2VpRnoiO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvSG9tZUFkbWluIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjUxOTg0MTtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMDoibmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMToiZW1haWxfYWRtaW4iO047czoxMToicGhvdG9fYWRtaW4iO047czoxMDoicm9sZV9hZG1pbiI7czo1OiJhZG1pbiI7czo5OiJiaW9fYWRtaW4iO3M6NDoidGVzdCI7fQ==', 1751000482);
 
 -- Dumping structure for table app_paymin.subcategories
 CREATE TABLE IF NOT EXISTS `subcategories` (

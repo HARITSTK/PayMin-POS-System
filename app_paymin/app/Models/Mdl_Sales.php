@@ -33,4 +33,9 @@ class Mdl_Sales extends Model
     {
         return $this->belongsTo(Mdl_Customer::class, 'customer_id', 'id'); //
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Mdl_Product::class, 'product_id', 'id'); //
+    }
 }

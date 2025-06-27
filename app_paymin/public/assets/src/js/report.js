@@ -73,6 +73,131 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function filterByDate() {
+    const selectedDate = document.getElementById("dateFilter").value; // format: YYYY-MM-DD
+    const rows = document.querySelectorAll("#tableBody tr");
+
+    let hasVisibleRow = false;
+
+    rows.forEach((row) => {
+        const rowDate = row.dataset.date; // dari data-date
+        if (selectedDate === "" || rowDate === selectedDate) {
+            row.style.display = "";
+            hasVisibleRow = true;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    // Optional: Tampilkan pesan jika tidak ada hasil
+    const noDataDiv = document.getElementById("noDataRow");
+    if (noDataDiv) {
+        noDataDiv.style.display = hasVisibleRow ? "none" : "flex";
+    }
+}
+
+function filterByUser() {
+    const selectedUser = document
+        .getElementById("userFilter")
+        .value.toLowerCase();
+    const rows = document.querySelectorAll("#tableBody tr");
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+        const user = (row.dataset.user || "").toLowerCase();
+
+        if (selectedUser === "all" || user === selectedUser) {
+            row.style.display = "";
+            visibleCount++;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    // Tampilkan / sembunyikan row "No Data"
+    const noDataRow = document.getElementById("noDataRow");
+    if (noDataRow) {
+        noDataRow.style.display = visibleCount === 0 ? "table-row" : "none";
+    }
+
+    // Hitung ulang isi card berdasarkan baris yang terlihat
+    updateCards();
+}
+
+function updateCards() {
+    const rows = document.querySelectorAll("#tableBody tr");
+    let income = 0;
+    let items = 0;
+    const customers = new Set();
+
+    rows.forEach((row) => {
+        if (row.style.display !== "none" && !row.id.includes("noDataRow")) {
+            const total = parseInt(row.dataset.total || "0");
+            const qty = parseInt(row.dataset.qty || "0");
+            const customer = row.dataset.customer || null;
+
+            income += total;
+            items += qty;
+            if (customer) customers.add(customer);
+        }
+    });
+
+    // Format dan tampilkan ke card
+    document.getElementById("cardTotalIncome").textContent =
+        "Rp. " + income.toLocaleString("id-ID");
+    document.getElementById("cardTotalItemSell").textContent =
+        items.toLocaleString("id-ID");
+    document.getElementById("cardTotalCustomers").textContent =
+        customers.size.toLocaleString("id-ID");
+}
+
+function filterByShift() {
+    const selectedShift = document
+        .getElementById("shiftFilter")
+        .value.toLowerCase();
+    const rows = document.querySelectorAll("#tableBody tr");
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+        const shift = (row.dataset.shift || "").toLowerCase();
+
+        if (selectedShift === "all" || shift === selectedShift) {
+            row.style.display = "";
+            visibleCount++;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    // Optional: Tampilkan pesan jika tidak ada hasil
+    const noDataRow = document.getElementById("noDataRow");
+    if (noDataRow) {
+        noDataRow.style.display = visibleCount === 0 ? "table-row" : "none";
+    }
+}
+
+function searchTable() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const rows = document.querySelectorAll("#tableBody tr");
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+        const rowText = row.textContent.toLowerCase();
+
+        if (rowText.includes(input)) {
+            row.style.display = "";
+            visibleCount++;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    const noDataRow = document.getElementById("noDataRow");
+    if (noDataRow) {
+        noDataRow.style.display = visibleCount === 0 ? "table-row" : "none";
+    }
+}
+
 function showTransactionModal(button) {
     const id = button.dataset.id;
     const user = button.dataset.user;
