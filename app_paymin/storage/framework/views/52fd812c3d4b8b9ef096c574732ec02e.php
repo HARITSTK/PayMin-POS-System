@@ -179,6 +179,24 @@
                         </div>
                     </div>
                 </div>
+
+                <?php if($lowStocks->isEmpty()): ?>
+                <!-- Items empty -->
+                <div
+                    class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    <h1 class="text-white mb-5 mt-2 text-2xl font-medium">Low Stock</h1>
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                            cancel
+                        </span>
+                        <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                            <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                            <span class="font-light text-[11pt]">New orders will be displayed here once they
+                                arrive.</span>
+                        </div>
+                    </div>
+                </div>
+                <?php else: ?>
                 <!-- Low Stocks -->
                 <div
                     class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
@@ -199,17 +217,43 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
-                <!-- Items empty -->
-                <!-- <div class="flex flex-col items-center justify-center h-full">
-                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
-                        cancel
-                    </span>
-                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
-                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
-                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
-                    </div>
-                </div> -->
+                <?php endif; ?>
+
                 <!-- Product List -->
+                <?php if($products->isEmpty()): ?>
+                <!-- Items empty -->
+                <div
+                    class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    <div class="flex items-center justify-between mb-1 w-auto p-4">
+                        <h1 class="font-medium text-white text-2xl">Product List</h1>
+                        <div class="flex items-center justify-between gap-4">
+                            <span
+                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 flex items-center justify-center shadow-4xl cursor-pointer">
+                                chevron_left
+                            </span>
+
+                            <span
+                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 shadow-4xl cursor-pointer">
+                                chevron_right
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="h-full w-full rounded-xl">
+                        <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
+                            <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
+                                cancel
+                            </span>
+                            <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
+                                <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
+                                <span class="font-light text-[11pt]">Start by adding your first product to manage
+                                    your
+                                    inventory.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php else: ?>
                 <div
                     class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
                     <div class="flex items-center justify-between mb-1 w-auto p-4">
@@ -242,23 +286,22 @@
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                         </div>
-                        <!-- Items empty -->
-                        <!-- <div class="flex flex-col items-center justify-center h-full">
-                            <?php if($products->isEmpty()): ?>
-                            <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
-                                cancel
-                            </span>
-                            <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
-                                <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
-                                <span class="font-light text-[11pt]">Start by adding your first product to manage
-                                    your
-                                    inventory.</span>
-                            </div>
-                            <?php endif; ?>
-                        </div> -->
                     </div>
                 </div>
+                <?php endif; ?>
                 <!-- Sales Growth -->
+                <?php if($salesGrowth->isEmpty()): ?>
+                <!-- Items empty -->
+                <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                        <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
+                        <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
+                    </div>
+                </div>
+                <?php else: ?>
                 <div
                     class="row-span-2 col-start-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-6 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
                     <div class="flex items-center justify-between mb-5 w-auto">
@@ -283,24 +326,31 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
+                <?php endif; ?>
+
+
+                <!-- Orders Today -->
+                <?php if($ordersToday->isEmpty()): ?>
                 <!-- Items empty -->
-                <!-- <div class="flex flex-col items-center justify-center h-full">
-                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
                         cancel
                     </span>
-                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
-                        <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
-                        <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
+                    <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
+                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
                     </div>
-                </div> -->
-                <!-- Orders Today -->
+                </div>
+                <?php else: ?>
                 <div
                     class="col-span-2 row-span-2 col-start-3 row-start-4 bg-gradient-to-b from-white from-40% to-gray-300 to-100% border-2 border-white p-3 flex flex-col rounded-xl shadow-4xl">
                     <div class="flex items-center justify-between mb-2 w-auto px-3 cursor-pointer">
                         <h1 class="font-bold text-textColor text-2xl">Orders Today</h1>
                         <div class="flex items-center justify-between gap-2">
-                            <h2>View All</h2>
-                            <span class="material-symbols-outlined"> arrow_forward </span>
+                            <a href="<?php echo e(route('Report')); ?>" class="flex items-center gap-2">
+                                <h2>View All</h2>
+                                <span class="material-symbols-outlined"> arrow_forward </span>
+                            </a>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 grid-rows-2 my-auto gap-2">
@@ -320,16 +370,7 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
-                <!-- Items empty -->
-                <!-- <div class="flex flex-col items-center justify-center h-full">
-                    <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
-                        cancel
-                    </span>
-                    <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
-                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
-                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
-                    </div>
-                </div> -->
+                <?php endif; ?>
             </div>
         </section>
     </main>

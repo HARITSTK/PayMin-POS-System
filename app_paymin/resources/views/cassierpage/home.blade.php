@@ -24,102 +24,6 @@
 
 <body>
     <main class="flex items-center justify-between h-screen font-poppins box-border bg-[#E6EEFD]">
-        <!-- <nav
-        id="navbar"
-        class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
-      >
-        <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
-
-          <li>
-            <div class="flex items-center justify-center mb-2">
-              <img
-                src="assets/src/assets/logoMin.png"
-                alt="Logo"
-                class="w-20 h-20 rounded-full"
-              />
-            </div>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="home.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-home fa-2x"></i>
-
-              <p class="text-sm">Home</p>
-            </a>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="order.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-cart-plus fa-2x"></i>
-              <p class="text-sm">Orders</p>
-            </a>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="report.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-file-text-o fa-2x"></i>
-              <p class="text-sm">Report</p>
-            </a>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="items.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-th fa-2x"></i>
-              <p class="text-sm">Items</p>
-            </a>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="master.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-key fa-2x"></i>
-              <p class="text-sm">Master</p>
-            </a>
-          </li>
-          <li
-            class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer"
-          >
-            <a
-              href="settings.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-cog fa-2x"></i>
-              <p class="text-sm">Settings</p>
-            </a>
-          </li>
-          <span class="highlight-span mx-auto shadow-2xl"></span>
-          <li
-            class="flex flex-col items-center justify-center mt-auto text-[#8B8B8B] hover:text-red-400 cursor-pointer"
-          >
-            <a
-              href="login.html"
-              class="flex flex-col items-center justify-center"
-            >
-              <i class="fa fa-sign-out fa-2x"></i>
-              <p class="text-sm">Logout</p></a
-            >
-          </li>
-        </ul>
-      </nav> -->
         <!-- Navigation Bar -->
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
@@ -131,43 +35,44 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('HomeCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
                     </a>
                 </li>
+
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('OrderCassier') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-cart-plus fa-2x"></i>
-                        <p class="text-sm">Orders</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('ReportCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Report') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-file-text-o fa-2x"></i>
                         <p class="text-sm">Report</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('ItemCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Item') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-th fa-2x"></i>
                         <p class="text-sm">Items</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('MemberCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Member') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
                         <p class="text-sm">Member</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('SettingCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('Master') }}" class="flex flex-col items-center justify-center">
+                        <i class="fa fa-key fa-2x" aria-hidden="true"></i>
+                        <p class="text-sm">Master</p>
+                    </a>
+                </li>
+                <li
+                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
+                    <a href="{{ route('Setting') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-cog fa-2x"></i>
                         <p class="text-sm">Settings</p>
                     </a>
@@ -209,6 +114,7 @@
                     </div>
                 </div>
             </div>
+
         </nav>
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
@@ -272,6 +178,24 @@
                         </div>
                     </div>
                 </div>
+
+                @if ($lowStocks->isEmpty())
+                <!-- Items empty -->
+                <div
+                    class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    <h1 class="text-white mb-5 mt-2 text-2xl font-medium">Low Stock</h1>
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                            cancel
+                        </span>
+                        <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                            <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                            <span class="font-light text-[11pt]">New orders will be displayed here once they
+                                arrive.</span>
+                        </div>
+                    </div>
+                </div>
+                @else
                 <!-- Low Stocks -->
                 <div
                     class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
@@ -292,7 +216,11 @@
                         @endforeach
                     </div>
                 </div>
+                @endif
+
                 <!-- Product List -->
+                @if ($products->isEmpty())
+                <!-- Items empty -->
                 <div
                     class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
                     <div class="flex items-center justify-between mb-1 w-auto p-4">
@@ -312,21 +240,67 @@
 
                     <div class="h-full w-full rounded-xl">
                         <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
-                            @foreach ($products as $p)
+                            <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
+                                cancel
+                            </span>
+                            <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
+                                <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
+                                <span class="font-light text-[11pt]">Start by adding your first product to manage
+                                    your
+                                    inventory.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div
+                    class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    <div class="flex items-center justify-between mb-1 w-auto p-4">
+                        <h1 class="font-medium text-white text-2xl">Product List</h1>
+                        <div class="flex items-center justify-between gap-4">
+                            <span
+                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 flex items-center justify-center shadow-4xl cursor-pointer">
+                                chevron_left
+                            </span>
+
+                            <span
+                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 shadow-4xl cursor-pointer">
+                                chevron_right
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="h-full w-full rounded-xl">
+                        <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
+                            @foreach ($products as $pl)
                             <div class="flex flex-col items-center bg-white rounded-lg shadow-4xl w-auto h-full p-3">
                                 <div class="flex mx-auto w-[8rem]">
                                     <img src="assets/src/assets/coffee.png" alt="Coffee" class="object-cover w-full" />
                                 </div>
                                 <div class="flex flex-col items-center w-full my-auto">
-                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">{{ $p->name }}</span>
-                                    <span class="font-bold text-[13pt] text-[#353535]">{{ $p->price }}</span>
+                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">{{ $pl->name }}</span>
+                                    <span class="font-bold text-[13pt] text-[#353535]">Price Rp. {{ $pl->price }}</span>
                                 </div>
                             </div>
                             @endforeach
+
                         </div>
                     </div>
                 </div>
+                @endif
                 <!-- Sales Growth -->
+                @if ($salesGrowth->isEmpty())
+                <!-- Items empty -->
+                <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                        <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
+                        <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
+                    </div>
+                </div>
+                @else
                 <div
                     class="row-span-2 col-start-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-6 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
                     <div class="flex items-center justify-between mb-5 w-auto">
@@ -351,29 +325,51 @@
                         @endforeach
                     </div>
                 </div>
+                @endif
+
+
                 <!-- Orders Today -->
+                @if ($ordersToday->isEmpty())
+                <!-- Items empty -->
+                <div class="flex flex-col items-center justify-center h-full">
+                    <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
+                        cancel
+                    </span>
+                    <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
+                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
+                    </div>
+                </div>
+                @else
                 <div
                     class="col-span-2 row-span-2 col-start-3 row-start-4 bg-gradient-to-b from-white from-40% to-gray-300 to-100% border-2 border-white p-3 flex flex-col rounded-xl shadow-4xl">
                     <div class="flex items-center justify-between mb-2 w-auto px-3 cursor-pointer">
                         <h1 class="font-bold text-textColor text-2xl">Orders Today</h1>
                         <div class="flex items-center justify-between gap-2">
-                            <h2>View All</h2>
-                            <span class="material-symbols-outlined"> arrow_forward </span>
+                            <a href="{{ route('Report') }}" class="flex items-center gap-2">
+                                <h2>View All</h2>
+                                <span class="material-symbols-outlined"> arrow_forward </span>
+                            </a>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 grid-rows-2 my-auto gap-2">
                         @foreach ($ordersToday as $ot)
+                        @foreach ($ot->saleItems as $it)
+
                         <div
                             class="bg-white p-1 w-full rounded-lg shadow-xl flex items-center border-gray-200 border-2 box-border">
                             <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-18 h-18" />
                             <div class="flex flex-col mr-10">
-                                <span class="text-gray-500 text-base">{{ $ot->name }}</span>
-                                <span class="font-bold text-[#353535] text-lg">{{ $ot->subtotal }}</span>
+                                <span class="text-gray-500 text-base">{{ $it->product->name ?? '-' }}</span>
+                                <span
+                                    class="font-bold text-[#353535] text-lg">{{ number_format($ot->quantity ?? 0, 0, ',', '.') }}</span>
                             </div>
                         </div>
                         @endforeach
+                        @endforeach
                     </div>
                 </div>
+                @endif
             </div>
         </section>
     </main>

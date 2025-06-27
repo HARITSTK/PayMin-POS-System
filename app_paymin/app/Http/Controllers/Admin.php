@@ -177,7 +177,7 @@ class Admin extends BaseController
     public function exportCSVReport()
     {
         $fileName = 'Report_Data_' . now()->format('Ymd_His') . '.csv';
-        $users = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
+        $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
 
         $headers = [
             "Content-type"        => "text/csv",
@@ -187,29 +187,29 @@ class Admin extends BaseController
             "Expires"             => "0"
         ];
 
-        $columns = ['id:Username', 'customer id', 'total', 'payment', 'sale date', 'type', 'quantity'];
+        $columns = ['ID', 'Username', 'Customer Name', 'Total', 'Payment Method', 'Sale Date', 'Type', 'Quantity'];
 
-        $callback = function () use ($users, $columns) {
+        $callback = function () use ($sales, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
-            foreach ($users as $user) {
+            foreach ($sales as $sale) {
                 fputcsv($file, [
-                    $user->user_id,
-                    $user->customer_id,
-                    $user->total,
-                    $user->payment,
-                    $user->sale_date->format('Y-m-d H:i:s'),
-                    $user->type,
-                    $user->quantity,
+                    $sale->id,
+                    $sale->total,
+                    optional($sale->payments->first())->payment_method ?? '-',
+                    $sale->sale_date->format('Y-m-d H:i:s'),
+                    $sale->type,
+                    $sale->quantity,
                 ]);
             }
 
             fclose($file);
         };
 
-        return Response::stream($callback, 200, $headers);
+        return response()->stream($callback, 200, $headers);
     }
+
 
     public function delete(Request $request)
     {
