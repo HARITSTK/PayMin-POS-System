@@ -138,3 +138,49 @@ function searchTable() {
     noResults.classList.toggle("hidden", !noMatch);
     addItemCard.classList.toggle("hidden", noMatch);
 }
+
+function showProductDetail(button) {
+    const name = button.dataset.name;
+    const stock = button.dataset.stock;
+    const price = button.dataset.price;
+    const desc = button.dataset.desc;
+    const image = button.dataset.image;
+
+    // Set content ke modal
+    document.getElementById('modalItemName').textContent = name;
+    document.getElementById('modalItemStock').textContent = stock;
+    document.getElementById('modalItemPrice').textContent = "Rp. " + parseInt(price).toLocaleString('id-ID');
+    document.getElementById('modalItemDesc').innerHTML = desc.replace(/\n/g, "<br>");
+    document.getElementById('modalItemImage').src = image;
+
+    // Tampilkan modal
+    document.getElementById('modalDetailItem').classList.remove('hidden');
+}
+
+// document.addEventListener('DOMContentLoaded', function () {
+function showProductDetail(button) {
+    const cashier = button.dataset.cashier;
+    const customer = button.dataset.customer;
+    const table = button.dataset.table;
+    const items = button.dataset.items;
+    const note = button.dataset.note;
+    const image = button.dataset.image;
+
+    const orderIdInput = document.getElementById('orderIdInput');
+    if (orderIdInput) {
+      orderIdInput.value = button.dataset.id;
+    }
+
+    // Set value ke modal
+    document.getElementById('orderIdInput').value = button.dataset.id;
+    document.getElementById('modalCashierName').textContent = cashier;
+    document.getElementById('modalCustomerName').textContent = customer;
+    document.getElementById('modalCustomerTable').textContent = table;
+    document.getElementById('modalItemList').textContent = items;
+    document.getElementById('modalItemDesc').textContent = note;
+    document.getElementById('modalItemImage').src = image;
+
+    // Tampilkan modal
+    document.getElementById('modalDetailItem').classList.remove('hidden');
+}
+// });

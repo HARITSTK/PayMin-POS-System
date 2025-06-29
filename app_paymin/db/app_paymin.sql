@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `members_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.members: ~0 rows (approximately)
 
@@ -226,11 +226,11 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `idx_subcategory_id` (`subcategory_id`),
   CONSTRAINT `fk_products_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE SET NULL,
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table app_paymin.products: ~0 rows (approximately)
 REPLACE INTO `products` (`id`, `name`, `category_id`, `subcategory_id`, `desc`, `price`, `stock`, `image`, `created_at`, `updated_at`) VALUES
-	(12, 'Jagung Bakar', 3, 11, NULL, 2500.00, 10, NULL, '2025-06-26 21:38:56', '2025-06-26 21:38:56');
+	(12, 'Jagung Bakar', 3, 11, NULL, 2500.00, 10, NULL, '2025-06-26 21:38:56', '2025-06-28 15:19:45');
 
 -- Dumping structure for table app_paymin.sales
 CREATE TABLE IF NOT EXISTS `sales` (
@@ -242,6 +242,8 @@ CREATE TABLE IF NOT EXISTS `sales` (
   `sale_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `type` enum('dine_in','take_away') DEFAULT NULL,
   `quantity` int DEFAULT NULL,
+  `status` enum('procced','ready','served') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `table` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `customer_id` (`customer_id`),
@@ -249,9 +251,9 @@ CREATE TABLE IF NOT EXISTS `sales` (
   CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.sales: ~0 rows (approximately)
-REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `change_amount`, `sale_date`, `type`, `quantity`) VALUES
-	(4, 234083, 1, 20000.00, 0.00, '2025-06-27 10:02:53', 'take_away', 2);
+-- Dumping data for table app_paymin.sales: ~1 rows (approximately)
+REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `change_amount`, `sale_date`, `type`, `quantity`, `status`, `table`) VALUES
+	(4, 234083, 1, 20000.00, 0.00, '2025-06-27 10:02:53', 'take_away', 2, 'served', NULL);
 
 -- Dumping structure for table app_paymin.sale_items
 CREATE TABLE IF NOT EXISTS `sale_items` (
@@ -285,9 +287,10 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.sessions: ~0 rows (approximately)
+-- Dumping data for table app_paymin.sessions: ~2 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('lzFcZ9LIzRlounWAyVDy12CnuU1Ii6q9vgscIdGT', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IjRKQWpOUXhPa3AwbWJmbnhCU0k4a1diUXpLQlVueGZLQlA0R2VpRnoiO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMxOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvSG9tZUFkbWluIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjUxOTg0MTtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMDoibmFtZV9hZG1pbiI7czo1OiJhZG1pbiI7czoxMToiZW1haWxfYWRtaW4iO047czoxMToicGhvdG9fYWRtaW4iO047czoxMDoicm9sZV9hZG1pbiI7czo1OiJhZG1pbiI7czo5OiJiaW9fYWRtaW4iO3M6NDoidGVzdCI7fQ==', 1751000482);
+	('qCioIXO0OxN41RkczmWwEjaUKrcCTltnvhL7JmMF', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YTozOntzOjY6Il9mbGFzaCI7YToyOntzOjM6Im5ldyI7YTowOnt9czozOiJvbGQiO2E6MDp7fX1zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNjoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL0F1dGgiO31zOjY6Il90b2tlbiI7czo0MDoiQk5xOW9ZdXFyQURYWkhZMEptRTJCYzJ3a2E3WVFFWklkZXUwQ2NvMiI7fQ==', 1751169861),
+	('YvfD3fo9WOM7SJA7WZbuoxiXbe8BCuQWOXChq2KC', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9PcmRlckNhc3NpZXIiO31zOjY6Il90b2tlbiI7czo0MDoib1VWU3RKdFFWR0d0dlVGQTFpYW1kb3FyMHkzR2NxbVVxVUNaRGZJNCI7czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751127579);
 
 -- Dumping structure for table app_paymin.subcategories
 CREATE TABLE IF NOT EXISTS `subcategories` (
@@ -328,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `shift` enum('pagi','sore') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shift` enum('pagi','sore') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `role` enum('admin','cassier','kitchen','storage','waiters') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` enum('Y','N') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -336,10 +339,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1253411 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.users: ~3 rows (approximately)
+-- Dumping data for table app_paymin.users: ~5 rows (approximately)
 REPLACE INTO `users` (`id`, `username`, `name`, `password`, `email`, `photo`, `bio`, `shift`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
 	(234083, 'kasir', 'kasirrrrr', '$2y$12$h9BMNFIsM9KYeF4t/aMONupyjSE7IN/kvzWxzezXJBYkzgryx4hH6', NULL, NULL, NULL, 'pagi', 'cassier', 'Y', '2025-06-24 16:30:26', '2025-06-27 01:40:11'),
-	(519841, 'admin', 'admin', '$2y$12$HbZeTeT5VlEo35/hCRCN/eN3zz5.F/Be8CL08dx4Ey.FL020CdBU2', NULL, NULL, 'test', NULL, 'admin', 'Y', '2025-06-17 23:40:28', '2025-06-27 02:33:51');
+	(519841, 'admin', 'admin', '$2y$12$HbZeTeT5VlEo35/hCRCN/eN3zz5.F/Be8CL08dx4Ey.FL020CdBU2', NULL, NULL, 'test', NULL, 'admin', 'Y', '2025-06-17 23:40:28', '2025-06-27 02:33:51'),
+	(659313, 'gudang', 'gudang1', '$2y$12$WbpNF7AQBZLFh12bMr9ht.TOOqul0uElZN044979MkawwyBNJFWGG', NULL, NULL, 'gudang 1 test 123', NULL, 'storage', 'Y', '2025-06-28 21:17:52', '2025-06-29 10:45:45'),
+	(899054, 'kitchen', 'kitchen', '$2y$12$.hAO0DWP5Z1b6nIeLyxMjeeORrMxH42U2Ob00iEsWD8UV/44QPkYG', NULL, NULL, NULL, NULL, 'kitchen', 'Y', '2025-06-28 22:06:37', '2025-06-28 22:06:37'),
+	(991475, 'waiters', 'waiters', '$2y$12$oEr7BFUjFVvVIeIbyKLvlO45dDEYPFkkdeZb5mks39DAfz7seQonS', NULL, NULL, NULL, NULL, 'waiters', 'Y', '2025-06-28 23:07:31', '2025-06-28 23:07:31');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

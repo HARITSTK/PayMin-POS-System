@@ -62,44 +62,43 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Home') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('HomeCassier') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
                     </a>
                 </li>
-
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Report') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('OrderCassier') }}" class="flex flex-col items-center justify-center">
+                        <i class="fa fa-cart-plus fa-2x"></i>
+                        <p class="text-sm">Orders</p>
+                    </a>
+                </li>
+                <li
+                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
+                    <a href="{{ route('ReportCassier') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-file-text-o fa-2x"></i>
                         <p class="text-sm">Report</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Item') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('ItemCassier') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-th fa-2x"></i>
                         <p class="text-sm">Items</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Member') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('MemberCassier') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
                         <p class="text-sm">Member</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Master') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-key fa-2x" aria-hidden="true"></i>
-                        <p class="text-sm">Master</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('Setting') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('SettingCassier') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-cog fa-2x"></i>
                         <p class="text-sm">Settings</p>
                     </a>
@@ -148,10 +147,10 @@
                 <h1 class="text-[36pt] font-bold text-[#353535]">Orders History</h1>
             </div>
 
-            <div class="flex gap-x-4 items-center">
-                <div class="relative inline-block w-48 h-full">
+            <div class="flex gap-x-4">
+                <div class="relative md:w-2/12 w-[15%]">
                     <input type="date" id="dateFilter" onchange="filterByDate()"
-                        class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
+                        class="flex justify-between items-center w-full px-5 py-2.5 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 cursor-pointer">
                 </div>
 
                 <a id="sortingDropdown" href="{{ route('exportCSVReport') }}"
@@ -167,9 +166,16 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Income</p>
-                        <p class="text-3xl font-bold text-gray-800" id="cardTotalIncome">Rp.
-                            {{ number_format($TotalIncome, 0, ',', '.') }}
-                        </p>
+                        <p class="text-3xl font-bold text-gray-800">Rp. {{ number_format($TotalIncome, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+
+                <!-- Card 1 -->
+                <div class="bg-white rounded-lg shadow-4xl w-full">
+                    <div class="h-2 bg-primary rounded-t-lg"></div>
+                    <div class="p-6">
+                        <p class="text-xl text-gray-500">Beginning balance</p>
+                        <p class="text-3xl font-bold text-gray-800">Rp. 0</p>
                     </div>
                 </div>
 
@@ -177,9 +183,8 @@
                 <div class="bg-white rounded-lg shadow-4xl w-full">
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
-                        <p class="text-xl text-gray-500">Total Items sell</p>
-                        <p class="text-3xl font-bold text-gray-800" id="cardTotalItemSell">
-                            {{ number_format($TotalItemSell, 0, ',', '.') }}</p>
+                        <p class="text-xl text-gray-500">Admission fee</p>
+                        <p class="text-3xl font-bold text-gray-800">+Rp. {{ number_format($admissionFee, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -187,51 +192,38 @@
                 <div class="bg-white rounded-lg shadow-4xl w-full">
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
-                        <p class="text-xl text-gray-500">Total Costumers</p>
-                        <p class="text-3xl font-bold text-gray-800" id="cardTotalCustomers">
-                            {{ number_format($TotalCustomers, 0, ',', '.') }}
-                        </p>
+                        <p class="text-xl text-gray-500">Money Out</p>
+                        <p class="text-3xl font-bold text-gray-800">-Rp. 0</p>
                     </div>
                 </div>
             </div>
 
-            <div class="flex gap-4 items-center">
-                <div class="relative inline-block w-48 flex-1">
-                    <select id="userFilter" onchange="filterByUser()"
-                        class="appearance-none w-full bg-white border border-gray-300 text-gray-900 text-base px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                        <option>All</option>
-                        @foreach ($user as $s)
-                        <option value="{{ strtolower($s->name) }}">{{ $s->name }}</option>
-                        @endforeach
-                    </select>
+            <div class="flex md:flex-row md:justify-between w-full">
+                <!-- Search Form - 4/12 columns -->
+                <form class="flex items-center gap-2 md:w-4/12 mb-4 md:mb-0">
+                    <div class="relative inline-block w-48">
+                        <select id="shiftFilter" onchange="filterByShift()"
+                            class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
+                            <option value="all">All</option>
+                            <option value="pagi">Pagi (09:00-16:00)</option>
+                            <option value="malam">Malam (16:00-22:00)</option>
+                        </select>
 
-                    <!-- Dropdown Arrow Icon -->
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
-                        <span class="material-symbols-outlined"> arrow_drop_down </span>
+                        <!-- Dropdown Arrow Icon -->
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
+                            <span class="material-symbols-outlined"> arrow_drop_down </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="relative inline-block w-48">
-                    <select id="shiftFilter" onchange="filterByShift()"
-                        class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
-                        <option value="all">All</option>
-                        <option value="pagi">Pagi (09:00-16:00)</option>
-                        <option value="malam">Malam (16:00-22:00)</option>
-                    </select>
-
-                    <!-- Dropdown Arrow Icon -->
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
-                        <span class="material-symbols-outlined"> arrow_drop_down </span>
+                    <!-- Find order searching -->
+                    <div
+                        class="flex items-center gap-x-3 flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white">
+                        <span class="material-symbols-outlined text-gray-500">search</span>
+                        <input type="text" placeholder="Find Order" id="searchInput" onkeyup="searchTable()"
+                            class="w-full outline-none text-gray-700 placeholder-gray-400 bg-transparent" />
                     </div>
-                </div>
-
-                <!-- Find order searching -->
-                <div
-                    class="flex items-center gap-x-3 flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white">
-                    <span class="material-symbols-outlined text-gray-500">search</span>
-                    <input type="text" placeholder="Find Order" id="searchInput" onkeyup="searchTable()"
-                        class="w-full outline-none text-gray-700 placeholder-gray-400 bg-transparent" />
-                </div>
+                </form>
             </div>
 
             <!-- REPORT TABLE -->
@@ -324,7 +316,6 @@
                         </div>
                     </table>
                 </div>
-
             </div>
             <!-- REPORT TABLE END -->
         </section>

@@ -152,18 +152,6 @@
                 <div class="relative inline-block w-48 h-full">
                     <input type="date" id="dateFilter" onchange="filterByDate()"
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
-                    <!-- <select
-                        class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
-                        <option>All</option>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
-                    </select> -->
-
-                    <!-- Dropdown Arrow Icon -->
-                    <!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-600">
-                        <span class="material-symbols-outlined"> arrow_drop_down </span>
-                    </div> -->
                 </div>
 
                 <a id="sortingDropdown" href="<?php echo e(route('exportCSVReport')); ?>"

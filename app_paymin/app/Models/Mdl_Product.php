@@ -15,4 +15,10 @@ class Mdl_Product extends Model
     {
         return $this->belongsTo(Mdl_Categories::class, 'category_id');
     }
+
+    public function saleItems()
+    {
+        return $this->hasMany(Mdl_SaleItem::class, 'product_id');
+    }
+
 }

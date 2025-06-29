@@ -11,8 +11,8 @@ class Mdl_Sales extends Model
 {
     protected $table = 'sales';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'customer_id', 'total', 'payment', 'change_amount', 'sale_date'];
-    public $timestamps = true;
+    protected $fillable = ['user_id', 'customer_id', 'total', 'payment', 'change_amount', 'sale_date', 'status'];
+    public $timestamps = false;
 
     public function user()
     {

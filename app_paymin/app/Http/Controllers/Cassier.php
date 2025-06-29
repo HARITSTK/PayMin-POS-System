@@ -6,6 +6,7 @@ use App\Models\Mdl_Auth;
 use App\Models\Mdl_Admin;
 use App\Models\Mdl_Sales;
 use App\Models\Mdl_Customer;
+use App\Models\Mdl_Member;
 use App\Models\Mdl_Product;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Cassier extends BaseController
 {
@@ -42,9 +44,10 @@ class Cassier extends BaseController
             ->where('stock', '<=', 5)
             ->get();
 
-        $ordersToday = DB::table('sales')
+        $ordersToday = Mdl_Sales::with(['saleItems.product'])
             ->whereDate('sale_date', Carbon::today())
             ->get();
+
         
         return view('cassierpage/home',  compact('user', 'admissionFee', 'TotalItems', 'TotalCustomers', 'TotalCustomers', 'products', 'lowStocks', 'ordersToday', 'salesGrowth'));
     }
@@ -197,24 +200,20 @@ class Cassier extends BaseController
 
     // REPORT
     public function report() {
+        $userId = session('user_id'); // atau auth()->id()
+
         $user = Mdl_Admin::all();
-        // $user = Mdl_Sales::with('users')->get();
-        $sales = Mdl_Sales::all();
-        $sales = Mdl_Sales::with('user')->get();
+        $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->where('user_id', $userId)->get();
 
-        $today = Carbon::today();
+        // $today = Carbon::today();
 
-        $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+        // $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+        $TotalIncome = DB::table('sales')
+            ->where('user_id', $userId)
+            ->sum('total');        $TotalItemSell = DB::table('sale_items')->where('product_id')->count();
+            $admissionFee = DB::table('payments')->sum('amount');
 
-        $admissionFee = DB::table('payments')
-            ->whereDate('created_at', $today)
-            ->sum('amount');
-
-        $moneyOut = DB::table('expenses')
-            ->whereDate('created_at', $today)
-            ->sum('amount');
-
-        return view('karyawanpage/report', compact('user', 'sales', 'beginningBalance', 'admissionFee', 'moneyOut'));
+        return view('cassierpage/report', compact('user', 'sales', 'TotalIncome', 'admissionFee'));
     }
 
     // ITEMS
@@ -234,14 +233,14 @@ class Cassier extends BaseController
         $categories = DB::table('categories')->get();
         $products = DB::table('products')->get();
 
-        return view('karyawanpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'categories', 'products'));
+        return view('cassierpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'categories', 'products'));
     }
 
     // MEMBERSHIP
     public function member()
     {
-        $members = Mdl_Admin::all();
-        return view('karyawanpage/member', compact('members'));
+        $members = Mdl_Member::with('customer')->get();
+        return view('cassierpage/member', compact('members'));
     }
 
 
@@ -251,6 +250,64 @@ class Cassier extends BaseController
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
         
-        return view('karyawanpage/setting', compact('user'));
+        return view('cassierpage/setting', compact('user'));
+    }
+
+    public function SysEditProfile(Request $request) {        
+        $userId = session('user_id');
+        $user = Mdl_Admin::find($userId);
+        
+        if (!$user) {
+            return redirect()->back()->with('message', 'User tidak ditemukan.');
+        }
+
+        $validatedData = $request->validate([
+            'name' => 'nullable|max:255',
+            'username' => 'nullable|max:255', 
+            'bio' => 'nullable',
+        ]);
+        
+        $user->name = $validatedData['name'];
+        $user->username = $validatedData['username'];
+        $user->bio = $validatedData['bio'];
+        $user->save();
+
+        session([
+            'name_admin' => $user->name,
+            'username_admin' => $user->username,
+            'bio_admin' => $user->bio,
+        ]);
+        
+        return redirect()->back()->with('message', 'Data user berhasil diperbarui.');
+    }
+
+    public function SysUpdatePassword(Request $request) {
+        
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:8',
+            'new_password_repeat' => 'required|same:new_password',
+        ]);
+        
+        if ($validator->fails()) {
+            return back()->with('message', $validator->errors()->first());
+        }
+
+        $userId = session('user_id');
+        $user = Mdl_Admin::find($userId);
+
+        if (!$user) {
+            return back()->with('message', 'User not found.');
+        }
+
+        if (!password_verify($request->old_password, $user->password)) {
+            return back()->with('message', 'Old Password is incorrect.');
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('message', 'Password successfully updated.');
+
     }
 }

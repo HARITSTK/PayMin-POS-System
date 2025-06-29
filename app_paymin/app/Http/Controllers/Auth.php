@@ -103,32 +103,32 @@ class Auth extends BaseController
             return redirect()->route('HomeCassier');
             
         } elseif ($user->role == 'kitchen') {
-            // session([
-            //     'user_id' => $user->id,
-            //     'username_karyawan' => $user->username,
-            //     'name_karyawan' => $user->name,
-            //     'role_karyawan' => $user->role,
-            //     'bio_karyawan' => $user->bio,
-            // ]);
-            // return redirect()->route('HomeKaryawan');
+            session([
+                'user_id' => $user->id,
+                'username_kitchen' => $user->username,
+                'name_kitchen' => $user->name,
+                'role_kitchen' => $user->role,
+                'bio_kitchen' => $user->bio,
+            ]);
+            return redirect()->route('HomeKitchen');
         } elseif ($user->role == 'storage') {
-            // session([
-            //     'user_id' => $user->id,
-            //     'username_karyawan' => $user->username,
-            //     'name_karyawan' => $user->name,
-            //     'role_karyawan' => $user->role,
-            //     'bio_karyawan' => $user->bio,
-            // ]);
-            // return redirect()->route('HomeKaryawan');
+            session([
+                'user_id' => $user->id,
+                'username_storage' => $user->username,
+                'name_storage' => $user->name,
+                'role_storage' => $user->role,
+                'bio_storage' => $user->bio,
+            ]);
+            return redirect()->route('HomeStorage');
         } elseif ($user->role == 'waiters') {
-            // session([
-            //     'user_id' => $user->id,
-            //     'username_karyawan' => $user->username,
-            //     'name_karyawan' => $user->name,
-            //     'role_karyawan' => $user->role,
-            //     'bio_karyawan' => $user->bio,
-            // ]);
-            // return redirect()->route('HomeKaryawan');
+            session([
+                'user_id' => $user->id,
+                'username_waiters' => $user->username,
+                'name_waiters' => $user->name,
+                'role_waiters' => $user->role,
+                'bio_waiters' => $user->bio,
+            ]);
+            return redirect()->route('HomeWaiters');
         } else {
             return back()->withErrors(['username' => 'Akun tidak memiliki role!'])->withInput();
         }

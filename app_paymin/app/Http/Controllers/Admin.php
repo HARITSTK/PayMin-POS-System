@@ -470,6 +470,6 @@ class Admin extends BaseController
 
         $member->delete();
 
-        return redirect()->back()->with('success', 'Member deleted successfully.');
+        return redirect()->back()->with('message', 'Member deleted successfully.');
     }
 }

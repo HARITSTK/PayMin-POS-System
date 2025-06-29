@@ -35,7 +35,7 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('HomeCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('HomeWaiters') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-home fa-2x"></i>
 
                         <p class="text-sm">Home</p>
@@ -43,35 +43,14 @@
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('OrderCassier') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-cart-plus fa-2x"></i>
-                        <p class="text-sm">Orders</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('ReportCassier') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-file-text-o fa-2x"></i>
-                        <p class="text-sm">Report</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('ItemCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('OrderWaiters') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-th fa-2x"></i>
-                        <p class="text-sm">Items</p>
+                        <p class="text-sm">Order</p>
                     </a>
                 </li>
                 <li
                     class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('MemberCassier') }}" class="flex flex-col items-center justify-center">
-                        <i class="fa fa-diamond fa-2x" aria-hidden="true"></i>
-                        <p class="text-sm">Member</p>
-                    </a>
-                </li>
-                <li
-                    class="flex flex-col items-center justify-center text-[#8B8B8B] hover:text-primary transition-all duration-300 ease-in-out h-[70px] relative z-20 cursor-pointer">
-                    <a href="{{ route('SettingCassier') }}" class="flex flex-col items-center justify-center">
+                    <a href="{{ route('SettingWaiters') }}" class="flex flex-col items-center justify-center">
                         <i class="fa fa-cog fa-2x"></i>
                         <p class="text-sm">Settings</p>
                     </a>
