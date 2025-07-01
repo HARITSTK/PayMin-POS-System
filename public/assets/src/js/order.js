@@ -14,11 +14,26 @@ function closeModal(modalId) {
 }
 
 function orderNext() {
+  const name = document.getElementById('name')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
+  const table = document.getElementById('table')?.value;
+  const dineIn = document.getElementById('dinein')?.checked;
+  const takeaway = document.getElementById('takeaway')?.checked;
+
+  // Validasi
+  if (!name || !phone || !table || (!dineIn && !takeaway)) {
+    alert("Please complete all required fields:\n- Choose Dine In or Take Away\n- Enter name, phone number, and table number");
+    return;
+  }
+
   const orderAside = document.getElementById("sidebarOrderedList");
   const paymentAside = document.getElementById("sidebarPayment");
 
   orderAside.classList.add("hidden");
   paymentAside.classList.remove("hidden");
+
+  checkMembership();
+  updatePaymentSummary();
 }
 
 function paymentNext() {
@@ -180,67 +195,179 @@ function searchTable() {
 }
 
 // add item to sidebar order list
-let currentQty = 1;
-let currentPrice = 0;
+let orders = {};
+let currentOrderCode = null;
 
-function fillModal(name, price, image) {
-    const orderId = Math.floor(1000 + Math.random() * 9000); // hasil: 4 digit acak, misal 4923
-    const now = new Date();
+function addToOrder(id, name, price, image) {
+    price = parseInt(price);
 
-    const orderCode = "#Orders" + orderId;
-    const dateStr = now.toLocaleDateString('id-ID', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    }).replace(/\//g, '/');
+    if (!orders[id]) {
+        orders[id] = { name, price, qty: 1, image };
+        createOrderItem(id); // TAMBAHKAN INI
+    } else {
+        orders[id].qty++;
+        updateExistingItem(id);
+    }
 
-    const timeStr = now.toLocaleTimeString('id-ID', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    });
-
-    const fullInfo = `${orderCode} | ${dateStr} | ${timeStr}`;
-
-    // Tampilkan ke elemen-elemen di modal
-    const meta1 = document.getElementById('orderMeta1');
-    const meta2 = document.getElementById('orderMeta2');
-
-    if (meta1) meta1.textContent = fullInfo;
-    if (meta2) meta2.textContent = fullInfo;
-
-    // (lanjutkan isi produk seperti sebelumnya...)
-    currentQty = 1;
-    currentPrice = parseInt(price);
-    document.getElementById('productImage').src = image;
-    document.getElementById('productName').textContent = name;
-    document.getElementById('productPrice').textContent = 'Rp. ' + formatRupiah(price);
-    document.getElementById('itemCounter').textContent = currentQty;
-    document.getElementById('productSubtotal').textContent = 'Rp. ' + formatRupiah(price);
-
-    toggleSidebar('sidebarOrderedList');
+    // TAMPILKAN SIDEBAR
+    const sidebar = document.getElementById('sidebarOrderedList');
+    if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        setOrderMeta(); // orderID hanya dibuat sekali
+    }
 }
 
-function incrementCounter() {
-    currentQty++;
-    updateQtyDisplay();
+
+function updateQty(id, change) {
+    if (!orders[id]) return;
+    orders[id].qty += change;
+
+    if (orders[id].qty <= 0) {
+        removeItem(id);
+    } else {
+        updateExistingItem(id);
+    }
 }
 
-function decrementCounter() {
-    if (currentQty > 1) currentQty--;
-    updateQtyDisplay();
+function updateExistingItem(id) {
+    const item = document.querySelector(`[data-id="${id}"]`);
+    if (!item) return;
+
+    item.querySelector('.productQty').textContent = orders[id].qty;
+    item.querySelector('.productSubtotal').textContent =
+        'Rp. ' + (orders[id].qty * orders[id].price).toLocaleString();
 }
 
-function updateQtyDisplay() {
-    document.getElementById('itemCounter').textContent = currentQty;
-    document.getElementById('productSubtotal').textContent = 'Rp. ' + formatRupiah(currentQty * currentPrice);
+function removeItem(id) {
+    delete orders[id];
+    const item = document.querySelector(`[data-id="${id}"]`);
+    if (item) item.remove();
+
+    if (Object.keys(orders).length === 0) {
+      document.getElementById('sidebarOrderedList').classList.add('hidden');
+      currentOrderCode = null; // reset supaya dibuat ulang di pemesanan baru
+    }
 }
 
-function formatRupiah(number) {
-    return parseInt(number).toLocaleString('id-ID');
+function setOrderMeta() {
+  if (currentOrderCode) return; // sudah ada, tidak perlu buat baru
+
+  const now = new Date();
+  const randomNumber = Math.floor(1000 + Math.random() * 9000);
+  currentOrderCode = `#Orders${randomNumber}`;
+
+  const dateStr = now.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+  });
+  const timeStr = now.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+  });
+
+  const info = `${currentOrderCode} | ${dateStr} | ${timeStr}`;
+  document.getElementById('orderMeta1').textContent = info;
+  document.getElementById('orderMeta2').textContent = info;
 }
 
-function toggleSidebar(id) {
-    const sidebar = document.getElementById(id);
-    sidebar.classList.toggle('hidden');
+function createOrderItem(id) {
+    const template = document.getElementById('templateItem');
+    if (!template) {
+        console.error("templateItem not found!");
+        return;
+    }
+
+    const clone = template.cloneNode(true);
+    clone.id = "";
+    clone.classList.remove("hidden");
+    clone.setAttribute('data-id', id);
+
+    // Isi data
+    clone.querySelector('.productImage').src = orders[id].image;
+    clone.querySelector('.productName').textContent = orders[id].name;
+    clone.querySelector('.productPrice').textContent = 'Rp. ' + orders[id].price.toLocaleString();
+    clone.querySelector('.productSubtotal').textContent = 'Rp. ' + orders[id].price.toLocaleString();
+    clone.querySelector('.productQty').textContent = orders[id].qty;
+
+    // Event handler
+    clone.querySelector('.btnMinus').onclick = () => updateQty(id, -1);
+    clone.querySelector('.btnPlus').onclick = () => updateQty(id, 1);
+    clone.querySelector('.btnDelete').onclick = () => removeItem(id);
+
+    // Tambahkan ke DOM
+    document.getElementById('orderedList').appendChild(clone);
+}
+
+function checkMembership() {
+
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  console.log('[checkMembership] input:', { name, phone });
+
+  if (!name || !phone) {
+    showNoMembershipCard();
+    return;
+  }
+
+  fetch('/check-membership', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({ name, phone })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+  if (data.status === 'found') {
+
+    const nameEl = document.querySelectorAll('.memberName');
+    const phoneEl = document.querySelectorAll('.memberPhone');
+    const pointEl = document.querySelectorAll('.memberPoints');
+
+    // Isi semua kartu yang aktif (karena hanya satu yang akan tampil)
+    nameEl.forEach(el => el.textContent = data.name);
+    phoneEl.forEach(el => el.textContent = data.phone);
+    pointEl.forEach(el => el.textContent = data.points ?? 0);
+
+      if (data.membership === 'Silver') {
+        document.getElementById('cardSilver').classList.remove('hidden');
+      } else if (data.membership === 'Gold') {
+        document.getElementById('cardGold').classList.remove('hidden');
+      } else if (data.membership === 'Platinum') {
+        document.getElementById('cardPlatinum').classList.remove('hidden');
+      } else if (data.membership === 'Expired') {
+        document.getElementById('cardExpired')?.classList.remove('hidden');
+        document.getElementById('UpdateMember')?.classList.remove('hidden');
+      } else {
+        document.getElementById('NoMembership')?.classList.remove('hidden');
+      }
+    } else {
+      document.getElementById('NoMembership')?.classList.remove('hidden');
+    }
+  })
+}
+
+function updatePaymentSummary() {
+  let subtotal = 0;
+  const taxRate = 0.1; // 10%
+
+  // Hitung subtotal dari pesanan
+  for (const id in orders) {
+    const item = orders[id];
+    subtotal += item.price * item.qty;
+  }
+
+  const tax = Math.round(subtotal * taxRate);
+  const total = subtotal + tax;
+
+  const formatRupiah = n => 'Rp. ' + n.toLocaleString('id-ID');
+
+  // Masukkan nilai yang sesuai ke elemen
+  document.getElementById('subtotalAmount').textContent = formatRupiah(subtotal);
+  document.getElementById('taxAmount').textContent = formatRupiah(tax);
+  document.getElementById('totalAmount').textContent = formatRupiah(total); // pastikan ID ini ada
 }

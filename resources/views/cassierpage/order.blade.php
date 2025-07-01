@@ -10,6 +10,8 @@
     <link rel="shortcut icon" href="assets/src/assets/logoMin.png" type="image/x-icon" />
     <title>PayMin-Cashier</title>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Google Icons -->
 
     <link rel="stylesheet"
@@ -17,6 +19,31 @@
 </head>
 
 <body>
+    @if (Session::has('message'))
+    <div id="auto-dismiss-alert"
+        class="absolute top-1 right-1 transform translate-x-12 -translate-y-12 bg-primary text-white px-4 py-3 rounded shadow-md z-20 w-fit min-w-max"
+        role="alert">
+        <div class="flex items-center gap-x-2">
+            <i class="fa fa-info-circle fa-2xs" aria-hidden="true"></i>
+            <div class="flex-1">
+                <strong>{{ Session::get('message') }}</strong>
+            </div>
+            <button type="button" class="text-white hover:text-gray-300 ml-2"
+                onclick="this.closest('div[role=alert]').remove()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+    setTimeout(() => {
+        const alert = document.getElementById('auto-dismiss-alert');
+        if (alert) {
+            alert.remove();
+        }
+    }, 5000);
+    </script>
+    @endif
     <main class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins">
         <nav id="navbar" class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl">
             <ul id="navbar-list" class="flex flex-col h-full w-full relative z-10">
@@ -112,7 +139,8 @@
                 <h1 class="text-[22pt] font-bold text-[#353535]">
                     Pay<span class="text-primary">Min</span> CoffeShop
                 </h1>
-                <p class="text-textColor text-lg">{{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y') }}</p>
+                <p class="text-textColor text-lg">
+                    {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y') }}</p>
             </div>
 
             <div class="flex justify-between w-full shadow-4xl rounded-xl bg-white px-5 py-2">
@@ -175,7 +203,7 @@
                     </div>
                     <button
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] w-full py-2 mt-5 rounded-lg text-white font-semibold toggleSidebarBtn"
-                        onclick="fillModal('{{ $p->name }}', '{{ $p->price }}', '{{ asset('assets/src/assets/coffee.png') }}')">
+                        onclick="addToOrder('{{ $p->id }}', '{{ $p->name }}', '{{ $p->price }}', '{{ asset('assets/src/assets/coffee.png') }}')">
                         Add
                     </button>
                 </div>
@@ -231,8 +259,8 @@
                     class="flex font-light justify-center items-center gap-x-2 border-2 border-[#8B8B8B] rounded-xl px-4 py-2 text-[#8B8B8B] has-checked:border-primary has-checked:bg-[#fff6f4] has-checked:text-primary">
                     <form action="/action_page.php" class="flex items-center gap-2">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                        <label for="togo">To Go</label>
-                        <input type="checkbox" id="togo" name="togo" value="ToGo"
+                        <label for="togo">Take Away</label>
+                        <input type="checkbox" id="takeaway" name="takeaway"
                             class="appearance-none w-4 h-4 rounded-full border-2 border-[#8B8B8B] checked:bg-primary checked:border-primary focus:outline-none transition-colors duration-200" />
                     </form>
                 </div>
@@ -254,7 +282,7 @@
                     <!-- Phone Number -->
                     <div>
                         <label for="phone" class="block text-gray-800 text-[11pt]">No Telephone</label>
-                        <input type="tel" id="phone" name="phone" required pattern="[0-9]{10,15}"
+                        <input type="number" id="phone" name="phone" required pattern="[0-9]{10,15}"
                             class="w-full border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1" />
                     </div>
 
@@ -277,51 +305,42 @@
             </div>
             <!-- Orders -->
             <div id="orderedList" class="h-full w-full flex flex-col items-center mt-2 overflow-y-auto px-6">
-                <div class="flex flex-col items-center w-full mt-2">
-                    <div class="flex justify-between w-full h-[60px]">
-                        <div class="flex items-center justify-center w-[5em]">
-                            <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-full object-cover h-full" id="productImage"/>
+                <div id="templateItem" class="hidden flex flex-col items-center w-full mt-2" data-id="">
+                    <div class="flex flex-col items-center w-full mt-2">
+                        <div class="flex justify-between w-full h-[60px]">
+                            <div class="flex items-center justify-center w-[5em]">
+                                <img src="assets/src/assets/coffee.png" alt="Coffee"
+                                    class="productImage w-full object-cover h-full" />
+                            </div>
+                            <div class="w-auto">
+                                <h1
+                                    class="productName text-textColor text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-[70%]">
+                                    -
+                                </h1>
+                                <p class="productPrice text-textColor text-sm w-auto">Rp. -</p>
+                            </div>
+                            <div class="w-auto">
+                                <h1 class="productSubtotal text-primary text-2xl font-bold">-</h1>
+                            </div>
                         </div>
-                        <div class="w-auto">
-                            <h1 id="productName"
-                                class="text-textColor text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap w-[70%]">
-                                Coffe Capuchino
-                            </h1>
-                            <p id="productPrice" class="text-textColor text-sm w-auto">Rp. 20.000</p>
+                        <div class="flex items-center justify-end gap-1 w-full">
+                            <button class="btnMinus bg-primary text-white rounded-md w-8 h-8 text-xl">-</button>
+                            <span class="productQty text-lg font-semibold w-8 text-center">-</span>
+                            <button class="btnPlus bg-primary text-white rounded-md w-8 h-8 text-xl">+</button>
                         </div>
-                        <div class="w-auto">
-                            <h1 id="productSubtotal" class="text-primary text-2xl font-bold">40k</h1>
+                        <div class="flex justify-between items-center w-full h-12 mt-2">
+                            <input type="text" placeholder="add note"
+                                class="note border border-gray-300 rounded-md p-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+                            <button
+                                class="btnDelete text-tertiary hover:text-red-700 h-full rounded-md border-2 border-tertiary transition-colors duration-200 w-[20%]">
+                                <i class="fa fa-trash fa-lg"></i>
+                            </button>
                         </div>
+                        <hr class="w-full h-[1px] my-6 border-0 bg-tertiary" />
                     </div>
-                    <div class="flex items-center justify-end gap-1 w-full">
-                        <button
-                            class="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center text-xl font-bold focus:outline-none"
-                            onclick="decrementCounter()" type="button">
-                            -
-                        </button>
-                        <span id="itemCounter" class="text-lg font-semibold w-8 text-center">1</span>
-                        <button
-                            class="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center text-xl font-bold focus:outline-none"
-                            onclick="incrementCounter()" type="button">
-                            +
-                        </button>
-                    </div>
-                    <div class="flex justify-between items-center w-full h-12 mt-2">
-                        <form action="">
-                            <input type="text"
-                                class="border rounded-md p-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                                placeholder="add note" />
-                        </form>
-
-                        <button
-                            class="text-tertiary hover:text-red-700 h-full rounded-md border-2 border-tertiary transition-colors duration-200 w-[20%]"
-                            type="button" aria-label="Remove item">
-                            <i class="fa fa-trash fa-lg"></i>
-                        </button>
-                    </div>
-                    <hr class="w-full h-[1px] my-6 border-0 bg-tertiary" />
                 </div>
             </div>
+
 
             <div class="h-auto w-full flex flex-col justify-end bottom-0 p-4 shadow-continuePayment bg-white">
                 <button
@@ -360,13 +379,13 @@
 
             <!-- Select Payment -->
             <div class="w-full px-6 h-full relative overflow-y-auto" id="paymentMethod">
-                <div
+                <div id="NoMembership"
                     class="w-full h-32 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 italic text-sm hidden">
                     No membership yet
                 </div>
 
                 <!-- Silver Card -->
-                <div class="w-full rounded-xl p-5 bg-linear-[-90deg,_#D9D9D9,_#B9B9B9] shadow-md relative flex items-center justify-between text-white border-[1px] border-[#929292]"
+                <div class="w-full rounded-xl p-5 bg-linear-[-90deg,_#D9D9D9,_#B9B9B9] shadow-md relative flex items-center justify-between text-white border-[1px] border-[#929292] hidden"
                     id="cardSilver">
                     <div class="text-sm my-2">
                         <p>Name : <strong>Daveton Aljabar</strong></p>
@@ -376,8 +395,7 @@
                     <div class="text-xs text-right">
                         <p class="mb-4 text-gray-900 font-light">Membership</p>
                         <span
-                            class="bg-linear-[90deg,_#FF5733,_#B9B9B9] text-white px-3 py-2 rounded font-bold text-xs hidden">SILVER</span>
-                        <span class="bg-primary text-white px-3 py-2 rounded font-bold italic text-xs">EXPIRED</span>
+                            class="bg-linear-[90deg,_#FF5733,_#B9B9B9] text-white px-3 py-2 rounded font-bold text-xs">SILVER</span>
                     </div>
                 </div>
 
@@ -411,9 +429,24 @@
                     </div>
                 </div>
 
+                <!-- Expired Card -->
+                <div class="w-full rounded-xl p-5 bg-linear-[-90deg,_#D9D9D9,_#B9B9B9] shadow-md relative flex items-center justify-between text-white border-[1px] border-[#929292] hidden"
+                    id="cardExpired">
+                    <div class="text-sm my-2">
+                        <p>Name : <strong class="memberName">-</strong></p>
+                        <p>No.Tlp : <strong class="memberPhone">-</strong></p>
+                        <p>Point : <span class="memberPoints">-</span></p>
+                    </div>
+                    <div class="text-xs text-right">
+                        <p class="mb-4 text-gray-900 font-light">Membership</p>
+                        <span
+                            class="bg-linear-[90deg,_#FF5733,_#B9B9B9] text-white px-3 py-2 rounded font-bold text-xs">EXPIRED</span>
+                    </div>
+                </div>
+
                 <!-- Update Membership -->
-                <button
-                    class="w-auto h-auto px-4 py-2 ml-auto border-2 border-primary rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-white italic text-sm mt-2"
+                <button id="UpdateMember"
+                    class="w-auto h-auto px-4 py-2 ml-auto border-2 border-primary rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-white italic text-sm mt-2 hidden"
                     onclick="showModal('updateMembershipModal')">
                     Update
                 </button>
@@ -551,11 +584,15 @@
             <div class="relative h-[25%] w-full flex flex-col justify-end bottom-0 p-6 shadow-continuePayment bg-white">
                 <div class="flex justify-between items-center">
                     <h1 class="text-tertiary text-lg font-light">Pajak</h1>
-                    <p class="text-textColor text-sm w-auto">Rp. 20.000</p>
+                    <p class="text-textColor text-sm w-auto" id="taxAmount">Rp. 20.000</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <h1 class="text-tertiary text-lg font-light">Subtotal</h1>
-                    <p class="text-textColor text-lg font-bold w-auto">Rp. 20.000</p>
+                    <p class="text-textColor text-lg font-bold w-auto" id="subtotalAmount">Rp. 20.000</p>
+                </div>
+                <div class="flex justify-between items-center">
+                    <h1 class="text-tertiary text-lg font-light">Total</h1>
+                    <p class="text-textColor text-lg font-bold w-auto" id="totalAmount">Rp. 0</p>
                 </div>
                 <div class="flex justify-between mt-3 w-full">
                     <button
