@@ -248,7 +248,7 @@
             <div class="flex items-center justify-between gap-4 my-2 w-full py-2 px-6">
                 <div
                     class="flex justify-center font-light items-center gap-x-2 border-2 border-[#8B8B8B] rounded-xl px-4 py-2 text-[#8B8B8B] has-checked:border-primary has-checked:bg-[#fff6f4] has-checked:text-primary">
-                    <form action="/action_page.php" class="flex items-center gap-2">
+                    <form action="" class="flex items-center gap-2">
                         <i class="fa fa-cutlery" aria-hidden="true"></i>
                         <label for="dinein">Dine In</label>
                         <input type="checkbox" id="dinein" name="dinein" value="DineIn"
@@ -257,7 +257,7 @@
                 </div>
                 <div
                     class="flex font-light justify-center items-center gap-x-2 border-2 border-[#8B8B8B] rounded-xl px-4 py-2 text-[#8B8B8B] has-checked:border-primary has-checked:bg-[#fff6f4] has-checked:text-primary">
-                    <form action="/action_page.php" class="flex items-center gap-2">
+                    <form action="" class="flex items-center gap-2">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                         <label for="togo">Take Away</label>
                         <input type="checkbox" id="takeaway" name="takeaway"
@@ -287,13 +287,21 @@
                     </div>
 
                     <!-- Table Number -->
-                    <div>
+                    <div id="tableWrapper">
                         <label for="table" class="block text-gray-800 text-[11pt]">No.Table</label>
                         <select id="table" name="table" required
                             class="w-[50%] border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1 text-[11pt]">
-                            <option value="">Select Table</option>
-                            <option value="245">245</option>
-                            <option value="246">246</option>
+                            <option hidden>Select Table</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
                         </select>
                     </div>
                 </form>
@@ -329,7 +337,7 @@
                             <button class="btnPlus bg-primary text-white rounded-md w-8 h-8 text-xl">+</button>
                         </div>
                         <div class="flex justify-between items-center w-full h-12 mt-2">
-                            <input type="text" placeholder="add note"
+                            <input type="text" placeholder="add note" id="note"
                                 class="note border border-gray-300 rounded-md p-3 w-full text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
                             <button
                                 class="btnDelete text-tertiary hover:text-red-700 h-full rounded-md border-2 border-tertiary transition-colors duration-200 w-[20%]">
@@ -447,7 +455,7 @@
                 <!-- Update Membership -->
                 <button id="UpdateMember"
                     class="w-auto h-auto px-4 py-2 ml-auto border-2 border-primary rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-white italic text-sm mt-2 hidden"
-                    onclick="showModal('updateMembershipModal')">
+                    onclick="showUpdateMembershipModal()">
                     Update
                 </button>
 
@@ -527,7 +535,7 @@
 
                     <div class="space-y-2">
                         <h3 class="text-lg font-medium text-tertiary">
-                            Card (Comming Soon)
+                            Card (Coming Soon)
                         </h3>
                         <div class="flex flex-col gap-1">
                             <div
@@ -583,8 +591,12 @@
             <!-- Pay Orders -->
             <div class="relative h-[25%] w-full flex flex-col justify-end bottom-0 p-6 shadow-continuePayment bg-white">
                 <div class="flex justify-between items-center">
-                    <h1 class="text-tertiary text-lg font-light">Pajak</h1>
+                    <h1 class="text-tertiary text-lg font-light">Tax</h1>
                     <p class="text-textColor text-sm w-auto" id="taxAmount">Rp. 20.000</p>
+                </div>
+                <div class="flex justify-between items-center" id="membershipCostSection" style="display: none;">
+                    <h1 class="text-tertiary text-lg font-light">Update Membership</h1>
+                    <p class="text-textColor text-sm w-auto" id="membershipCost">Rp. 0</p>
                 </div>
                 <div class="flex justify-between items-center">
                     <h1 class="text-tertiary text-lg font-light">Subtotal</h1>
@@ -602,7 +614,7 @@
                     </button>
                     <button
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white rounded-lg text-[11pt] font-semibold shadow-md hover:bg-primary-dark transition-colors duration-200 py-2 px-1 w-auto"
-                        type="button" id="continuePaymentBtn" onclick="showModal('modalInvoice')">
+                        type="button" id="continuePaymentBtn" onclick="prepareInvoice()">
                         Continue Payment
                     </button>
                 </div>
@@ -743,14 +755,14 @@
         </aside>
 
         <!-- Invoice -->
-        <div class="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-opacity-50 z-50 hidden"
+        <div class="fixed inset-0 flex bg-black/25 items-center justify-center backdrop-blur-sm bg-opacity-50 z-50 hidden"
             id="modalInvoice">
             <!-- Modal -->
             <div class="bg-white w-[50%] h-auto rounded-xl shadow-lg p-6 space-y-4">
                 <!-- Header -->
                 <div class="flex justify-between items-center">
                     <div class="text-sm text-gray-500">
-                        Table No.<br /><span class="text-2xl font-bold text-black">234</span>
+                        Table No.<br /><span class="text-2xl font-bold text-black" id="invoiceTableNo">234</span>
                     </div>
                     <div class="text-center">
                         <h2 class="text-xl font-semibold">Order confirmation</h2>
@@ -761,8 +773,8 @@
 
                 <!-- Order Info -->
                 <div class="flex justify-between text-sm text-gray-500">
-                    <span>#Orders0021</span>
-                    <span>23/05/2025 | 14:30</span>
+                    <span id="invoiceOrderCode">#Orders0021</span>
+                    <span id="invoiceOrderTime">23/05/2025 | 14:30</span>
                 </div>
 
                 <!-- Table -->
@@ -774,19 +786,9 @@
                     </div>
                     <div class="divide-y text-sm">
                         <div class="grid grid-cols-4 p-2">
-                            <div class="col-span-2">Steak sapi bakar</div>
-                            <div>1</div>
-                            <div class="text-right">Rp20.500</div>
-                        </div>
-                        <div class="grid grid-cols-4 p-2">
-                            <div class="col-span-2">Ayam kentang</div>
-                            <div>1</div>
-                            <div class="text-right">Rp20.500</div>
-                        </div>
-                        <div class="grid grid-cols-4 p-2">
-                            <div class="col-span-2">Energen Es</div>
-                            <div>1</div>
-                            <div class="text-right">Rp20.500</div>
+                            <div class="col-span-2" id="invoiceItemList">Steak sapi bakar</div>
+                            <div id="invoiceItemQty">1</div>
+                            <div class="text-right" id="invoiceItemTotalPrice">Rp20.500</div>
                         </div>
                     </div>
                 </div>
@@ -795,47 +797,43 @@
                     <!-- Notes -->
                     <div class="flex-1">
                         <h3 class="text-sm font-semibold mb-1">NOTES</h3>
-                        <p class="text-xs text-gray-500">
-                            Lorem Ipsum has been the industry’s standard dummy text ever
-                            since the 1500s, when an unknown printer took a galley of type
-                            and scrambled it to make a type specimen book.
-                        </p>
+                        <p class="text-xs text-gray-500" id="noteItem"></p>
                     </div>
 
                     <!-- Summary -->
                     <div class="text-sm space-y-1 flex-1">
                         <div class="flex justify-between">
                             <span>SUBTOTAL</span>
-                            <span>Rp70.000</span>
+                            <span id="invoiceSubtotal">Rp70.000</span>
                         </div>
                         <div class="flex justify-between">
                             <span>MEMBERSHIP DISCOUNT</span>
-                            <span class="text-textColor">-2.5%</span>
+                            <span class="text-textColor" id="invoiceDiscount">-2.5%</span>
                         </div>
                         <div class="flex justify-between">
                             <span>TAX</span>
-                            <span>Rp2.000</span>
+                            <span id="invoiceTax">Rp2.000</span>
                         </div>
                         <div class="flex justify-between font-bold text-lg text-primary">
                             <span>BILL AMOUNT</span>
-                            <span>Rp71.500</span>
+                            <span id="invoiceTotal">Rp71.500</span>
                         </div>
                         <div class="flex justify-between">
                             <span>CASH</span>
-                            <span>Rp100.000</span>
+                            <span id="invoiceCash"></span>
                         </div>
                         <div class="flex justify-between">
                             <span>RETURN</span>
-                            <span>Rp28.500</span>
+                            <span id="invoiceReturn"></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Payment Method -->
                 <div class="flex items-center space-x-2 text-sm text-gray-600">
-                    <img src="https://img.icons8.com/color/48/000000/cash-in-hand.png" class="w-6 h-6"
-                        alt="Cash Icon" />
-                    <span>Cash</span>
+                    <img src="https://img.icons8.com/color/48/000000/cash-in-hand.png"
+                        class="w-6 h-6 payment-method-icon" />
+                    <span class="payment-method-name">Cash</span>
                 </div>
 
                 <!-- Buttons -->
@@ -846,6 +844,31 @@
                     </button>
                     <button class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
                         onclick="showPaymentProcessModal()">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Order Finish -->
+        <div id="modalInputCash"
+            class="fixed hidden inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-100 w-full animate-fadeIn">
+            <div class="bg-white relative rounded-2xl p-16 w-[50vw] h-[80vh] shadow-lg flex flex-col items-center">
+                <!-- Processing section -->
+                <div id="processingPayment" class="flex flex-col items-center justify-center w-full h-full my-auto">
+                    <h2 class="text-3xl font-semibold mb-2">Input Payment Method Cash</h2>
+
+                    <input type="number" id="cashInput" name="cashInput" placeholder="Cash Amount" class="" />
+
+                </div>
+                <!-- Buttons -->
+                <div class="flex justify-end space-x-3">
+                    <button class="px-4 py-2 rounded-md border border-primary text-primary hover:bg-red-50"
+                        onclick="closeModal('modalInvoice')">
+                        Cancel
+                    </button>
+                    <button class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
+                        onclick="handleCashInput()">
                         Confirm
                     </button>
                 </div>
@@ -909,6 +932,8 @@
         <div class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
             id="updateMembershipModal">
             <!-- Modal Box -->
+            <input type="hidden" name="name" id="formUpdateName">
+            <input type="hidden" name="phone" id="formUpdatePhone">
             <div
                 class="bg-white w-[400px] h-[350px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-lg p-6 flex flex-col justify-between">
                 <!-- Title -->
@@ -932,7 +957,7 @@
                     <div class="space-y-4 text-sm text-gray-800">
                         <div class="flex justify-between border-b pb-1">
                             <span>Member</span>
-                            <span class="font-semibold">Silver</span>
+                            <span class="font-semibold" id="lastTypeDisplay">Silver</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Cost Update Member</span>
@@ -943,11 +968,11 @@
 
                 <!-- Action Buttons -->
                 <div class="flex justify-end gap-3 mt-6">
-                    <button onclick="closeModal('updateMembershipModal')"
+                    <button onclick="closeModal('updateMembershipModal')" type="button"
                         class="border border-primary text-primary px-4 py-1 rounded hover:bg-primary hover:text-white transition">
                         Cancel
                     </button>
-                    <button
+                    <button type="submit" onclick="updateMembership()"
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white px-4 py-1 rounded hover:opacity-90 transition">
                         Update
                     </button>

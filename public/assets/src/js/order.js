@@ -13,6 +13,53 @@ function closeModal(modalId) {
   modal.classList.add("hidden");
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const dineinCheckbox = document.getElementById('dinein');
+  const takeawayCheckbox = document.getElementById('takeaway');
+  const tableWrapper = document.getElementById('tableWrapper');
+
+  function toggleTableVisibility() {
+    if (takeawayCheckbox.checked && !dineinCheckbox.checked) {
+      tableWrapper.classList.add('hidden'); // Sembunyikan table
+    } else {
+      tableWrapper.classList.remove('hidden'); // Tampilkan table
+    }
+  }
+
+  dineinCheckbox.addEventListener('change', function () {
+    if (dinein.checked) {
+      takeaway.checked = false;
+    }
+  });
+
+  takeawayCheckbox.addEventListener('change', function () {
+    if (takeaway.checked) {
+      dinein.checked = false;
+    }
+  });
+
+  // Event listener ketika checkbox berubah
+  dineinCheckbox.addEventListener('change', toggleTableVisibility);
+  takeawayCheckbox.addEventListener('change', toggleTableVisibility);
+
+  // Panggil langsung saat halaman dimuat
+  toggleTableVisibility();
+
+  const paymentCheckboxes = document.querySelectorAll(
+    'input[type="checkbox"][name="ShopeePay"], input[name="Qris"], input[name="Dana"], input[name="Cash"], input[name="Muamalat"], input[name="BRI"], input[name="BCA"]'
+  );
+
+  paymentCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      if (this.checked) {
+        paymentCheckboxes.forEach(cb => {
+          if (cb !== this) cb.checked = false;
+        });
+      }
+    });
+  });
+});
+
 function orderNext() {
   const name = document.getElementById('name')?.value.trim();
   const phone = document.getElementById('phone')?.value.trim();
@@ -20,9 +67,21 @@ function orderNext() {
   const dineIn = document.getElementById('dinein')?.checked;
   const takeaway = document.getElementById('takeaway')?.checked;
 
-  // Validasi
-  if (!name || !phone || !table || (!dineIn && !takeaway)) {
-    alert("Please complete all required fields:\n- Choose Dine In or Take Away\n- Enter name, phone number, and table number");
+  // Validasi utama: nama & telepon harus selalu diisi
+  if (!name || !phone) {
+    alert("Please enter name and phone number.");
+    return;
+  }
+
+  // Validasi minimal salah satu dipilih
+  if (!dineIn && !takeaway) {
+    alert("Please choose either Dine In or Take Away.");
+    return;
+  }
+
+  // Validasi table hanya jika dine in
+  if (dineIn && !table) {
+    alert("Please select a table for Dine In.");
     return;
   }
 
@@ -194,9 +253,22 @@ function searchTable() {
     addItemCard.classList.toggle("hidden", noMatch);
 }
 
+
+
+
+
+
+
+
+
+
 // add item to sidebar order list
 let orders = {};
 let currentOrderCode = null;
+let membershipUpgradeCost = 0;
+let membershipDiscountRate = 0.025; // 2.5%
+let customerCash = 0;
+let selectedPaymentMethod = "";
 
 function addToOrder(id, name, price, image) {
     price = parseInt(price);
@@ -291,6 +363,12 @@ function createOrderItem(id) {
     clone.querySelector('.productSubtotal').textContent = 'Rp. ' + orders[id].price.toLocaleString();
     clone.querySelector('.productQty').textContent = orders[id].qty;
 
+    const noteInput = clone.querySelector('.note');
+    noteInput.value = orders[id].note || '';
+    noteInput.addEventListener('input', (e) => {
+      orders[id].note = e.target.value;
+    });
+
     // Event handler
     clone.querySelector('.btnMinus').onclick = () => updateQty(id, -1);
     clone.querySelector('.btnPlus').onclick = () => updateQty(id, 1);
@@ -301,73 +379,251 @@ function createOrderItem(id) {
 }
 
 function checkMembership() {
-
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  console.log('[checkMembership] input:', { name, phone });
-
-  if (!name || !phone) {
-    showNoMembershipCard();
-    return;
-  }
+  const name = document.getElementById('name')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
 
   fetch('/check-membership', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
     },
     body: JSON.stringify({ name, phone })
   })
-  .then(res => res.json())
-  .then(data => {
+    .then(res => res.json())
+    .then(data => {
+      // Sembunyikan semua dulu
 
-  if (data.status === 'found') {
+      if (data.status === 'found') {
+        if (data.membership === 'Expired') {
+          document.getElementById('cardExpired').classList.remove('hidden');
+          document.querySelector('.memberName').textContent = data.name;
+          document.querySelector('.memberPhone').textContent = data.phone;
+          document.querySelector('.memberPoints').textContent = data.points;
 
-    const nameEl = document.querySelectorAll('.memberName');
-    const phoneEl = document.querySelectorAll('.memberPhone');
-    const pointEl = document.querySelectorAll('.memberPoints');
+          // Tampilkan tombol update
+          document.getElementById('UpdateMember').classList.remove('hidden');
 
-    // Isi semua kartu yang aktif (karena hanya satu yang akan tampil)
-    nameEl.forEach(el => el.textContent = data.name);
-    phoneEl.forEach(el => el.textContent = data.phone);
-    pointEl.forEach(el => el.textContent = data.points ?? 0);
+          // Simpan nilai untuk modal
+          document.getElementById('formUpdateName').value = data.name;
+          document.getElementById('formUpdatePhone').value = data.phone;
 
-      if (data.membership === 'Silver') {
-        document.getElementById('cardSilver').classList.remove('hidden');
-      } else if (data.membership === 'Gold') {
-        document.getElementById('cardGold').classList.remove('hidden');
-      } else if (data.membership === 'Platinum') {
-        document.getElementById('cardPlatinum').classList.remove('hidden');
-      } else if (data.membership === 'Expired') {
-        document.getElementById('cardExpired')?.classList.remove('hidden');
-        document.getElementById('UpdateMember')?.classList.remove('hidden');
+          // Set display Last Type di Modal Update
+          document.getElementById('lastTypeDisplay').textContent = data.last_type ?? '-';
+
+        } else if (data.membership === 'Silver') {
+          document.getElementById('cardSilver').classList.remove('hidden');
+        } else if (data.membership === 'Gold') {
+          document.getElementById('cardGold').classList.remove('hidden');
+        } else if (data.membership === 'Platinum') {
+          document.getElementById('cardPlatinum').classList.remove('hidden');
+        } else {
+          document.getElementById('NoMembership')?.classList.remove('hidden');
+        }
       } else {
         document.getElementById('NoMembership')?.classList.remove('hidden');
       }
-    } else {
-      document.getElementById('NoMembership')?.classList.remove('hidden');
-    }
-  })
+    })
+    // .catch(() => showCard('NoMembership'));
 }
+
+function showUpdateMembershipModal() {
+  const name = document.getElementById('name')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
+  const lastType = document.getElementById('lastTypeDisplay')?.textContent || '-';
+
+  // Isi input hidden
+  document.getElementById('formUpdateName').value = name;
+  document.getElementById('formUpdatePhone').value = phone;
+
+  document.getElementById('lastTypeDisplay').textContent = last;
+
+  // Tampilkan modal
+  document.getElementById('updateMembershipModal').classList.remove('hidden');
+}
+
+// function updateMembership() {
+//   const name = document.getElementById('formUpdateName').value.trim();
+//   const phone = document.getElementById('formUpdatePhone').value.trim();
+
+//   if (!name || !phone) {
+//     alert('Data tidak lengkap');
+//     return;
+//   }
+
+//   fetch('/membership/update', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+//     },
+//     body: JSON.stringify({ name, phone })
+//   })
+//     .then(res => res.json())
+//     .then(data => {
+//       if (data.status === 'updated') {
+//         // Tutup modal
+//         closeModal('updateMembershipModal');
+
+//         // Tampilkan kembali sidebar payment
+//         showSidebar('sidebarPayment');
+
+//         // Tambahkan biaya update ke total (jika ada UI untuk itu)
+//         const cost = data.cost || 20000;
+//         document.getElementById('membershipCostSection').style.display = 'flex';
+//         document.getElementById('membershipCost').textContent = formatRupiah(cost);
+
+//         // Perbarui total pembayaran
+//         updatePaymentSummary();
+
+//         // Refresh kartu membership dengan check ulang
+//         checkMembership();
+//       } else {
+//         alert(data.message || 'Membership gagal diperbarui.');
+//       }
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       alert('Terjadi kesalahan saat memperbarui membership.');
+//     });
+// }
+
+
 
 function updatePaymentSummary() {
   let subtotal = 0;
-  const taxRate = 0.1; // 10%
+  const taxRate = 0.1;
 
-  // Hitung subtotal dari pesanan
   for (const id in orders) {
     const item = orders[id];
     subtotal += item.price * item.qty;
   }
 
   const tax = Math.round(subtotal * taxRate);
-  const total = subtotal + tax;
+  const total = subtotal + tax + membershipUpgradeCost;
 
   const formatRupiah = n => 'Rp. ' + n.toLocaleString('id-ID');
 
-  // Masukkan nilai yang sesuai ke elemen
   document.getElementById('subtotalAmount').textContent = formatRupiah(subtotal);
   document.getElementById('taxAmount').textContent = formatRupiah(tax);
-  document.getElementById('totalAmount').textContent = formatRupiah(total); // pastikan ID ini ada
+  document.getElementById('totalAmount').textContent = formatRupiah(total);
 }
+
+document.querySelectorAll('#paymentMethod input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', function () {
+    // Hapus centang dari semua
+    document.querySelectorAll('#paymentMethod input[type="checkbox"]').forEach(cb => {
+      if (cb !== this) cb.checked = false;
+    });
+
+    // Simpan metode pembayaran yang terpilih
+    if (this.checked) {
+      selectedPaymentMethod = this.value;
+    } else {
+      selectedPaymentMethod = "";
+    }
+  });
+});
+
+function prepareInvoice() {
+  if (selectedPaymentMethod === "Cash") {
+    // Tampilkan input cash terlebih dahulu
+    document.getElementById("modalInputCash").classList.remove("hidden");
+  } else {
+    // Langsung ke invoice
+    customerCash = 0; // atau bisa default cash = total jika kamu mau
+    showInvoice();
+  }
+}
+
+function handleCashInput() {
+  const input = document.getElementById("cashInput").value;
+  const amount = parseInt(input);
+
+  if (isNaN(amount) || amount <= 0) {
+    alert("Please enter a valid cash amount.");
+    return;
+  }
+
+  customerCash = amount;
+
+  closeModal('modalInputCash');
+  showInvoice(); // Panggil invoice setelah cash dimasukkan
+}
+
+
+function showInvoice() {
+  const tableNo = document.getElementById("table")?.value || "-";
+  const metaText = document.getElementById("orderMeta1")?.textContent || "-";
+  const cash = parseInt(document.getElementById("cashInput")?.value) || 0;
+  const [orderCode, date, time] = metaText.split(" | ");
+
+  // Set meta
+  document.getElementById("invoiceTableNo").textContent = tableNo;
+  document.getElementById("invoiceOrderCode").textContent = orderCode;
+  document.getElementById("invoiceOrderTime").textContent = `${date} | ${time}`;
+
+  // Ambil item terakhir dalam orders (hanya 1 yg ditampilkan berdasarkan strukturmu sekarang)
+  const lastItemId = Object.keys(orders).pop(); // ambil ID terakhir
+  const lastItem = orders[lastItemId];
+
+  if (lastItem) {
+    document.getElementById("invoiceItemList").textContent = lastItem.name;
+    document.getElementById("invoiceItemQty").textContent = lastItem.qty;
+    document.getElementById("invoiceItemTotalPrice").textContent =
+      "Rp" + (lastItem.price * lastItem.qty).toLocaleString("id-ID");
+
+    // Ambil note dari elemen sidebar
+    const itemElem = document.querySelector(`[data-id="${lastItemId}"]`);
+    const noteText = itemElem?.querySelector('.note')?.value?.trim() || "-";
+    document.getElementById("noteItem").textContent = noteText;
+  }
+
+  // Hitung total
+  let subtotal = 0;
+  for (const id in orders) {
+    subtotal += orders[id].price * orders[id].qty;
+  }
+
+  const discount = Math.round(subtotal * membershipDiscountRate); // misal 0.025
+  const tax = Math.round(subtotal * 0.1);
+  const total = subtotal + tax + membershipUpgradeCost - discount;
+  customerCash = cash;
+  const change = customerCash - total;
+
+  // Tampilkan ke summary invoice
+  const format = n => `Rp${n.toLocaleString("id-ID")}`;
+  document.getElementById("invoiceSubtotal").textContent = format(subtotal);
+  document.getElementById("invoiceDiscount").textContent = `-Rp${discount.toLocaleString("id-ID")}`;
+  document.getElementById("invoiceTax").textContent = format(tax);
+  document.getElementById("invoiceTotal").textContent = format(total);
+  document.getElementById("invoiceCash").textContent = format(customerCash);
+  document.getElementById("invoiceReturn").textContent = format(change);
+
+  // Tampilkan metode pembayaran
+  const paymentMethod = selectedPaymentMethod || "Not selected";
+  document.querySelector('#modalInvoice .payment-method-icon').src = getPaymentIcon(paymentMethod);
+  document.querySelector('#modalInvoice .payment-method-name').textContent = paymentMethod;
+
+  // Tampilkan modal invoice
+  document.getElementById("modalInvoice").classList.remove("hidden");
+}
+
+
+
+
+// Fungsi bantu untuk menyesuaikan icon
+function getPaymentIcon(method) {
+  switch (method) {
+    case "ShopeePay": return "assets/src/assets/paymentIcons/logoShopeePay-01.png";
+    case "Qris": return "assets/src/assets/paymentIcons/qris.png";
+    case "Dana": return "assets/src/assets/paymentIcons/dana.png";
+    case "Cash": return "assets/src/assets/paymentIcons/cash.png";
+    case "Muamalat": return "assets/src/assets/paymentIcons/muamalat.png";
+    case "BRI": return "assets/src/assets/paymentIcons/bri.png";
+    case "BCA": return "assets/src/assets/paymentIcons/bca.png";
+    default: return "https://img.icons8.com/color/48/000000/cash-in-hand.png";
+  }
+}
+
+

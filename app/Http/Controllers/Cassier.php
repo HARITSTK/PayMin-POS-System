@@ -68,14 +68,6 @@ class Cassier extends BaseController
                                 ->with('member') // Eager load the relationship
                                 ->first();
 
-        // --- ADD THIS DEBUGGING LINE ---
-        \Log::info('Membership Check Request:', ['name' => $request->name, 'phone' => $request->phone]);
-        \Log::info('Customer Found:', ['customer' => $customer ? $customer->toArray() : 'null']);
-        if ($customer && $customer->member) {
-            \Log::info('Member Data:', ['member' => $customer->member->toArray()]);
-        }
-        // --------------------------------
-
         if (!$customer || !$customer->member) {
             return response()->json(['status' => 'not_found']);
         }
@@ -91,110 +83,145 @@ class Cassier extends BaseController
         ]);
     }
 
-    public function processPayment(Request $request)
+    public function updateMembership(Request $request)
     {
-        $request->validate([
-            // ... (existing validations)
-            'cash_received' => 'nullable|numeric|min:0', // New: for cash payments
-            'change_amount' => 'nullable|numeric', // New: for cash payments
-        ]);
+        $customer = Mdl_Customer::where('name', $request->input('name'))
+            ->where('phone', $request->input('phone'))
+            ->with('member')
+            ->first();
 
-        try {
-            DB::beginTransaction();
+        if (!$customer || !$customer->member) {
+            return response()->json([
+                'status' => 'not_found',
+                'message' => 'Customer not found or no membership.'
+            ], 404);
+        }
 
-            $customer = null;
-            $customerId = null;
-            if ($request->customerPhone) {
-                $customer = Customer::firstOrCreate(
-                    ['phone' => $request->customerPhone],
-                    ['name' => $request->customerName ?? 'Guest', 'address' => null]
-                );
-                $customerId = $customer->id;
-            }
+        $member = $customer->member;
 
-            $sale = Sale::create([
-                'user_id' => auth()->id(),
-                'customer_id' => $customerId,
-                'total' => $request->total,
-                'change_amount' => $request->change_amount ?? 0.00, // Use the value from frontend
-                'sale_date' => Carbon::now(),
-                'type' => $request->sale_type,
-                'quantity' => array_sum(array_column($request->items, 'quantity')),
-                'tax_amount' => $request->tax_amount,
-                'discount_amount' => $request->discount_amount,
-            ]);
-
-            foreach ($request->items as $itemData) {
-                SaleItem::create([
-                    'sale_id' => $sale->id,
-                    'product_id' => $itemData['product_id'],
-                    'quantity' => $itemData['quantity'],
-                    'price' => $itemData['price'],
-                    'subtotal' => $itemData['price'] * $itemData['quantity'],
-                ]);
-                // TODO: Product stock decrement
-                Product::where('id', $itemData['product_id'])->decrement('stock', $itemData['quantity']);
-            }
-
-            $paymentMethodInDB = $this->mapPaymentMethodForDB($request->paymentMethod);
-            Payment::create([
-                'sale_id' => $sale->id,
-                'payment_method' => $paymentMethodInDB,
-                'amount' => $request->total, // Amount recorded in payments table is the total bill
-            ]);
-
-            if ($customer && $customer->member && $request->customer_membership && $request->customer_membership !== 'not_found') {
-                $pointsToAdd = floor($request->total / 10000);
-                $customer->member->increment('points', $pointsToAdd);
-            }
-
-            DB::commit();
+        if ($member->type === 'Expired' && $member->last_type) {
+            $member->type = $member->last_type;
+            $member->last_type = null;
+            $member->save();
 
             return response()->json([
-                'message' => 'Pembayaran berhasil!',
-                'order_number' => $sale->order_number,
-                'total_paid' => $sale->total,
-                'payment_method' => $request->paymentMethod,
-                'subtotal_before_discount' => $request->subtotal_before_discount,
-                'tax_amount' => $request->tax_amount,
-                'discount_amount' => $request->discount_amount,
-                'customer_membership' => $request->customer_membership,
-                'items' => $request->items,
-                'cash_received' => $request->cash_received, // Return these for display
-                'change_amount' => $request->change_amount, // Return these for display
-            ], 200);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            DB::rollBack();
-            return response()->json(['message' => 'Data tidak valid.', 'errors' => $e->errors()], 422);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Payment processing error: ' . $e->getMessage(), ['exception' => $e->getTraceAsString(), 'request' => $request->all()]);
-            return response()->json(['message' => 'Terjadi kesalahan saat memproses pembayaran. Mohon coba lagi.', 'error' => $e->getMessage()], 500);
+                'status' => 'updated',
+                'cost' => 20000
+            ]);
         }
-    }
 
-    private function mapPaymentMethodForDB(string $frontendMethod): string
-    {
-        // Based on your payment_method ENUM ('cash','card','ewallet')
-        switch ($frontendMethod) {
-            case 'Cash': return 'cash';
-            case 'ShopeePay':
-            case 'Qris':
-            case 'Dana': return 'ewallet';
-            case 'Muamalat':
-            case 'BRI':
-            case 'BCA': return 'card';
-            default: return 'ewallet'; // Default to ewallet or handle error
-        }
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Membership is still active or cannot be updated.'
+        ], 400);
     }
 
 
-    private function getProductIdFromName(string $productName): ?int
-    {
-        $product = Product::where('name', $productName)->first();
-        return $product ? $product->id : null;
-    }
+
+    // public function processPayment(Request $request)
+    // {
+    //     $request->validate([
+    //         // ... (existing validations)
+    //         'cash_received' => 'nullable|numeric|min:0', // New: for cash payments
+    //         'change_amount' => 'nullable|numeric', // New: for cash payments
+    //     ]);
+
+    //     try {
+    //         DB::beginTransaction();
+
+    //         $customer = null;
+    //         $customerId = null;
+    //         if ($request->customerPhone) {
+    //             $customer = Customer::firstOrCreate(
+    //                 ['phone' => $request->customerPhone],
+    //                 ['name' => $request->customerName ?? 'Guest', 'address' => null]
+    //             );
+    //             $customerId = $customer->id;
+    //         }
+
+    //         $sale = Sale::create([
+    //             'user_id' => auth()->id(),
+    //             'customer_id' => $customerId,
+    //             'total' => $request->total,
+    //             'change_amount' => $request->change_amount ?? 0.00, // Use the value from frontend
+    //             'sale_date' => Carbon::now(),
+    //             'type' => $request->sale_type,
+    //             'quantity' => array_sum(array_column($request->items, 'quantity')),
+    //             'tax_amount' => $request->tax_amount,
+    //             'discount_amount' => $request->discount_amount,
+    //         ]);
+
+    //         foreach ($request->items as $itemData) {
+    //             SaleItem::create([
+    //                 'sale_id' => $sale->id,
+    //                 'product_id' => $itemData['product_id'],
+    //                 'quantity' => $itemData['quantity'],
+    //                 'price' => $itemData['price'],
+    //                 'subtotal' => $itemData['price'] * $itemData['quantity'],
+    //             ]);
+    //             // TODO: Product stock decrement
+    //             Product::where('id', $itemData['product_id'])->decrement('stock', $itemData['quantity']);
+    //         }
+
+    //         $paymentMethodInDB = $this->mapPaymentMethodForDB($request->paymentMethod);
+    //         Payment::create([
+    //             'sale_id' => $sale->id,
+    //             'payment_method' => $paymentMethodInDB,
+    //             'amount' => $request->total, // Amount recorded in payments table is the total bill
+    //         ]);
+
+    //         if ($customer && $customer->member && $request->customer_membership && $request->customer_membership !== 'not_found') {
+    //             $pointsToAdd = floor($request->total / 10000);
+    //             $customer->member->increment('points', $pointsToAdd);
+    //         }
+
+    //         DB::commit();
+
+    //         return response()->json([
+    //             'message' => 'Pembayaran berhasil!',
+    //             'order_number' => $sale->order_number,
+    //             'total_paid' => $sale->total,
+    //             'payment_method' => $request->paymentMethod,
+    //             'subtotal_before_discount' => $request->subtotal_before_discount,
+    //             'tax_amount' => $request->tax_amount,
+    //             'discount_amount' => $request->discount_amount,
+    //             'customer_membership' => $request->customer_membership,
+    //             'items' => $request->items,
+    //             'cash_received' => $request->cash_received, // Return these for display
+    //             'change_amount' => $request->change_amount, // Return these for display
+    //         ], 200);
+
+    //     } catch (\Illuminate\Validation\ValidationException $e) {
+    //         DB::rollBack();
+    //         return response()->json(['message' => 'Data tidak valid.', 'errors' => $e->errors()], 422);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         \Log::error('Payment processing error: ' . $e->getMessage(), ['exception' => $e->getTraceAsString(), 'request' => $request->all()]);
+    //         return response()->json(['message' => 'Terjadi kesalahan saat memproses pembayaran. Mohon coba lagi.', 'error' => $e->getMessage()], 500);
+    //     }
+    // }
+
+    // private function mapPaymentMethodForDB(string $frontendMethod): string
+    // {
+    //     // Based on your payment_method ENUM ('cash','card','ewallet')
+    //     switch ($frontendMethod) {
+    //         case 'Cash': return 'cash';
+    //         case 'ShopeePay':
+    //         case 'Qris':
+    //         case 'Dana': return 'ewallet';
+    //         case 'Muamalat':
+    //         case 'BRI':
+    //         case 'BCA': return 'card';
+    //         default: return 'ewallet'; // Default to ewallet or handle error
+    //     }
+    // }
+
+
+    // private function getProductIdFromName(string $productName): ?int
+    // {
+    //     $product = Product::where('name', $productName)->first();
+    //     return $product ? $product->id : null;
+    // }
 
 
 

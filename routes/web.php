@@ -52,6 +52,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/HomeCassier', [Cassier::class, 'home'])->name('HomeCassier');
     Route::get('/OrderCassier', [Cassier::class, 'order'])->name('OrderCassier');
     Route::post('/check-membership', [Cassier::class, 'checkMembership']);
+    Route::post('/membership/update', [Cassier::class, 'updateMembership']);
     Route::post('/process-payment', [Cassier::class, 'processPayment']);
     Route::get('/ReportCassier', [Cassier::class, 'report'])->name('ReportCassier');
     Route::get('/ItemCassier', [Cassier::class, 'item'])->name('ItemCassier');
