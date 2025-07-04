@@ -8,6 +8,8 @@ use App\Http\Controllers\Storagee;
 use App\Http\Controllers\Waiters;
 use App\Http\Controllers\Kitchen;
 use App\Http\Middleware\AuthMiddleware;
+use Illuminate\Http\Request;
+
 
 Route::get('/', function () {
     return view('fpay');
@@ -53,7 +55,12 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/OrderCassier', [Cassier::class, 'order'])->name('OrderCassier');
     Route::post('/check-membership', [Cassier::class, 'checkMembership']);
     Route::post('/membership/update', [Cassier::class, 'updateMembership']);
-    Route::post('/process-payment', [Cassier::class, 'processPayment']);
+    // Route::post('/process-payment', [Cassier::class, 'processPayment']);
+    // Route::post('/submit-sale', [Cassier::class, 'store']);
+    Route::post('/submit-sale', function (Request $request) {
+    return response()->json(['status' => 'received', 'data' => $request->all()]);
+    });
+
     Route::get('/ReportCassier', [Cassier::class, 'report'])->name('ReportCassier');
     Route::get('/ItemCassier', [Cassier::class, 'item'])->name('ItemCassier');
     Route::get('/MemberCassier', [Cassier::class, 'member'])->name('MemberCassier');

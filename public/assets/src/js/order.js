@@ -60,41 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function orderNext() {
-  const name = document.getElementById('name')?.value.trim();
-  const phone = document.getElementById('phone')?.value.trim();
-  const table = document.getElementById('table')?.value;
-  const dineIn = document.getElementById('dinein')?.checked;
-  const takeaway = document.getElementById('takeaway')?.checked;
-
-  // Validasi utama: nama & telepon harus selalu diisi
-  if (!name || !phone) {
-    alert("Please enter name and phone number.");
-    return;
-  }
-
-  // Validasi minimal salah satu dipilih
-  if (!dineIn && !takeaway) {
-    alert("Please choose either Dine In or Take Away.");
-    return;
-  }
-
-  // Validasi table hanya jika dine in
-  if (dineIn && !table) {
-    alert("Please select a table for Dine In.");
-    return;
-  }
-
-  const orderAside = document.getElementById("sidebarOrderedList");
-  const paymentAside = document.getElementById("sidebarPayment");
-
-  orderAside.classList.add("hidden");
-  paymentAside.classList.remove("hidden");
-
-  checkMembership();
-  updatePaymentSummary();
-}
-
 function paymentNext() {
   const paymentAside = document.getElementById("sidebarPayment");
   const finishAside = document.getElementById("sidebarFinish");
@@ -170,60 +135,6 @@ function adjustGridColumns() {
 
 window.addEventListener("resize", adjustGridColumns);
 adjustGridColumns();
-
-function confirmPayment() {
-  const paymentSuccess = document.getElementById("processingPayment");
-  const processingSection = document.getElementById("paymentSuccess");
-  const successSection = document.getElementById("successPayment");
-
-  // Tampilkan modal dan bagian processing
-  paymentSuccess.classList.remove("hidden");
-  processingSection.classList.remove("hidden");
-  successSection.classList.add("hidden");
-
-  // Sembunyikan invoice dan payment sidebar
-  const invoiceModal = document.getElementById("modalInvoice");
-  const paymentAside = document.getElementById("sidebarPayment");
-  const finishAside = document.getElementById("sidebarFinish");
-
-  invoiceModal.classList.add("hidden");
-  paymentAside.classList.add("hidden");
-
-  // Setelah delay 3 detik, tampilkan bagian sukses
-  setTimeout(() => {
-    processingSection.classList.add("hidden");
-    successSection.classList.remove("hidden");
-  }, 3000);
-
-  // Setelah delay total 6.5 detik, sembunyikan modal dan tampilkan sidebarFinish
-  setTimeout(() => {
-    paymentSuccess.classList.add("hidden");
-    finishAside.classList.remove("hidden");
-  }, 6500);
-}
-
-const modalOrderFinish = document.getElementById("modalOrderFinish");
-const processingSection = document.getElementById("processingPayment");
-const successSection = document.getElementById("paymentSuccess");
-
-function showPaymentProcessModal() {
-  modalOrderFinish.classList.remove("hidden");
-  processingSection.classList.remove("hidden");
-  successSection.classList.add("hidden");
-
-  document.getElementById("modalInvoice")?.classList.add("hidden");
-  document.getElementById("sidebarPayment")?.classList.add("hidden");
-
-  setTimeout(() => {
-    processingSection.classList.add("hidden");
-    successSection.classList.remove("hidden");
-  }, 3500);
-
-  setTimeout(() => {
-    modalOrderFinish.classList.add("hidden");
-    document.getElementById("sidebarFinish")?.classList.remove("hidden");
-  }, 6500);
-}
 
 function searchTable() {
     const input = document.getElementById("searchInput").value.toLowerCase().trim();
@@ -528,11 +439,11 @@ document.querySelectorAll('#paymentMethod input[type="checkbox"]').forEach(check
 function prepareInvoice() {
   if (selectedPaymentMethod === "Cash") {
     // Tampilkan input cash terlebih dahulu
-    document.getElementById("modalInputCash").classList.remove("hidden");
-  } else {
-    // Langsung ke invoice
     customerCash = 0; // atau bisa default cash = total jika kamu mau
-    showInvoice();
+    document.getElementById("modalInputCash").classList.remove("hidden");
+    
+  } else {
+    document.getElementById("sidebarFinish").classList.remove("hidden");
   }
 }
 
@@ -548,14 +459,115 @@ function handleCashInput() {
   customerCash = amount;
 
   closeModal('modalInputCash');
-  showInvoice(); // Panggil invoice setelah cash dimasukkan
+  closeModal('modalInvoice');
+
+  updateSidebarFinish(); // <--- Tambahkan ini
+  document.getElementById("sidebarPayment").classList.add("hidden");
+  document.getElementById("sidebarFinish").classList.remove("hidden");
+}
+
+
+function updateSidebarFinish() {
+  const orderMeta = document.getElementById("orderMeta1").textContent;
+  const [orderCode, date, time] = orderMeta.split(" | ");
+  document.getElementById("finishOrderCode").textContent = orderCode;
+  document.getElementById("finishOrderTime").textContent = `${date} | ${time}`;
+
+  // Kosongkan dulu tbody-nya
+  const tbody = document.getElementById("sidebarItemList");
+  tbody.innerHTML = "";
+
+  let subtotal = 0;
+  let tax = 0;
+  let discount = 0;
+
+  for (const id in orders) {
+    const item = orders[id];
+    const itemSubtotal = item.price * item.qty;
+    const itemTax = Math.round(itemSubtotal * 0.1);
+    const itemDiscount = Math.round(itemSubtotal * membershipDiscountRate || 0);
+
+    subtotal += itemSubtotal;
+    tax += itemTax;
+    discount += itemDiscount;
+
+    const row = document.createElement("tr");
+    row.classList.add("border-b", "border-tertiary", "h-[3rem]");
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>${item.qty}</td>
+      <td>Rp${itemTax.toLocaleString("id-ID")}</td>
+      <td>Rp${itemSubtotal.toLocaleString("id-ID")}</td>
+    `;
+    tbody.appendChild(row);
+  }
+
+  const total = subtotal + tax - discount;
+
+  // Update summary
+  document.getElementById("sidebarSubtotal").textContent = `Rp${subtotal.toLocaleString("id-ID")}`;
+  document.getElementById("sidebarDiscount").textContent = `Rp${discount.toLocaleString("id-ID")}`;
+  document.getElementById("sidebarTax").textContent = `Rp${tax.toLocaleString("id-ID")}`;
+  document.getElementById("sidebarTotal").textContent = `Rp${total.toLocaleString("id-ID")}`;
+
+  // Payment method
+  document.getElementById("sidebarPaymentMethod").textContent = selectedPaymentMethod;
+  document.getElementById("sidebarPaymentIcon").src = getPaymentIcon(selectedPaymentMethod);
+
+  // Show/hide cash and return
+  if (selectedPaymentMethod === "Cash") {
+    document.getElementById("sidebarCashRow").classList.remove("hidden");
+    document.getElementById("sidebarReturnRow").classList.remove("hidden");
+
+    document.getElementById("sidebarCash").textContent = `Rp${customerCash.toLocaleString("id-ID")}`;
+    const returnAmount = customerCash - total;
+    document.getElementById("sidebarReturn").textContent = `Rp${returnAmount.toLocaleString("id-ID")}`;
+  } else {
+    document.getElementById("sidebarCashRow").classList.add("hidden");
+    document.getElementById("sidebarReturnRow").classList.add("hidden");
+  }
+}
+
+function orderNext() {
+  const name = document.getElementById('name')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
+  const table = document.getElementById('table')?.value;
+  const dineIn = document.getElementById('dinein')?.checked;
+  const takeaway = document.getElementById('takeaway')?.checked;
+
+  // Validasi utama: nama & telepon harus selalu diisi
+  if (!name || !phone) {
+    alert("Please enter name and phone number.");
+    return;
+  }
+
+  // Validasi minimal salah satu dipilih
+  if (!dineIn && !takeaway) {
+    alert("Please choose either Dine In or Take Away.");
+    return;
+  }
+
+  // Validasi table hanya jika dine in
+  if (dineIn && !table) {
+    alert("Please select a table for Dine In.");
+    return;
+  }
+
+  const orderAside = document.getElementById("sidebarOrderedList");
+  const paymentAside = document.getElementById("sidebarPayment");
+
+  orderAside.classList.add("hidden");
+  paymentAside.classList.remove("hidden");
+
+  checkMembership();
+  updatePaymentSummary();
 }
 
 
 function showInvoice() {
   const tableNo = document.getElementById("table")?.value || "-";
   const metaText = document.getElementById("orderMeta1")?.textContent || "-";
-  const cash = parseInt(document.getElementById("cashInput")?.value) || 0;
+  // const cash = parseInt(document.getElementById("cashInput")?.value) || 0;
   const [orderCode, date, time] = metaText.split(" | ");
 
   // Set meta
@@ -588,8 +600,8 @@ function showInvoice() {
   const discount = Math.round(subtotal * membershipDiscountRate); // misal 0.025
   const tax = Math.round(subtotal * 0.1);
   const total = subtotal + tax + membershipUpgradeCost - discount;
-  customerCash = cash;
-  const change = customerCash - total;
+  // customerCash = cash;
+  // const change = customerCash - total;
 
   // Tampilkan ke summary invoice
   const format = n => `Rp${n.toLocaleString("id-ID")}`;
@@ -597,8 +609,8 @@ function showInvoice() {
   document.getElementById("invoiceDiscount").textContent = `-Rp${discount.toLocaleString("id-ID")}`;
   document.getElementById("invoiceTax").textContent = format(tax);
   document.getElementById("invoiceTotal").textContent = format(total);
-  document.getElementById("invoiceCash").textContent = format(customerCash);
-  document.getElementById("invoiceReturn").textContent = format(change);
+  // document.getElementById("invoiceCash").textContent = format(customerCash);
+  // document.getElementById("invoiceReturn").textContent = format(change);
 
   // Tampilkan metode pembayaran
   const paymentMethod = selectedPaymentMethod || "Not selected";
@@ -607,6 +619,141 @@ function showInvoice() {
 
   // Tampilkan modal invoice
   document.getElementById("modalInvoice").classList.remove("hidden");
+}
+
+
+function confirmPayment() {
+  const paymentSuccess = document.getElementById("processingPayment");
+  const processingSection = document.getElementById("paymentSuccess");
+  const successSection = document.getElementById("successPayment");
+
+  // Tampilkan modal dan bagian processing
+  paymentSuccess.classList.remove("hidden");
+  processingSection.classList.remove("hidden");
+  successSection.classList.add("hidden");
+
+  // Sembunyikan invoice dan payment sidebar
+  const invoiceModal = document.getElementById("modalInvoice");
+  const paymentAside = document.getElementById("sidebarPayment");
+  const finishAside = document.getElementById("sidebarFinish");
+
+  invoiceModal.classList.add("hidden");
+  paymentAside.classList.add("hidden");
+
+  // Setelah delay 3 detik, tampilkan bagian sukses
+  setTimeout(() => {
+    processingSection.classList.add("hidden");
+    successSection.classList.remove("hidden");
+  }, 3000);
+
+  // Setelah delay total 6.5 detik, sembunyikan modal dan tampilkan sidebarFinish
+  setTimeout(() => {
+    paymentSuccess.classList.add("hidden");
+    finishAside.classList.remove("hidden");
+  }, 6500);
+}
+
+
+function showPaymentProcessModal() {
+  const modalOrderFinish = document.getElementById("modalOrderFinish");
+  const processingSection = document.getElementById("processingPayment");
+  const successSection = document.getElementById("paymentSuccess");
+
+  // Tampilkan dulu processing-nya
+  modalOrderFinish.classList.remove("hidden");
+  processingSection.classList.remove("hidden");
+  successSection.classList.add("hidden");
+  
+  setTimeout(() => {
+    processingSection.classList.add("hidden");
+    successSection.classList.remove("hidden");
+  }, 3500);
+  
+  setTimeout(() => {
+    successSection.classList.add("hidden");
+    modalOrderFinish.classList.add("hidden");
+    document.getElementById("sidebarFinish")?.classList.add("hidden");
+    submitTransaction()
+  }, 6500);
+
+}
+
+function submitTransaction() {
+  const name = document.getElementById('name')?.value.trim();
+  const phone = document.getElementById('phone')?.value.trim();
+  const table = document.getElementById('table')?.value || null;
+  const dineIn = document.getElementById('dinein')?.checked;
+  const takeAway = document.getElementById('takeaway')?.checked;
+
+  const type = dineIn ? 'dine_in' : 'take_away';
+
+  let orderItems = [];
+  let totalQty = 0;
+  let subtotal = 0;
+
+  for (const id in orders) {
+    const item = orders[id];
+    const itemSubtotal = item.price * item.qty;
+
+    subtotal += itemSubtotal;
+    totalQty += item.qty;
+
+    orderItems.push({
+      product_id: parseInt(id),
+      quantity: item.qty,
+      price: item.price,
+      subtotal: itemSubtotal,
+      note: item.note || ""
+    });
+  }
+
+  const tax = Math.round(subtotal * 0.1);
+  const discount = Math.round(subtotal * membershipDiscountRate);
+  const total = subtotal + tax + membershipUpgradeCost - discount;
+  const change = customerCash - total;
+
+  const payload = {
+    user_id: 234083, // <-- GANTI: ambil dari session Laravel / backend
+    customer_name: name,
+    customer_phone: phone,
+    dine_type: type,
+    table: dineIn ? table : null,
+    total: total,
+    change_amount: change,
+    orders: orderItems,
+    payment_method: selectedPaymentMethod.toLowerCase(),
+    payment_amount: customerCash
+  };
+
+  fetch('/submit-sale', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+  },
+  body: JSON.stringify(payload)
+  })
+    .then(res => res.text()) // baca text mentah dulu, bukan .json()
+    .then(data => {
+      console.log("DATA:", data);
+      try {
+        const data = JSON.parse(text);
+        console.log("Parsed JSON:", data);
+        if (data.status === 'success') {
+          alert("Transaksi berhasil disimpan!");
+        } else {
+          alert("Gagal menyimpan transaksi.");
+        }
+      } catch (e) {
+        console.error("Bukan JSON valid:", e);
+        alert("Respon server tidak valid JSON.");
+      }
+    })
+    .catch(err => {
+      console.error("Fetch gagal:", err);
+      alert("Terjadi kesalahan jaringan atau server.");
+    });
+
 }
 
 

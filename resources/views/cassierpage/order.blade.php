@@ -291,7 +291,7 @@
                         <label for="table" class="block text-gray-800 text-[11pt]">No.Table</label>
                         <select id="table" name="table" required
                             class="w-[50%] border border-[#383838] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-primary p-1 text-[11pt]">
-                            <option hidden>Select Table</option>
+                            <option hidden value="-">Select Table</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -614,7 +614,7 @@
                     </button>
                     <button
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white rounded-lg text-[11pt] font-semibold shadow-md hover:bg-primary-dark transition-colors duration-200 py-2 px-1 w-auto"
-                        type="button" id="continuePaymentBtn" onclick="prepareInvoice()">
+                        type="button" id="continuePaymentBtn" onclick="showInvoice()">
                         Continue Payment
                     </button>
                 </div>
@@ -651,13 +651,10 @@
                         <h2 class="text-3xl font-semibold text-center mb-2">
                             Order confirmation
                         </h2>
-                        <p class="text-sm text-gray-500 text-center mb-4">
-                            Please confirm the order
-                        </p>
 
                         <div class="flex justify-between text-sm mb-4">
-                            <span>#Orders0021</span>
-                            <span>23/05/2025 | 14:30</span>
+                            <span id="finishOrderCode">#Orders0021</span>
+                            <span id="finishOrderTime">23/05/2025 | 14:30</span>
                         </div>
 
                         <div class="overflow-y-auto h-[10em] mb-4">
@@ -670,31 +667,7 @@
                                         <th class="text-left">SUB TOTAL</th>
                                     </tr>
                                 </thead>
-                                <tbody class="">
-                                    <tr class="border-b border-tertiary h-[3rem]">
-                                        <td>Steak Sapi bakar</td>
-                                        <td>2</td>
-                                        <td>Rp1.500</td>
-                                        <td>Rp40.000</td>
-                                    </tr>
-                                    <tr class="border-b border-tertiary h-[3rem]">
-                                        <td>Steak Sapi bakar</td>
-                                        <td>2</td>
-                                        <td>Rp1.500</td>
-                                        <td>Rp40.000</td>
-                                    </tr>
-                                    <tr class="border-b border-tertiary h-[3rem]">
-                                        <td>Steak Sapi bakar</td>
-                                        <td>2</td>
-                                        <td>Rp1.500</td>
-                                        <td>Rp40.000</td>
-                                    </tr>
-                                    <tr class="border-b border-tertiary h-[3rem]">
-                                        <td>Steak Sapi bakar</td>
-                                        <td>2</td>
-                                        <td>Rp1.500</td>
-                                        <td>Rp40.000</td>
-                                    </tr>
+                                <tbody class="" id="sidebarItemList">
                                     <tr class="border-b border-tertiary h-[3rem]">
                                         <td>Steak Sapi bakar</td>
                                         <td>2</td>
@@ -710,9 +683,9 @@
                                 <div>
                                     <h1 class="font-light text-tertiary">Payment method:</h1>
                                     <div class="flex">
-                                        <img src="assets/src/assets/paymentIcons/cash.png" alt="Cash"
-                                            class="w-5 h-5 mr-2" />
-                                        Cash
+                                        <img id="sidebarPaymentIcon" src="assets/src/assets/paymentIcons/cash.png"
+                                            alt="Cash" class="w-5 h-5 mr-2" />
+                                        <span id="sidebarPaymentMethod">Cash</span>
                                     </div>
                                 </div>
 
@@ -720,19 +693,27 @@
                                     <tbody>
                                         <tr>
                                             <td class="py-1 text-tertiary">SUBTOTAL</td>
-                                            <td class="py-1 text-right">Rp70.000</td>
+                                            <td class="py-1 text-right" id="sidebarSubtotal">Rp70.000</td>
                                         </tr>
                                         <tr>
                                             <td class="py-1 text-tertiary">ORDER DISCOUNT</td>
-                                            <td class="py-1 text-right">Rp0</td>
+                                            <td class="py-1 text-right" id="sidebarDiscount">Rp0</td>
                                         </tr>
                                         <tr>
                                             <td class="py-1 text-tertiary">TAX</td>
-                                            <td class="py-1 text-right">Rp1.500</td>
+                                            <td class="py-1 text-right" id="sidebarTax">Rp1.500</td>
+                                        </tr>
+                                        <tr id="sidebarCashRow" class="hidden">
+                                            <td class="py-1 text-tertiary">CASH</td>
+                                            <td class="py-1 text-right" id="sidebarCash">Rp0</td>
+                                        </tr>
+                                        <tr id="sidebarReturnRow" class="hidden">
+                                            <td class="py-1 text-tertiary">RETURN</td>
+                                            <td class="py-1 text-right" id="sidebarReturn">Rp1.500</td>
                                         </tr>
                                         <tr class="font-bold">
                                             <td class="py-1">BILL AMOUNT</td>
-                                            <td class="py-1 text-right text-primary">Rp71.500</td>
+                                            <td class="py-1 text-right text-primary" id="sidebarTotal">Rp71.500</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -747,7 +728,7 @@
                 <div class="flex justify-end mt-3 w-full">
                     <button
                         class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white px-8 py-[0.80rem] rounded-lg text-lg font-semibold shadow-md hover:bg-primary-dark transition-colors duration-200 w-full"
-                        type="button" id="continuePaymentBtn" onclick="showPaymentProcessModal()">
+                        id="continuePaymentBtn" onclick="showPaymentProcessModal()">
                         Confirmation
                     </button>
                 </div>
@@ -818,14 +799,6 @@
                             <span>BILL AMOUNT</span>
                             <span id="invoiceTotal">Rp71.500</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span>CASH</span>
-                            <span id="invoiceCash"></span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>RETURN</span>
-                            <span id="invoiceReturn"></span>
-                        </div>
                     </div>
                 </div>
 
@@ -843,7 +816,7 @@
                         Cancel
                     </button>
                     <button class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
-                        onclick="showPaymentProcessModal()">
+                        onclick="prepareInvoice()">
                         Confirm
                     </button>
                 </div>
@@ -852,15 +825,27 @@
 
         <!-- Modal Order Finish -->
         <div id="modalInputCash"
-            class="fixed hidden inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-100 w-full animate-fadeIn">
-            <div class="bg-white relative rounded-2xl p-16 w-[50vw] h-[80vh] shadow-lg flex flex-col items-center">
+            class="fixed bg-black/25 inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-100 w-full animate-fadeIn hidden">
+            <div class="bg-white relative rounded-2xl p-16 w-[50vw] h-[50vh] shadow-lg flex flex-col ">
                 <!-- Processing section -->
-                <div id="processingPayment" class="flex flex-col items-center justify-center w-full h-full my-auto">
-                    <h2 class="text-3xl font-semibold mb-2">Input Payment Method Cash</h2>
+                <div class="flex flex-col w-full h-full my-auto px-6 py-4 bg-white rounded-2xl">
+                    <h2 class="text-3xl font-semibold mb-4 text-gray-800">Input Payment Method (Cash)</h2>
 
-                    <input type="number" id="cashInput" name="cashInput" placeholder="Cash Amount" class="" />
+                    <label for="cashInput" class="text-sm font-medium text-gray-600 mb-2">
+                        Enter Cash Amount
+                    </label>
 
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            Rp
+                        </span>
+                        <input type="number" id="cashInput" name="cashInput" placeholder="0"
+                            class="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-lg transition-all duration-200" />
+                    </div>
+
+                    <p id="cashValidationMsg" class="mt-2 text-sm text-red-500 hidden">Insufficient cash amount.</p>
                 </div>
+
                 <!-- Buttons -->
                 <div class="flex justify-end space-x-3">
                     <button class="px-4 py-2 rounded-md border border-primary text-primary hover:bg-red-50"
@@ -869,7 +854,7 @@
                     </button>
                     <button class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"
                         onclick="handleCashInput()">
-                        Confirm
+                        Confirm Payment
                     </button>
                 </div>
             </div>
@@ -877,7 +862,7 @@
 
         <!-- Modal Order Finish -->
         <div id="modalOrderFinish"
-            class="fixed hidden inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-100 w-full animate-fadeIn">
+            class="fixed hidden bg-black/25 inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-100 w-full animate-fadeIn">
             <div class="bg-white relative rounded-2xl p-16 w-[50vw] h-[80vh] shadow-lg flex flex-col items-center">
                 <!-- Processing section -->
                 <div id="processingPayment" class="flex flex-col items-center justify-center w-full h-full my-auto">
@@ -909,7 +894,7 @@
         </div>
 
         <!-- QRIS Payment modal pop up (If select qris payment)-->
-        <div class="fixed inset-0 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-50 hidden"
+        <div class="fixed inset-0 bg-black/25 flex items-center justify-center backdrop-blur-md bg-opacity-50 z-50 hidden"
             id="qrisPaymentModal">
             <div class="bg-white w-auto h-auto rounded-2xl shadow-lg p-6 flex flex-col items-center">
                 <h2 class="text-2xl font-bold text-primary mb-4">QRIS Payment</h2>

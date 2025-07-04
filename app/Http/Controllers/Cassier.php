@@ -7,7 +7,9 @@ use App\Models\Mdl_Admin;
 use App\Models\Mdl_Sales;
 use App\Models\Mdl_Customer;
 use App\Models\Mdl_Member;
+use App\Models\Mdl_Payment;
 use App\Models\Mdl_Product;
+use App\Models\Mdl_SaleItem;
 use Illuminate\View\View;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -222,6 +224,55 @@ class Cassier extends BaseController
     //     $product = Product::where('name', $productName)->first();
     //     return $product ? $product->id : null;
     // }
+
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $customer = Mdl_Customer::firstOrCreate(
+                ['name' => $request->customer_name, 'phone' => $request->customer_phone]
+            );
+
+            // Buat sales
+            $sale = Mdl_Sales::create([
+                'user_id' => $request->user_id,
+                'customer_id' => $customer->id,
+                'total' => $request->total,
+                'change_amount' => $request->change_amount,
+                'type' => $request->dine_type,
+                'quantity' => collect($request->orders)->sum('quantity'),
+                'table' => $request->table,
+                'status' => 'procced'
+            ]);
+
+            // Simpan item
+            foreach ($request->orders as $item) {
+                Mdl_SaleItem::create([
+                    'sale_id' => $sale->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                    'subtotal' => $item['subtotal'],
+                ]);
+            }
+
+            // Simpan pembayaran
+            Mdl_Payment::create([
+                'sale_id' => $sale->id,
+                'payment_method' => $request->payment_method,
+                'amount' => $request->payment_amount
+            ]);
+
+            DB::commit();
+
+            return response()->json(['status' => 'success', 'sale_id' => $sale->id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
 
 
 

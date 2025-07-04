@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `balances` (
   UNIQUE KEY `date` (`date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.balances: ~1 rows (approximately)
+-- Dumping data for table app_paymin.balances: ~0 rows (approximately)
 REPLACE INTO `balances` (`id`, `date`, `beginning_balance`, `created_at`) VALUES
 	(1, '2025-06-13', 1000000.00, '2025-06-13 03:55:44');
 
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.customers: ~1 rows (approximately)
+-- Dumping data for table app_paymin.customers: ~0 rows (approximately)
 REPLACE INTO `customers` (`id`, `name`, `phone`, `address`, `created_at`) VALUES
 	(1, 'test', '123232', 'asdasdasd', '2025-06-13 02:35:30');
 
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   CONSTRAINT `members_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.members: ~0 rows (approximately)
+-- Dumping data for table app_paymin.members: ~1 rows (approximately)
 
 -- Dumping structure for table app_paymin.migrations
 DROP TABLE IF EXISTS `migrations`;
@@ -206,9 +206,7 @@ CREATE TABLE IF NOT EXISTS `payments` (
   CONSTRAINT `payments_sale_fk` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.payments: ~1 rows (approximately)
-REPLACE INTO `payments` (`id`, `sale_id`, `payment_method`, `amount`, `created_at`) VALUES
-	(2, 4, 'cash', 20000.00, '2025-06-27 10:03:48');
+-- Dumping data for table app_paymin.payments: ~0 rows (approximately)
 
 -- Dumping structure for table app_paymin.products
 DROP TABLE IF EXISTS `products`;
@@ -231,7 +229,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.products: ~1 rows (approximately)
+-- Dumping data for table app_paymin.products: ~0 rows (approximately)
 REPLACE INTO `products` (`id`, `name`, `category_id`, `subcategory_id`, `desc`, `price`, `stock`, `image`, `created_at`, `updated_at`) VALUES
 	(4, 'asd', 1, 1, 'asd', 123.00, 12, NULL, '2025-06-30 04:04:16', '2025-06-30 04:04:16');
 
@@ -256,9 +254,7 @@ CREATE TABLE IF NOT EXISTS `sales` (
   CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.sales: ~1 rows (approximately)
-REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `change_amount`, `sale_date`, `type`, `quantity`, `status`, `table`, `note`) VALUES
-	(4, 234083, 1, 20000.00, 0.00, '2025-06-27 10:02:53', 'take_away', 2, 'procced', NULL, NULL);
+-- Dumping data for table app_paymin.sales: ~0 rows (approximately)
 
 -- Dumping structure for table app_paymin.sale_items
 DROP TABLE IF EXISTS `sale_items`;
@@ -292,11 +288,10 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table app_paymin.sessions: ~3 rows (approximately)
+-- Dumping data for table app_paymin.sessions: ~2 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('KTx3bYxT85yxV68tyybXOxCoqtVRDBUWQ0J4Iobn', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IlV2ZFJ0Rzk0dFc2ZXg2QW5rMmFidkFlc3JKU1BLc0x0Z0hncjE0bWsiO3M6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvT3JkZXJDYXNzaWVyIjt9czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751426825),
-	('tuKTSAmIferGl4fF3yfVSNWdcQHG7ITw57cgeCW8', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IkdkSUFkaTJXTzNpSUxZUGc0cDJaeGZZYmU4V280T0U1NUJPNThKRFciO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvT3JkZXJDYXNzaWVyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751385914),
-	('Wg9kHlgo7ioF7b1wMnJl1twDgXiL0iBfnkidHD6q', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6Im9Na2hVdEd1Q0V4OUY2UEN3QUU3NW5Ua01sVEIzV1RsYkE0S1luZnoiO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvT3JkZXJDYXNzaWVyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751442890);
+	('2EMjJXTDbMZCZKZawE1bPMtr68arBM1KMHqkvlaH', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6ImFJMXBYamdxd2trTFFLeU55NzhvcFZ3MXJQQ29Zejk4WTFHRVdFekMiO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvT3JkZXJDYXNzaWVyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751536704),
+	('agAb7YACDtKTNuGgJMiSJ6JsvwdvNhrYVTi9HDL6', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfdG9rZW4iO3M6NDA6IlhJNzFxdVlSUEt2ZnNYelZZSFRZQWFLWUhxZGdJSTBQbE1MWlppZG4iO3M6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM0OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvT3JkZXJDYXNzaWVyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6OToia2FzaXJycnJyIjtzOjEzOiJlbWFpbF9jYXNzaWVyIjtOO3M6MTM6InBob3RvX2Nhc3NpZXIiO047czoxMjoicm9sZV9jYXNzaWVyIjtzOjc6ImNhc3NpZXIiO3M6MTE6ImJpb19jYXNzaWVyIjtOO30=', 1751559496);
 
 -- Dumping structure for table app_paymin.subcategories
 DROP TABLE IF EXISTS `subcategories`;
