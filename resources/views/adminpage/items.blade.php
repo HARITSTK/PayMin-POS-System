@@ -241,7 +241,8 @@
                             data-category="{{ strtolower($p->category->name) }}">
                             <div class="flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
-                                <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
+                                <img src="{{ $p->image ? asset('storage/' . $user->image) : '/default.jpg' }}"
+                                    alt="{{ $p->name }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
@@ -439,22 +440,26 @@
                 </div>
 
                 <!-- Modal Content -->
-                <form action="{{ route('SysAddItem') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('SysAddItem') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
                     <!-- Modal Content -->
                     <div class="mt-4 flex justify-between gap-x-4 py-2">
                         <!-- drag and drop image -->
-                        <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
-                            id="imageView">
-                            <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
-                            <p class="text-gray-500 mt-2 text-center">
+                        <div id="dropZone"
+                            class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3 bg-center bg-cover relative overflow-hidden">
+
+                            <i class="fa fa-cloud-upload fa-3x text-gray-400 pointer-events-none"></i>
+                            <p class="text-gray-500 mt-2 text-center pointer-events-none">
                                 Drag and drop your image here
                             </p>
-                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
+
                             <label for="fileInput"
-                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
+                            class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer text-sm z-10">Choose
+                            File</label>
+                            <input type="file" accept="image/*" id="fileInput" name="image" />
+                            <img id="imagePreview" class="hidden absolute inset-0 w-full h-full object-cover" />
                         </div>
+
 
                         <!-- Input fields -->
                         <div class="mt-4">

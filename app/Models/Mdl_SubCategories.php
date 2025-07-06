@@ -13,6 +13,11 @@ class Mdl_SubCategories extends Model
     protected $table = 'subcategories';
     protected $primaryKey = 'id';
     protected $fillable = ['category_id', 'name', 'created_at', 'updated_at'];
-    public $timestamps = true;
+    public $timestamps = false;
+
+    public function products()
+    {
+        return $this->hasMany(Mdl_Product::class);
+    }
 
 }

@@ -154,7 +154,7 @@
                         class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary">
                 </div>
 
-                <a id="sortingDropdown" href="{{ route('exportCSVReport') }}"
+                <a id="sortingDropdown" href="{{ route('exportCSVReportAdmin') }}"
                     class="flex justify-between items-center w-auto px-2 py-1 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 gap-x-4">
                     <i class="fa fa-download" aria-hidden="true"></i>
                     <span>CSV</span>
@@ -252,13 +252,13 @@
                             </tr>
                         </thead>
 
-                        <tbody class="" id="tableBody">
+                        <tbody id="tableBody">
                             @foreach($sales as $sl)
-                            <tr class="border-b border-tertiary h-[3rem] text-center" data-date="2025-05-23"
-                                data-date="{{ \Carbon\Carbon::parse($sl->sale_date)->format('Y-m-d') }}"
+                            <tr class="border-b border-tertiary h-[3rem] text-center"
+                                data-date="{{ optional($sl->sale_date) ? \Carbon\Carbon::parse($sl->sale_date)->format('Y-m-d') : '' }}"
                                 data-shift="{{ strtolower($sl->user->shift ?? '-') }}" data-total="{{ $sl->total }}"
-                                data-qty="{{ $sl->quantity }}"
-                                data-customer="{{ strtolower(optional($sl->customer)->name) }}"
+                                data-qty="{{ $sl->quantity ?? 0 }}"
+                                data-customer="{{ strtolower(optional($sl->customer)->name ?? '-' ) }}"
                                 data-user="{{ strtolower(optional($sl->user)->name) }}">
                                 <td class="p-3">
                                     <div class="flex justify-center">

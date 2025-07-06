@@ -47,7 +47,7 @@ function showViewModal(button) {
     const name = button.getAttribute("data-name");
     const username = button.getAttribute("data-username");
     const role = button.getAttribute("data-role");
-    const photo = button.getAttribute("data-photo");
+    const image = button.getAttribute("data-photo");
     const bio = button.getAttribute("data-bio") || "-";
     const createdAt = button.getAttribute("data-created_at");
     const updatedAt = button.getAttribute("data-updated_at");
@@ -66,8 +66,8 @@ function showViewModal(button) {
 
     // Jika ada foto
     const photoElement = document.getElementById("modalViewPhoto");
-    if (photo && photo !== "null") {
-        photoElement.src = `/storage/${photo}`;
+    if (image && image !== "null") {
+        photoElement.src = `/storage/${image}`;
     } else {
         photoElement.src = "https://via.placeholder.com/150"; // fallback image
     }

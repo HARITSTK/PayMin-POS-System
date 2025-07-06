@@ -204,7 +204,7 @@
                                             class="bg-[#4682EC] text-white px-4 py-2 flex justify-between items-center hover:opacity-80 transition-all duration-200 cursor-pointer rounded-l-2xl"
                                             onclick="showViewModal(this)" data-id="{{ $md->id }}"
                                             data-name="{{ $md->name }}" data-username="{{ $md->username }}"
-                                            data-role="{{ $md->role }}" data-photo="{{ $md->photo }}"
+                                            data-role="{{ $md->role }}" data-photo="{{ $md->image }}"
                                             data-bio="{{ $md->bio }}" data-created_at="{{ $md->created_at }}"
                                             data-updated_at="{{ $md->updated_at }}">
                                             <div class="flex items-center">

@@ -12,7 +12,7 @@ class Mdl_SaleItem extends Model
     protected $table = 'sale_items';
     protected $primaryKey = 'id';
     protected $fillable = ['sale_id', 'product_id', 'quantity', 'price', 'subtotal'];
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function sale(): BelongsTo
     {

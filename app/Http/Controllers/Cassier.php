@@ -234,15 +234,19 @@ class Cassier extends BaseController
                 ['name' => $request->customer_name, 'phone' => $request->customer_phone]
             );
 
+            $userId = session('user_id');
+
             // Buat sales
+            
             $sale = Mdl_Sales::create([
-                'user_id' => $request->user_id,
+                'user_id' => $userId,
                 'customer_id' => $customer->id,
                 'total' => $request->total,
                 'change_amount' => $request->change_amount,
                 'type' => $request->dine_type,
                 'quantity' => collect($request->orders)->sum('quantity'),
-                'table' => $request->table,
+                'table_no' => $request->table,
+                'note' => $request->note,
                 'status' => 'procced'
             ]);
 
@@ -266,6 +270,25 @@ class Cassier extends BaseController
 
             DB::commit();
 
+            if ($request->total >= 100000) {
+                // Cek apakah customer sudah punya membership
+                $existingMember = Mdl_Member::where('customer_id', $customer->id)->first();
+
+              if ($existingMember) {
+                $existingMember->update([
+                    'points' => $existingMember->points + 5,
+                    'amount' => $existingMember->amount + $request->total,
+                ]);
+                } else {
+                    Mdl_Member::create([
+                        'customer_id' => $customer->id,
+                        'type' => 'Silver',
+                        'points' => 5,
+                        'amount' => $request->total,
+                    ]);
+                }
+            }
+
             return response()->json(['status' => 'success', 'sale_id' => $sale->id]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -280,18 +303,54 @@ class Cassier extends BaseController
     public function report() {
         $userId = session('user_id'); // atau auth()->id()
 
-        $user = Mdl_Admin::all();
         $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->where('user_id', $userId)->get();
 
-        // $today = Carbon::today();
-
-        // $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
+        $beginningBalance = DB::table('balances')->sum('beginning_balance');
         $TotalIncome = DB::table('sales')
             ->where('user_id', $userId)
-            ->sum('total');        $TotalItemSell = DB::table('sale_items')->where('product_id')->count();
-            $admissionFee = DB::table('payments')->sum('amount');
+            ->sum('total');       
+        $moneyOut = DB::table('payments')->sum('return');
 
-        return view('cassierpage/report', compact('user', 'sales', 'TotalIncome', 'admissionFee'));
+        return view('cassierpage/report', compact('sales', 'beginningBalance','TotalIncome', 'moneyOut'));
+    }
+
+    public function exportCSVreport()
+    {
+        $userId = session('user_id');
+        $fileName = 'Report_Data_' . now()->format('Ymd_His') . '.csv';
+        $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->where('user_id', $userId)->get();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['id', 'Cassa Name', 'Date', 'Name Customer', 'item', 'payment method', 'type order', 'amount'];
+
+        $callback = function () use ($sales, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($sales as $s) {
+                fputcsv($file, [
+                    $s->id,
+                    optional($s->user)->name,
+                    optional($s->sale_date)->format('Y-m-d H:i:s') ?? '-',
+                    optional($s->customer)->name,
+                    implode(', ', $s->saleItems->map(fn($item) => optional($item->product)->name)->toArray()),
+                    optional($s->payment)->payment_method,
+                    $s->type,
+                    $s->quantity,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     // ITEMS
@@ -309,9 +368,7 @@ class Cassier extends BaseController
         $totalProducts = DB::table('products')->count();
 
         $categories = DB::table('categories')->get();
-        // $products = DB::table('products')->get();
         $products = Mdl_Product::with('category')->get();
-
 
         return view('cassierpage/items',compact('outOfStock', 'lowStock', 'totalProducts', 'categories', 'products'));
     }
@@ -322,6 +379,44 @@ class Cassier extends BaseController
         $members = Mdl_Member::with('customer')->get();
         return view('cassierpage/member', compact('members'));
     }
+
+    public function exportCSVMember()
+    {
+        $fileName = 'Membership_Data_' . now()->format('Ymd_His') . '.csv';
+        $member = Mdl_Member::with(['customer'])->get();
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Member id', 'Name', 'Date', 'Amount', 'Point', 'No Telp', 'Type'];
+
+        $callback = function () use ($member, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($member as $m) {
+                fputcsv($file, [
+                    $m->id,
+                    optional($m->customer)->name ?? '-',
+                    optional($m->updated_at)->format('Y-m-d H:i:s') ?? '-',
+                    $m->amount,
+                    $m->points,
+                    optional($m->customer)->phone ?? '-',
+                    $m->type,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
 
 
     // SETTINGS

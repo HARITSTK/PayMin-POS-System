@@ -173,11 +173,12 @@ function searchTable() {
 
 
 
+
 // add item to sidebar order list
 let orders = {};
 let currentOrderCode = null;
 let membershipUpgradeCost = 0;
-let membershipDiscountRate = 0.025; // 2.5%
+let membershipDiscountRate = 0; // 2.5%
 let customerCash = 0;
 let selectedPaymentMethod = "";
 
@@ -323,15 +324,20 @@ function checkMembership() {
           document.getElementById('lastTypeDisplay').textContent = data.last_type ?? '-';
 
         } else if (data.membership === 'Silver') {
+          membershipDiscountRate = 0.025;
           document.getElementById('cardSilver').classList.remove('hidden');
         } else if (data.membership === 'Gold') {
+          membershipDiscountRate = 0.05;
           document.getElementById('cardGold').classList.remove('hidden');
         } else if (data.membership === 'Platinum') {
+          membershipDiscountRate = 0.1;
           document.getElementById('cardPlatinum').classList.remove('hidden');
         } else {
+          membershipDiscountRate = 0;
           document.getElementById('NoMembership')?.classList.remove('hidden');
         }
       } else {
+        membershipDiscountRate = 0;
         document.getElementById('NoMembership')?.classList.remove('hidden');
       }
     })
@@ -712,8 +718,13 @@ function submitTransaction() {
   const total = subtotal + tax + membershipUpgradeCost - discount;
   const change = customerCash - total;
 
+  const combinedNotes = Object.values(orders)
+  .map(order => order.note?.trim())
+  .filter(note => note)
+  .join(', ');
+
   const payload = {
-    user_id: 234083, // <-- GANTI: ambil dari session Laravel / backend
+    // user_id: 234083, // <-- GANTI: ambil dari session Laravel / backend
     customer_name: name,
     customer_phone: phone,
     dine_type: type,
@@ -722,7 +733,8 @@ function submitTransaction() {
     change_amount: change,
     orders: orderItems,
     payment_method: selectedPaymentMethod.toLowerCase(),
-    payment_amount: customerCash
+    payment_amount: customerCash,
+    note: combinedNotes
   };
 
   fetch('/submit-sale', {
@@ -733,27 +745,25 @@ function submitTransaction() {
   },
   body: JSON.stringify(payload)
   })
-    .then(res => res.text()) // baca text mentah dulu, bukan .json()
-    .then(data => {
-      console.log("DATA:", data);
-      try {
-        const data = JSON.parse(text);
-        console.log("Parsed JSON:", data);
-        if (data.status === 'success') {
-          alert("Transaksi berhasil disimpan!");
-        } else {
-          alert("Gagal menyimpan transaksi.");
-        }
-      } catch (e) {
-        console.error("Bukan JSON valid:", e);
-        alert("Respon server tidak valid JSON.");
+  .then(res => res.json())
+  .then(data => {
+    console.log("DATA:", data);
+    try {
+      console.log("Parsed JSON:", data);
+      if (data.status === 'success') {
+        alert("Transaksi berhasil disimpan!");
+      } else {
+        alert("Gagal menyimpan transaksi.");
       }
-    })
-    .catch(err => {
-      console.error("Fetch gagal:", err);
-      alert("Terjadi kesalahan jaringan atau server.");
-    });
-
+    } catch (e) {
+      console.error("Bukan JSON valid:", e);
+      alert("Respon server tidak valid JSON.");
+    }
+  })
+  .catch(err => {
+    console.error("Fetch gagal:", err);
+    alert("Terjadi kesalahan jaringan atau server.");
+  });
 }
 
 

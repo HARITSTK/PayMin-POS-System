@@ -74,27 +74,73 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function filterByDate() {
-    const selectedDate = document.getElementById("dateFilter").value; // format: YYYY-MM-DD
+    const selectedDate = document.getElementById("dateFilter").value;
     const rows = document.querySelectorAll("#tableBody tr");
 
     let hasVisibleRow = false;
+    let totalIncome = 0;
+    let moneyOut = 0;
+    let totalItemSold = 0;
+    let totalTransaction = 0;
+    const customerSet = new Set();
 
     rows.forEach((row) => {
-        const rowDate = row.dataset.date; // dari data-date
+        const rowDate = row.dataset.date;
+
         if (selectedDate === "" || rowDate === selectedDate) {
             row.style.display = "";
             hasVisibleRow = true;
+
+            const rowTotal = parseInt(row.dataset.total || "0");
+            const rowMoneyOut = parseInt(row.dataset.moneyout || "0");
+            const rowQty = parseInt(row.dataset.qty || "0");
+            const rowCustomer = row.dataset.customer || "-";
+
+            totalIncome += rowTotal;
+            moneyOut += rowMoneyOut;
+            totalItemSold += rowQty;
+
+            if (rowCustomer && rowCustomer !== "-") {
+                customerSet.add(rowCustomer);
+            }
         } else {
             row.style.display = "none";
         }
     });
 
-    // Optional: Tampilkan pesan jika tidak ada hasil
+
+    // Format angka (ribuan)
+    const numberFormat = (num) => num.toLocaleString("id-ID");
+
+    // Update card
+    document.getElementById("cardTotalIncome").textContent = `Rp. ${numberFormat(totalIncome)}`;
+    document.getElementById("cardTotalMoneyOut").textContent = `-Rp. ${numberFormat(moneyOut)}`;
+    document.getElementById("cardTotalItemSell").textContent = numberFormat(totalItemSold) ;
+    document.getElementById("cardTotalCustomers").textContent = numberFormat(customerSet.size);
+
+    // // Jika kamu punya card total transaksi
+    // const transactionCard = document.getElementById("cardTotalTransaction");
+    // if (transactionCard) {
+    //     transactionCard.textContent = `${numberFormat(totalTransaction)} Transaksi`;
+    // }
+
+    // Saldo akhir
+    const beginningBalance = parseInt(document.getElementById('cardTotalBegginingBalance')?.dataset?.value || "0");
+    const finalBalance = beginningBalance;
+    document.getElementById("cardTotalBegginingBalance").textContent = `Rp. ${numberFormat(finalBalance)}`;
+
+    // Tampilkan/ sembunyikan pesan jika tidak ada data
     const noDataDiv = document.getElementById("noDataRow");
     if (noDataDiv) {
         noDataDiv.style.display = hasVisibleRow ? "none" : "flex";
     }
 }
+
+
+function numberFormat(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 
 function filterByUser() {
     const selectedUser = document

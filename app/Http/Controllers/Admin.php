@@ -86,15 +86,20 @@ class Admin extends BaseController
         'stock' => 'required|integer',
         'category_id' => 'required|exists:categories,id',
         'subcategory_id' => 'nullable|exists:subcategories,id',
-        // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // if ($request->hasFile('image')) {
-        //     $filename = time() . '.' . $request->image->extension();
-        //     $request->image->move(public_path('uploads/products'), $filename);
-        //     $validated['image'] = $filename;
-        // }
-        
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('admins', 'public');
+            $validated['image'] = $path;
+        }
+
+        // dd([
+        //     'hasFile' => $request->hasFile('image'),
+        //     'file' => $request->file('image'),
+        //     'all' => $request->all()
+        // ]);
+
         Mdl_Product::create($validated);
         
         return redirect()->back()->with('message', 'Item berhasil ditambahkan');
@@ -160,21 +165,16 @@ class Admin extends BaseController
     // REPORT
     public function report() {
         $user = Mdl_Admin::all();
-        // $user = Mdl_Sales::with('users')->get();
-        // $sales = Mdl_Sales::all();
         $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
 
-        // $today = Carbon::today();
-
-        // $beginningBalance = DB::table('balances')->whereDate('date', $today)->value('beginning_balance') ?? 0;
-        $TotalIncome = DB::table('sales')->where('total')->count();
-        $TotalItemSell = DB::table('sale_items')->where('product_id')->count();
+        $TotalIncome = DB::table('sales')->sum('total');
+        $TotalItemSell = DB::table('sales')->sum('quantity');
         $TotalCustomers = DB::table('customers')->count();
 
         return view('adminpage/report', compact('user', 'sales', 'TotalCustomers', 'TotalItemSell', 'TotalIncome'));
     }
 
-    public function exportCSVReport()
+    public function exportCSVreport()
     {
         $fileName = 'Report_Data_' . now()->format('Ymd_His') . '.csv';
         $sales = Mdl_Sales::with(['user', 'customer', 'payments'])->get();
@@ -187,20 +187,22 @@ class Admin extends BaseController
             "Expires"             => "0"
         ];
 
-        $columns = ['ID', 'Username', 'Customer Name', 'Total', 'Payment Method', 'Sale Date', 'Type', 'Quantity'];
+        $columns = ['id', 'Cassa Name', 'Date', 'Name Customer', 'item', 'payment method', 'type order', 'amount'];
 
         $callback = function () use ($sales, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
-            foreach ($sales as $sale) {
+            foreach ($sales as $s) {
                 fputcsv($file, [
-                    $sale->id,
-                    $sale->total,
-                    optional($sale->payments->first())->payment_method ?? '-',
-                    $sale->sale_date->format('Y-m-d H:i:s'),
-                    $sale->type,
-                    $sale->quantity,
+                    $s->id,
+                    optional($s->user)->name,
+                    optional($s->sale_date)->format('Y-m-d H:i:s') ?? '-',
+                    optional($s->customer)->name,
+                    implode(', ', $s->saleItems->map(fn($item) => optional($item->product)->name)->toArray()),
+                    optional($s->payment)->payment_method,
+                    $s->type,
+                    $s->quantity,
                 ]);
             }
 
@@ -370,17 +372,32 @@ class Admin extends BaseController
             'name' => 'nullable|max:255',
             'username' => 'nullable|max:255', 
             'bio' => 'nullable',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
         $user->name = $validatedData['name'];
         $user->username = $validatedData['username'];
         $user->bio = $validatedData['bio'];
+
+        // Jika ada file gambar
+        if ($request->hasFile('image')) {
+            // Optional: hapus gambar lama jika perlu
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+
+            // Simpan gambar baru
+            $path = $request->file('image')->store('uploads/admins', 'public');
+            $user->image = $path;
+        }
+
         $user->save();
 
         session([
             'name_admin' => $user->name,
             'username_admin' => $user->username,
             'bio_admin' => $user->bio,
+            'image_admin' => $user->image,
         ]);
         
         return redirect()->back()->with('message', 'Data user berhasil diperbarui.');
@@ -425,9 +442,10 @@ class Admin extends BaseController
     }
 
 
-    public function exportCSVMember() {
+    public function exportCSVMember()
+    {
         $fileName = 'Membership_Data_' . now()->format('Ymd_His') . '.csv';
-        $users = Mdl_Member::with('customer')->get();
+        $member = Mdl_Member::with(['customer'])->get();
 
         $headers = [
             "Content-type"        => "text/csv",
@@ -437,27 +455,28 @@ class Admin extends BaseController
             "Expires"             => "0"
         ];
 
-        $columns = ['Customer id', 'Membership Type', 'Amount', 'Point', 'Created At', 'Updated At'];
+        $columns = ['Member id', 'Name', 'Date', 'Amount', 'Point', 'No Telp', 'Type'];
 
-        $callback = function () use ($users, $columns) {
+        $callback = function () use ($member, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
-            foreach ($users as $user) {
+            foreach ($member as $m) {
                 fputcsv($file, [
-                    $user->customer_id,
-                    $user->type,
-                    $user->amount,
-                    $user->points,
-                    $user->created_at->format('Y-m-d H:i:s'),
-                    $user->updated_at->format('Y-m-d H:i:s'),
+                    $m->id,
+                    optional($m->customer)->name ?? '-',
+                    optional($m->updated_at)->format('Y-m-d H:i:s') ?? '-',
+                    $m->amount,
+                    $m->points,
+                    optional($m->customer)->phone ?? '-',
+                    $m->type,
                 ]);
             }
 
             fclose($file);
         };
 
-        return Response::stream($callback, 200, $headers);
+        return response()->stream($callback, 200, $headers);
     }
     
     public function SysDeleteMember(Request $request)

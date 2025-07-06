@@ -191,7 +191,7 @@
                     <div class="flex h-auto w-full mx-5 items-center">
                         <!-- Profile Picture -->
                         <div class="relative w-40 h-40 mb-2">
-                            <img src="" class="rounded-full w-full h-full object-cover bg-gray-200" />
+                            <img src="{{ $user->image ? asset('storage/' . $user->image) : '/default.jpg' }}" class="rounded-full w-full h-full object-cover bg-gray-200" />
                             <!-- Edit Icon -->
                             <button
                                 class="absolute bottom-1 right-1 bg-primary text-white rounded-full p-1.5 shadow-md hover:bg-orange-600"
@@ -318,16 +318,14 @@
                         @method('PUT')
                         <h1 class="text-3xl font-bold text-red-500 mb-2">Edit Profile</h1>
                         <div class="flex flex-col items-center">
-                            <div
-                                class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center">
-                                <svg class="w-16 h-16 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                    <path
-                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                                </svg>
+                            <div>
+                                <img src="" id="previewImage"
+                                    class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center" />
                             </div>
-                            <button
-                                class="flex items-center mt-2 text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer hover:text-gray-900 transition-colors duration-200"
-                                type="button">
+                            <input type="file" name="image" id="imageInput" accept="image/*" class="hidden"
+                                onchange="handleImageUpload(event)">
+                            <button onclick="document.getElementById('imageInput').click()" type="button"
+                                class="flex items-center mt-2 text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer hover:text-gray-900 transition-colors duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

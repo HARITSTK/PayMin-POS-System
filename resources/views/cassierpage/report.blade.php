@@ -153,7 +153,7 @@
                         class="flex justify-between items-center w-full px-5 py-2.5 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 cursor-pointer">
                 </div>
 
-                <a id="sortingDropdown" href="{{ route('exportCSVReport') }}"
+                <a id="sortingDropdown" href="{{ route('exportCSVReportCassier') }}"
                     class="flex justify-between items-center w-auto px-2 py-1 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 gap-x-4">
                     <i class="fa fa-download" aria-hidden="true"></i>
                     <span>CSV</span>
@@ -166,7 +166,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Total Income</p>
-                        <p class="text-3xl font-bold text-gray-800">Rp. {{ number_format($TotalIncome, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalIncome">Rp. {{ number_format($TotalIncome, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -175,16 +175,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Beginning balance</p>
-                        <p class="text-3xl font-bold text-gray-800">Rp. 0</p>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-white rounded-lg shadow-4xl w-full">
-                    <div class="h-2 bg-primary rounded-t-lg"></div>
-                    <div class="p-6">
-                        <p class="text-xl text-gray-500">Admission fee</p>
-                        <p class="text-3xl font-bold text-gray-800">+Rp. {{ number_format($admissionFee, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalBegginingBalance" data-value="{{ $beginningBalance }}">Rp. {{ number_format($beginningBalance, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
@@ -193,7 +184,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Money Out</p>
-                        <p class="text-3xl font-bold text-gray-800">-Rp. 0</p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalMoneyOut">-Rp. {{ number_format($moneyOut, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -246,12 +237,15 @@
 
                         <tbody class="" id="tableBody">
                             @foreach($sales as $sl)
-                            <tr class="border-b border-tertiary h-[3rem] text-center" data-date="2025-05-23"
+                            <tr class="border-b border-tertiary h-[3rem] text-center"
                                 data-date="{{ \Carbon\Carbon::parse($sl->sale_date)->format('Y-m-d') }}"
                                 data-shift="{{ strtolower($sl->user->shift ?? '-') }}" data-total="{{ $sl->total }}"
                                 data-qty="{{ $sl->quantity }}"
                                 data-customer="{{ strtolower(optional($sl->customer)->name) }}"
-                                data-user="{{ strtolower(optional($sl->user)->name) }}">
+                                data-user="{{ strtolower(optional($sl->user)->name) }}"
+                                data-total="{{ $sl->total }}"
+                                data-moneyout="{{ $sl->payments->first()->return ?? 0 }}"
+                                >
                                 <td class="p-3">
                                     <div class="flex justify-center">
                                         <button

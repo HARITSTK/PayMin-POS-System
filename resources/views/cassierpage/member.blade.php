@@ -125,7 +125,7 @@
             <div class="flex gap-4 w-full justify-between items-center">
                 <!-- Tombol CSV (col-1) -->
                 <div class="">
-                    <a href="{{ route('exportCSVMember') }}"
+                    <a href="{{ route('exportCSVMemberCassier') }}"
                         class="text-textColor px-4 py-2 bg-white shadow-sm rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200">
                         <span class="material-symbols-outlined">download</span> CSV
                     </a>

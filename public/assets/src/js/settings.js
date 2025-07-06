@@ -34,3 +34,18 @@ function closeModal(modalId) {
 
   modal.classList.add("hidden");
 }
+
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    // Contoh preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById("previewImage").src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Kalau mau upload via AJAX, bisa lanjut di sini...
+  }
+}
+

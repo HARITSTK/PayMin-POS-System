@@ -11,7 +11,7 @@ class Mdl_Customer extends Model
     protected $table = 'customers';
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'phone', 'address', 'created_at'];
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function member() : HasOne
     {

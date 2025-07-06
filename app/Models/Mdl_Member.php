@@ -11,7 +11,7 @@ class Mdl_Member extends Model
     protected $table = 'members';
     protected $primaryKey = 'id';
     protected $fillable = ['customer_id', 'type', 'last_type', 'amount', 'points', 'created_at', 'updated_at'];
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function customer(): BelongsTo
     {

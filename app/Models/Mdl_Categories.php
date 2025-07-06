@@ -15,4 +15,10 @@ class Mdl_Categories extends Model
     protected $fillable = ['name', 'created_at', 'updated_at'];
     public $timestamps = true;
 
+
+    public function products()
+    {
+        return $this->hasMany(Mdl_Product::class);
+    }
+
 }

@@ -26,9 +26,11 @@ Route::get('/Logout', function () {
 
 
 Route::get('/exportCSVMaster', [Admin::class, 'exportCSVMaster'])->name('exportCSVMaster');
-Route::get('/exportCSVMember', [Admin::class, 'exportCSVMember'])->name('exportCSVMember');
-Route::get('/exportCSVReport', [Admin::class, 'exportCSVReport'])->name('exportCSVReport');
+Route::get('/exportCSVMemberAdmin', [Admin::class, 'exportCSVMember'])->name('exportCSVMemberAdmin');
+Route::get('/exportCSVReportAdmin', [Admin::class, 'exportCSVReport'])->name('exportCSVReportAdmin');
 
+Route::get('/exportCSVReportCassier', [Cassier::class, 'exportCSVMember'])->name('exportCSVReportCassier');
+Route::get('/exportCSVMemberCassier', [Cassier::class, 'exportCSVMember'])->name('exportCSVMemberCassier');
 
 Route::middleware([AuthMiddleware::class])->group(function () {
 
@@ -37,7 +39,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/ReportAdmin', [Admin::class, 'report'])->name('Report');
     Route::post('/transaction/delete', [Admin::class, 'delete'])->name('transaction.delete');
     Route::get('/ItemAdmin', [Admin::class, 'item'])->name('Item');
-    Route::put('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
+    Route::post('/SysAddItem', [Admin::class, 'SysAddItem'])->name('SysAddItem');
     Route::post('/SysEditItem', [Admin::class, 'SysEditItem'])->name('SysEditItem');
     Route::delete('/delete-item', [Admin::class, 'SysDeleteItem'])->name('SysDeleteItem');
     Route::get('/MemberAdmin', [Admin::class, 'member'])->name('Member');
@@ -55,12 +57,7 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/OrderCassier', [Cassier::class, 'order'])->name('OrderCassier');
     Route::post('/check-membership', [Cassier::class, 'checkMembership']);
     Route::post('/membership/update', [Cassier::class, 'updateMembership']);
-    // Route::post('/process-payment', [Cassier::class, 'processPayment']);
-    // Route::post('/submit-sale', [Cassier::class, 'store']);
-    Route::post('/submit-sale', function (Request $request) {
-    return response()->json(['status' => 'received', 'data' => $request->all()]);
-    });
-
+    Route::post('/submit-sale', [Cassier::class, 'store']);
     Route::get('/ReportCassier', [Cassier::class, 'report'])->name('ReportCassier');
     Route::get('/ItemCassier', [Cassier::class, 'item'])->name('ItemCassier');
     Route::get('/MemberCassier', [Cassier::class, 'member'])->name('MemberCassier');

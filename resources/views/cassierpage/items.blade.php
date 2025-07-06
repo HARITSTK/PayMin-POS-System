@@ -199,9 +199,9 @@
                     <div class="grid grid-cols-4 lg:grid-cols-4 auto-rows-auto gap-10 justify-items-center"
                         id="orderList">
                         @foreach ($products as $p)
-                        <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard"
+                        <div class="itemCard w-full h-full bg-white rounded-lg shadow-4xl card-container"
                             data-category="{{ strtolower($p->category->name) }}">
-                            <div class="flex flex-col items-center w-full h-full">
+                            <div class="itemCard flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
                                 <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />

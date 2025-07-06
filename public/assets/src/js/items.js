@@ -9,23 +9,47 @@ function closeModal(modalId) {
   document.getElementById(modalId).classList.add("hidden");
 }
 
+document.querySelector('form').addEventListener('submit', function (e) {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    if (!file) {
+        console.warn("❌ Tidak ada file yang dipilih saat submit!");
+    } else {
+        console.log("✅ File siap dikirim:", file.name, file.type);
+    }
+
+    const formData = new FormData(this);
+    for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`${key}: File - ${value.name}`);
+        } else {
+            console.log(`${key}: ${value}`);
+        }
+    }
+});
 
 
-// Input file for image upload and description of card
+document.getElementById("fileInput").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById("imagePreview");
 
-const inputFile = document.getElementById("fileInput");
-const imageView = document.getElementById("imageView");
-let imgLink = "";
-inputFile.addEventListener("change", uploadImage);
+    if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+        preview.classList.add("hidden");
+    }
+});
 
-function uploadImage() {
-  imgLink = URL.createObjectURL(inputFile.files[0]);
-  imageView.style.backgroundImage = `url(${imgLink})`;
-  imageView.style.backgroundSize = "cover";
-  imageView.style.backgroundPosition = "center";
-  imageView.style.backgroundRepeat = "no-repeat";
-  imageView.textContent = "";
-}
+document.getElementById("fileInput").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    console.log("Selected file:", file); // <- ini harus muncul
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   const categorySelect = document.getElementById("itemCategory");
