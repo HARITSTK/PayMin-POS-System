@@ -11,7 +11,7 @@
       href="../../assets/logoMin.png"
       type="image/x-icon"
     />
-    <title>PayMin</title>
+    <title>PayMin-Admin</title>
 
     <!-- Google Icons -->
 
@@ -24,7 +24,6 @@
     <main
       class="flex items-center justify-between h-screen bg-[#E6EEFD] overflow-hidden font-poppins"
     >
-      <!-- Navigation Bar -->
       <nav
         id="navbar"
         class="bg-white h-full overflow-hidden w-[7.2rem] min-w-[7.2rem] p-5 shadow-4xl rounded-r-4xl"
@@ -140,7 +139,7 @@
             <!-- Buttons -->
             <div class="flex justify-center gap-4">
               <button
-                class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+                class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-red-50"
                 onclick="closeModal('logoutModal')"
               >
                 Cancel
@@ -157,18 +156,18 @@
       </nav>
       <!-- Main Content -->
       <section class="h-full w-full p-11 box-border overflow-y-auto">
-        <div class="flex items-center justify-between">
+        <div class="animate-fade-right animate-once">
           <h1 class="text-[36pt] font-bold text-[#353535]">Settings</h1>
         </div>
         <div class="flex items-center w-full h-full p-4 gap-12">
-          <!-- Navigation -->
+          <!-- Navigation (Profile, Security & About Us) -->
           <div
-            class="flex flex-col items-center w-auto h-full bg-white rounded-lg shadow-4xl flex-1"
+            class="flex flex-col items-center w-auto h-full bg-white rounded-lg shadow-4xl flex-1 animate-fade-right animate-once animate-delay-500"
           >
             <!-- Your Restaurant -->
             <div
               class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
-              onclick="showYourRestaurant()"
+              onclick="navigateToPage('yourRestaurant')"
             >
               <div
                 class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
@@ -183,7 +182,7 @@
             <!-- Security -->
             <div
               class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
-              onclick="showSecurity()"
+              onclick="navigateToPage('security')"
             >
               <div
                 class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
@@ -198,7 +197,7 @@
             <!-- About Us -->
             <div
               class="flex items-center w-full h-auto p-4 hover:text-primary cursor-pointer transition-all duration-300 ease-in-out"
-              onclick="showAboutUs()"
+              onclick="navigateToPage('aboutUs')"
             >
               <div
                 class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full mr-2"
@@ -212,171 +211,181 @@
             </div>
           </div>
 
-          <!-- Profile -->
           <div
-            class="bg-white rounded-xl shadow-md p-6 flex-2 mx-auto flex flex-col h-full w-full"
-            id="yourRestaurant"
+            class="w-auto h-full rounded-lg flex-2 animate-fade-left animate-once animate-delay-500"
           >
-            <!-- Title -->
-            <h2 class="text-sm font-semibold text-gray-700 mb-4">
-              Your Profile
-            </h2>
+            <!-- Profile -->
+            <div
+              class="bg-white rounded-xl shadow-xl p-6 flex-2 mx-auto flex flex-col h-full w-full"
+              id="yourRestaurant"
+            >
+              <!-- Title -->
+              <h2 class="text-sm font-semibold text-gray-700 mb-4">
+                Your Profile
+              </h2>
 
-            <!-- Profile Info -->
-            <div class="flex h-auto w-full mx-5 items-center">
-              <!-- Profile Picture -->
-              <div class="relative w-40 h-40 mb-2">
-                <img
-                  src=""
-                  alt="Profile"
-                  class="rounded-full w-full h-full object-cover bg-gray-200"
-                />
-                <!-- Edit Icon -->
-                <button
-                  class="absolute bottom-0 right-1 bg-primary text-white rounded-full p-1 flex items-center hover:bg-orange-600"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
+              <!-- Profile Info -->
+              <div class="flex h-auto w-full mx-5 items-center">
+                <!-- Profile Picture -->
+                <div class="relative w-40 h-40 mb-2">
+                  <img
+                    src=""
+                    alt="Profile"
+                    class="rounded-full w-full h-full object-cover bg-gray-200"
+                  />
+                  <!-- Edit Icon -->
+                  <button
+                    class="absolute bottom-0 right-1 bg-primary text-white rounded-full p-1 flex items-center hover:bg-orange-600"
+                    onclick="showModal('uploadImageModal')"
+                  >
+                    <span class="material-symbols-outlined"> edit </span>
+                  </button>
+                </div>
+
+                <!-- Name & Date -->
+                <div class="flex flex-col justify-center ml-4 text-lg">
+                  <p class="font-semibold text-gray-800">Admin</p>
+                  <p class="text-gray-500">Last updated: 12/05/2024</p>
+                </div>
               </div>
 
-              <!-- Name & Date -->
-              <div class="flex flex-col justify-center ml-4 text-lg">
-                <p class="font-semibold text-gray-800">Admin</p>
-                <p class="text-gray-500">Last updated: 12/05/2024</p>
-              </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="border-t border-gray-200 my-6"></div>
-
-            <!-- Buttons -->
-            <div class="flex justify-end space-x-2 mt-auto">
-              <button
-                class="border border-orange-500 text-orange-500 rounded px-4 py-2 hover:bg-orange-50 text-sm font-medium"
-              >
-                Cancel
-              </button>
-              <button
-                class="bg-primary text-white rounded px-4 py-2 hover:from-orange-600 hover:to-orange-800 text-sm font-medium"
-              >
-                Save Changes
-              </button>
-            </div>
-          </div>
-          <!-- Security -->
-          <div
-            class="bg-white rounded-xl p-6 h-full flex-2 shadow-4xl hidden"
-            id="security"
-          >
-            <!-- Header -->
-            <h2 class="text-xl font-semibold text-gray-800 mb-2">Security</h2>
-            <p class="text-sm text-gray-500 mb-6">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusant ium doloremque laudantium, totam remad aperiam eaque ipsa
-              quae ab illo inventore.
-            </p>
-
-            <!-- Change Password Section -->
-            <form class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >Old Password</label
-                >
-                <input
-                  type="password"
-                  placeholder="Enter old password"
-                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >New Password</label
-                >
-                <input
-                  type="password"
-                  placeholder="Enter new password"
-                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"
-                  >Configure Password</label
-                >
-                <input
-                  type="password"
-                  placeholder="Enter new password"
-                  class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
+              <!-- Divider -->
+              <div class="border-t border-gray-200 my-6"></div>
 
               <!-- Buttons -->
               <div class="flex justify-end space-x-4 pt-4">
                 <button
                   type="button"
-                  class="border border-primary text-primary border-primary px-4 py-2 rounded-md text-sm hover:bg-red-50"
+                  class="border border-primary text-primary hover:bg-primary hover:text-white px-4 py-2 rounded-md text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-orange-600"
+                  class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white px-4 py-2 rounded-md text-sm hover:bg-orange-600"
                 >
                   Save Changes
                 </button>
               </div>
-            </form>
-          </div>
-          <!-- About Us -->
-          <div
-            class="bg-white rounded-xl p-6 h-full flex-2 shadow-4xl hidden"
-            id="aboutUs"
-          >
-            <!-- Header -->
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">About Us</h2>
-
-            <!-- Logo and Name -->
-            <div class="flex items-center space-x-2 mb-4">
-              <img
-                src="../../assets/logoMin.png"
-                alt="Logo"
-                class="w-10 h-10 rounded-sm"
-              />
-              <span class="text-2xl font-bold">
-                <span class="text-gray-800">Pay</span
-                ><span class="text-primary">Min</span>
-              </span>
             </div>
+            <!-- Security -->
+            <div
+              class="bg-white rounded-xl p-6 h-full flex-2 shadow-xl hidden"
+              id="security"
+            >
+              <!-- Header -->
+              <h2 class="text-xl font-semibold text-gray-800 mb-2">Security</h2>
+              <p class="text-sm text-gray-500 mb-6">
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                accusant ium doloremque laudantium, totam remad aperiam eaque
+                ipsa quae ab illo inventore.
+              </p>
 
-            <!-- Description -->
-            <p class="text-sm text-gray-600 mb-4 leading-relaxed">
-              PayMin is a smart and easy-to-use Point of Sale (POS) system
-              designed to help small businesses manage sales, inventory, and
-              payments in one place. From retail stores to cafés, PayMin makes
-              transactions fast, inventory tracking simple, and reporting clear.
-            </p>
+              <!-- Change Password Section -->
+              <form class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Old Password</label
+                  >
+                  <input
+                    type="password"
+                    placeholder="Enter old password"
+                    class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
 
-            <p class="text-sm text-gray-600 leading-relaxed mb-4">
-              Our mission is to make business operations more efficient and
-              accessible for everyone. With PayMin, you can focus less on
-              managing tools — and more on growing your business. Simple.
-              Reliable. Built for your business.
-            </p>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >New Password</label
+                  >
+                  <input
+                    type="password"
+                    placeholder="Enter new password"
+                    class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
 
-            <p class="text-sm font-semibold text-gray-800">
-              Simple. Reliable. Built for your business.
-            </p>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Configure Password</label
+                  >
+                  <input
+                    type="password"
+                    placeholder="Enter new password"
+                    class="w-full border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-end space-x-4 pt-4">
+                  <button
+                    type="button"
+                    class="border border-primary text-primary hover:bg-primary hover:text-white px-4 py-2 rounded-md text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="bg-linear-[180deg,_#FF5733,_#BB482F] text-white px-4 py-2 rounded-md text-sm hover:bg-orange-600"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- About Us -->
+            <div
+              class="bg-white rounded-xl p-6 h-full flex-2 shadow-xl hidden"
+              id="aboutUs"
+            >
+              <!-- Header -->
+              <h2 class="text-xl font-semibold text-gray-800 mb-4">About Us</h2>
+
+              <!-- Logo and Name -->
+              <div class="flex items-center space-x-2 mb-4">
+                <img
+                  src="../../assets/logoMin.png"
+                  alt="Logo"
+                  class="w-10 h-10 rounded-sm"
+                />
+                <span class="text-2xl font-bold">
+                  <span class="text-gray-800">Pay</span
+                  ><span class="text-primary">Min</span>
+                </span>
+              </div>
+
+              <!-- Description -->
+              <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+                PayMin is a smart and easy-to-use Point of Sale (POS) system
+                designed to help small businesses manage sales, inventory, and
+                payments in one place. From retail stores to cafés, PayMin makes
+                transactions fast, inventory tracking simple, and reporting
+                clear.
+              </p>
+
+              <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                Our mission is to make business operations more efficient and
+                accessible for everyone. With PayMin, you can focus less on
+                managing tools — and more on growing your business. Simple.
+                Reliable. Built for your business.
+              </p>
+
+              <p class="text-sm font-semibold text-gray-800">
+                Simple. Reliable. Built for your business.
+              </p>
+            </div>
           </div>
         </div>
 
         <!-- Modal -->
         <div
-          class="fixed inset-0 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50 hidden"
+          class="fixed inset-0 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50 hidden animate-fade animate-once animate-duration-[400ms]"
           id="uploadImageModal"
         >
           <!-- Modal -->
-          <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+          <div
+            class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md animate-jump animate-once animate-duration-[400ms]"
+          >
             <h2 class="text-xl font-semibold text-center mb-4">
               Change your profile
             </h2>

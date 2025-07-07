@@ -85,7 +85,7 @@ class Kitchen extends BaseController
         $userId = session('user_id');
         $user = Mdl_Admin::where('id', $userId)->first();
         
-        return view('adminpage/setting', compact('user'));
+        return view('kitchenpage/setting', compact('user'));
     }
 
     public function SysEditProfile(Request $request) {        

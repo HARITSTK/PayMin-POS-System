@@ -23,29 +23,26 @@ function showAboutUs() {
 // Function to show the modal
 function showModal(modalId) {
   const modal = document.getElementById(modalId);
-  const modalContent = modal.querySelector(".modal-content");
 
   modal.classList.remove("hidden");
 }
 
 function closeModal(modalId) {
   const modal = document.getElementById(modalId);
-  const modalContent = modal.querySelector(".modal-content");
 
   modal.classList.add("hidden");
 }
 
-function handleImageUpload(event) {
-  const file = event.target.files[0];
-  if (file) {
-    // Contoh preview
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      document.getElementById("previewImage").src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-
-    // Kalau mau upload via AJAX, bisa lanjut di sini...
-  }
+// 3 navigation (Your Restaurant, Security, About Us), When navigate to another page, added animated fade left and right
+function navigateToPage(pageId) {
+  const pages = [yourRestaurant, security, aboutUs];
+  pages.forEach((page) => {
+    if (page.id === pageId) {
+      page.classList.remove("hidden");
+      page.classList.add("fade-left");
+    } else {
+      page.classList.add("hidden");
+      page.classList.remove("fade-left");
+    }
+  });
 }
-

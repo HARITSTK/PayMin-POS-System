@@ -60,7 +60,7 @@
         <section
             class="bg-white h-full w-full p-5 shadow-2xl rounded-lg overflow-hidden flex flex-col items-center justify-center">
             <div class="flex flex-1 flex-col items-center justify-center">
-                <img src="/assets/src/assets/logo-01.png" alt="logo" width="300" />
+                <video src="assets/src/assets/logoAnimasi.mp4" width="600" autoplay muted playsinline></video>
                 <p class="mt-4 tracking-wide text-textColor">
                     Click Any Where to Login
                 </p>

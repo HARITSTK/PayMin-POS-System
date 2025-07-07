@@ -12,7 +12,7 @@
       type="image/x-icon"
     />
 
-    <title>PayMin</title>
+    <title>PayMin-Admin</title>
 
     <!-- Swiper -->
     <link
@@ -151,7 +151,7 @@
             <!-- Buttons -->
             <div class="flex justify-center gap-4">
               <button
-                class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+                class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-red-50"
                 onclick="closeModal('logoutModal')"
               >
                 Cancel
@@ -169,12 +169,20 @@
       <!-- Main Content -->
       <section class="h-full w-full p-11 box-border overflow-y-auto">
         <div class="mb-8 flex justify-between items-center">
-          <h1 class="text-[36pt] font-bold text-[#353535]">Orders History</h1>
-          <p>Data Up to 04:40 AM May 22, 2023</p>
+          <h1
+            class="text-[36pt] font-bold text-[#353535] animate-fade-right animate-once"
+          >
+            Orders History
+          </h1>
+          <p class="animate-fade-left animate-once animate-delay-[500]">
+            Data Up to 04:40 AM May 22, 2023
+          </p>
         </div>
 
         <div class="flex gap-x-4 items-center">
-          <div class="relative inline-block w-48 h-full">
+          <div
+            class="relative inline-block w-48 h-full animate-fade animate-once animate-delay-300"
+          >
             <select
               class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary"
             >
@@ -194,7 +202,7 @@
 
           <button
             id="sortingDropdown"
-            class="flex justify-between items-center w-auto px-2 py-1 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 gap-x-4"
+            class="flex justify-between items-center w-auto px-2 py-1 bg-white rounded-xl shadow-sm text-left text-lg text-gray-800 gap-x-4 animate-fade animate-once animate-delay-300"
           >
             <i class="fa fa-download" aria-hidden="true"></i>
             <span>CSV</span>
@@ -203,40 +211,60 @@
 
         <div class="flex gap-4 py-6 w-full">
           <!-- Card 1 -->
-          <div class="bg-white rounded-lg shadow-4xl w-full">
+          <div
+            class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[1000ms]"
+          >
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Total Income</p>
-              <p class="text-3xl font-bold text-gray-800">Rp. 200.000</p>
+              <div class="flex justify-between items-center">
+                <p class="text-xl text-gray-500">Total Income</p>
+                <p>All</p>
+              </div>
+
+              <p class="text-3xl font-bold text-textColor">Rp. 200.000</p>
             </div>
           </div>
 
           <!-- Card 2 -->
-          <div class="bg-white rounded-lg shadow-4xl w-full">
+          <div
+            class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[1200ms]"
+          >
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Total Items sell</p>
-              <p class="text-3xl font-bold text-gray-800">+Rp. 200.000</p>
+              <div class="flex justify-between items-center">
+                <p class="text-xl text-gray-500">Total Items</p>
+                <p>All</p>
+              </div>
+
+              <p class="text-3xl font-bold text-textColor">248</p>
             </div>
           </div>
 
           <!-- Card 3 -->
-          <div class="bg-white rounded-lg shadow-4xl w-full">
+          <div
+            class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[1400ms]"
+          >
             <div class="h-2 bg-primary rounded-t-lg"></div>
             <div class="p-6">
-              <p class="text-xl text-gray-500">Total Costumers</p>
-              <p class="text-3xl font-bold text-gray-800">-Rp. 200.000</p>
+              <div class="flex justify-between items-center">
+                <p class="text-xl text-gray-500">Total Costumers</p>
+                <p>All</p>
+              </div>
+
+              <p class="text-3xl font-bold text-textColor">121</p>
             </div>
           </div>
         </div>
 
-        <div class="flex gap-4 items-center">
+        <div
+          class="flex gap-4 items-center animate-fade animate-once animate-delay-[1800ms]"
+        >
           <div class="relative inline-block w-48 flex-1">
             <select
-              class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary"
+              class="appearance-none w-full bg-white border border-gray-300 text-textColor py-2 px-4 pr-10 rounded-xl leading-tight focus:outline-none focus:border-primary cursor-pointer"
             >
               <option>All</option>
-              <option>Option 1</option>
+              <option>Fiki</option>
               <option>Option 2</option>
               <option>Option 3</option>
             </select>
@@ -284,7 +312,7 @@
 
         <!-- Report Table Default (All) -->
         <div
-          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl hidden"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl hidden animate-fade-up animate-once animate-delay-[2000ms]"
         >
           <div class="w-full h-full flex flex-col overflow-hidden">
             <div class="overflow-y-auto flex-1 rounded-2xl">
@@ -349,7 +377,7 @@
 
         <!-- Report Table Selected Karyawan -->
         <div
-          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl animate-fade-up animate-once animate-delay-[2000ms]"
         >
           <div class="w-full h-full flex flex-col overflow-hidden">
             <div class="overflow-y-auto flex-1 rounded-2xl">
@@ -374,7 +402,7 @@
                     <td class="p-3">
                       <div class="flex justify-center">
                         <button
-                          class="bg-[#4682EC] text-white px-3 py-2 shadow flex justify-center items-center rounded-l-xl"
+                          class="bg-[#4682EC] hover:bg-[#4664ec] text-white px-3 py-2 shadow flex justify-center items-center rounded-l-xl"
                           onclick="showModal('modalViewItem')"
                         >
                           <span class="material-symbols-outlined">
@@ -382,7 +410,7 @@
                           </span>
                         </button>
                         <button
-                          class="bg-[#D9534F] text-white px-3 py-2 shadow flex justify-center items-center rounded-r-xl"
+                          class="bg-[#D9534F] hover:bg-[#cc3f3f] text-white px-3 py-2 shadow flex justify-center items-center rounded-r-xl"
                           onclick="showModal('modalDeleteItem')"
                         >
                           <span class="material-symbols-outlined">
@@ -425,12 +453,12 @@
 
       <!-- Modal Delete Item -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalDeleteItem"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 animate-jump animate-once animate-duration-[400ms]"
         >
           <!-- Modal Content -->
           <div class="mt-4 flex flex-col gap-y-2 py-2">
@@ -445,13 +473,13 @@
           <!-- Modal Footer -->
           <div class="mt-6 flex justify-end gap-x-4">
             <button
-              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              class="border-2 border-primary text-primary px-4 py-2 rounded hover:bg-[#ff58334b] transition-all duration-200 ease-in-out"
               onclick="closeModal('modalDeleteItem')"
             >
               Close
             </button>
             <button
-              class="bg-primary text-white px-4 py-2 rounded"
+              class="bg-primary hover:bg-[#db3610] text-white px-4 py-2 rounded transition-all duration-200 ease-in-out"
               id="submitBtn"
             >
               Save Changes
@@ -462,12 +490,12 @@
 
       <!-- Modal View Item -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalViewItem"
       >
         <!-- Modal Box -->
         <div
-          class="bg-white w-[400px] h-[500px] absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-lg p-6 overflow-y-auto"
+          class="bg-white w-[400px] h-[500px] absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-lg p-6 overflow-y-auto animate-jump animate-once animate-duration-[400ms]"
         >
           <!-- Title -->
           <h2 class="text-center text-xl font-bold text-primary mb-1">
@@ -515,7 +543,7 @@
 
           <div class="mt-6 flex justify-end">
             <button
-              class="border-2 border-primary text-primary px-2 py-1 rounded hover:bg-primary hover:text-white"
+              class="border-2 border-primary text-primary px-2 py-1 rounded hover:bg-primary hover:bg-[#ff58334b] hover:text-white transition-all duration-200 ease-in-out"
               onclick="closeModal('modalViewItem')"
             >
               Close

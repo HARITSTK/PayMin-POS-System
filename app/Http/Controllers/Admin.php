@@ -145,12 +145,11 @@ class Admin extends BaseController
 
         if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::disk('public')->delete($product->image); // jika sebelumnya pakai storage
+                Storage::disk('public')->delete($product->image);
             }
 
-            // Simpan dan ambil path-nya
             $path = $request->file('image')->store('uploads/admins', 'public');
-            $validated['image'] = $path; // akan seperti 'uploads/admins/namafile.jpg'
+            $validated['image'] = $path; 
         }
 
         $product->update($validated);
@@ -377,14 +376,11 @@ class Admin extends BaseController
         $user->username = $validatedData['username'];
         $user->bio = $validatedData['bio'];
 
-        // Jika ada file gambar
         if ($request->hasFile('image')) {
-            // Optional: hapus gambar lama jika perlu
             if ($user->image) {
                 Storage::disk('public')->delete($user->image);
             }
 
-            // Simpan gambar baru
             $path = $request->file('image')->store('uploads/admins', 'public');
             $user->image = $path;
         }

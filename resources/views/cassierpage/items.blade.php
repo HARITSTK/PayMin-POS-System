@@ -203,7 +203,7 @@
                             data-category="{{ strtolower($p->category->name) }}">
                             <div class="itemCard flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
-                                <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
+                                <img src="{{ $p->image ? asset('storage/' . $p->image) : asset('/default.jpg') }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
@@ -230,7 +230,7 @@
                                         onclick="showProductDetailCassier(this)" data-id="{{ $p->id }}"
                                         data-name="{{ $p->name }}" data-stock="{{ $p->stock }}"
                                         data-price="{{ $p->price }}" data-desc="{{ $p->desc }}"
-                                        data-image="{{ asset('uploads/products/' . $p->image) }}">
+                                        data-image="{{ $p->image ? asset('storage/' . $p->image) : asset('/default.jpg') }}"">
                                         Detail
                                     </button>
                                 </div>

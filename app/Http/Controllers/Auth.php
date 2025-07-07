@@ -88,7 +88,12 @@ class Auth extends BaseController
                 'role_admin' => $user->role,
                 'bio_admin' => $user->bio,
             ]);
-            return redirect()->route('Home');
+            // return redirect()->route('Home');
+
+
+            return view('authpage.loginsuccess', [
+                'redirectTo' => route('Home'),
+            ]);
 
         } elseif ($user->role == 'cassier') {
             session([
@@ -96,11 +101,14 @@ class Auth extends BaseController
                 'username_cassier' => $user->username,
                 'name_cassier' => $user->name,
                 'email_cassier' => $user->email,
-                'photo_cassier' => $user->photo,
+                'image_cassier' => $user->image,
                 'role_cassier' => $user->role,
                 'bio_cassier' => $user->bio,
             ]);
-            return redirect()->route('HomeCassier');
+            // return redirect()->route('HomeCassier');
+            return view('authpage.loginsuccess', [
+                'redirectTo' => route('HomeCassier'),
+            ]);
             
         } elseif ($user->role == 'kitchen') {
             session([
@@ -109,8 +117,12 @@ class Auth extends BaseController
                 'name_kitchen' => $user->name,
                 'role_kitchen' => $user->role,
                 'bio_kitchen' => $user->bio,
+                'image_kitchen' => $user->image,
             ]);
-            return redirect()->route('HomeKitchen');
+            // return redirect()->route('');
+            return view('authpage.loginsuccess', [
+                'redirectTo' => route('HomeKitchen'),
+            ]);
         } elseif ($user->role == 'storage') {
             session([
                 'user_id' => $user->id,
@@ -118,8 +130,12 @@ class Auth extends BaseController
                 'name_storage' => $user->name,
                 'role_storage' => $user->role,
                 'bio_storage' => $user->bio,
+                'image_storage' => $user->image,
             ]);
-            return redirect()->route('HomeStorage');
+            // return redirect()->route('HomeStorage');
+            return view('authpage.loginsuccess', [
+                'redirectTo' => route('HomeStorage'),
+            ]);
         } elseif ($user->role == 'waiters') {
             session([
                 'user_id' => $user->id,
@@ -127,8 +143,14 @@ class Auth extends BaseController
                 'name_waiters' => $user->name,
                 'role_waiters' => $user->role,
                 'bio_waiters' => $user->bio,
+                'image_waiters' => $user->image,
             ]);
-            return redirect()->route('HomeWaiters');
+            // return redirect()->route('HomeWaiters');
+
+
+            return view('authpage.loginsuccess', [
+                'redirectTo' => route('HomeWaiters'),
+            ]);
         } else {
             return back()->withErrors(['username' => 'Akun tidak memiliki role!'])->withInput();
         }

@@ -11,7 +11,7 @@
       href="../../assets/logoMin.png"
       type="image/x-icon"
     />
-    <title>PayMin</title>
+    <title>PayMin-Admin</title>
 
     <link
       rel="shortcut icon"
@@ -156,7 +156,7 @@
             <!-- Buttons -->
             <div class="flex justify-center gap-4">
               <button
-                class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+                class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-red-50"
                 onclick="closeModal('logoutModal')"
               >
                 Cancel
@@ -173,12 +173,13 @@
       </nav>
       <!-- Main Content -->
       <section class="h-full w-full p-11 box-border overflow-y-auto">
-        <div class="mb-8">
+        <div class="mb-8 animate-fade-right animate-once">
           <h1 class="text-[36pt] font-bold text-[#353535]">Master Key</h1>
         </div>
 
-        <div class="grid grid-cols-12 gap-4 w-full items-center">
-          <!-- Tombol Add New (col-1) -->
+        <div
+          class="grid grid-cols-12 gap-4 w-full items-center animate-fade animate-once animate-delay-300"
+        >
           <div class="col-span-2">
             <button
               class="bg-primary text-textColor px-4 py-2 rounded-lg w-full flex items-center justify-center hover:opacity-80 transition-all duration-200"
@@ -220,7 +221,7 @@
         <!-- REPORT TABLE -->
 
         <div
-          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl animate-fade animate-once animate-delay-700"
         >
           <div class="w-full h-full flex flex-col overflow-hidden">
             <div class="overflow-y-auto flex-1 rounded-2xl">
@@ -229,6 +230,9 @@
                   class="sticky top-0 z-10 bg-[#747474] text-white border-b-2 border-tertiary h-12"
                 >
                   <tr class="text-center text-sm">
+                    <th class="p-5">
+                      <span class="material-symbols-outlined"> close </span>
+                    </th>
                     <th class="p-5">Action</th>
                     <th class="p-5">Employee ID</th>
                     <th class="p-5">Name</th>
@@ -238,6 +242,9 @@
                 </thead>
                 <tbody>
                   <tr class="border-b border-tertiary h-[3rem] text-center">
+                    <td class="p-3">
+                      <span class="material-symbols-outlined"> close </span>
+                    </td>
                     <td class="">
                       <div class="flex justify-center items-center">
                         <button
@@ -277,7 +284,7 @@
                     <td class="p-3">Ridho</td>
                     <td class="p-3">
                       <button
-                        class="bg-primary text-white w-[60%] h-[2.5em] rounded-full"
+                        class="bg-primary text-white w-[60%] h-[2.5em] rounded-2xl"
                       >
                         Admin
                       </button>
@@ -294,12 +301,12 @@
 
       <!-- Modal Edit Master -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalEditItem"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content animate-jump animate-once animate-duration-[400ms]"
         >
           <!-- Modal Content -->
           <h1 class="text-3xl font-bold text-primary mb-2">Edit Profile</h1>
@@ -403,13 +410,13 @@
           <!-- Modal Footer -->
           <div class="mt-6 flex justify-center gap-x-4">
             <button
-              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              class="border-2 border-primary text-primary px-4 py-2 rounded hover:bg-[#ff58334b] transition-all duration-200 ease-in-out"
               onclick="closeModal('modalEditItem')"
             >
               Close
             </button>
             <button
-              class="bg-primary text-white px-4 py-2 rounded"
+              class="bg-primary text-white px-4 py-2 rounded hover:bg-[#db3610] transition-all duration-200 ease-in-out"
               id="submitBtn"
             >
               Save Changes
@@ -418,13 +425,14 @@
         </div>
       </div>
 
+      <!-- Modal Add Master -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalAddItem"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content animate-jump animate-once animate-duration-[400ms]"
         >
           <!-- Modal Content -->
           <h1 class="text-3xl font-bold text-primary mb-2">Add New</h1>
@@ -528,13 +536,13 @@
           <!-- Modal Footer -->
           <div class="mt-6 flex justify-center gap-x-4">
             <button
-              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              class="border-2 border-primary text-primary px-4 py-2 rounded hover:bg-[#ff58334b] transition-all duration-200 ease-in-out"
               onclick="closeModal('modalAddItem')"
             >
               Discard
             </button>
             <button
-              class="bg-primary text-white px-4 py-2 rounded"
+              class="bg-primary text-white px-4 py-2 rounded hover:bg-[#db3610] transition-all duration-200 ease-in-out"
               id="submitBtn"
             >
               Add New
@@ -543,13 +551,14 @@
         </div>
       </div>
 
+      <!-- Modal Delete Master -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalDeleteItem"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+          class="bg-white rounded-lg shadow-lg w-auto h-auto p-6 absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content animate-jump animate-once animate-duration-[400ms]"
         >
           <!-- Modal Content -->
           <div class="mt-4 flex flex-col gap-y-2 py-2">
@@ -563,13 +572,13 @@
           <!-- Modal Footer -->
           <div class="mt-6 flex justify-end gap-x-4">
             <button
-              class="border-2 border-primary text-primary px-4 py-2 rounded"
+              class="border-2 border-primary text-primary px-4 py-2 rounded hover:bg-[#ff58334b] transition-all duration-200 ease-in-out"
               onclick="closeModal('modalDeleteItem')"
             >
               Close
             </button>
             <button
-              class="bg-primary text-white px-4 py-2 rounded"
+              class="bg-primary text-white px-4 py-2 rounded hover:bg-[#db3610] transition-all duration-200 ease-in-out"
               id="submitBtn"
             >
               Save Changes
@@ -578,13 +587,14 @@
         </div>
       </div>
 
+      <!-- Modal View Master -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md flex justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md flex justify-center items-center z-50 animate-fadeIn hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalViewItem"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-xl shadow-lg w-96 p-6 mx-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content"
+          class="bg-white rounded-xl shadow-lg w-96 p-6 mx-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 scale-95 transition-all duration-300 ease-in-out modal-content animate-fade animate-jump animate-duration-[400ms]"
         >
           <!-- Modal Header -->
           <h1 class="text-2xl font-bold text-primary text-center mb-4">
@@ -635,13 +645,19 @@
                 <span class="text-gray-700">Username</span>
                 <span class="text-gray-500">ereneren</span>
               </div>
+
+              <!-- Password -->
+              <div class="flex justify-between gap-x-8">
+                <span class="text-gray-700">Password</span>
+                <span class="text-gray-500">ereneren</span>
+              </div>
             </div>
           </div>
 
           <!-- Modal Footer -->
           <div class="flex justify-center">
             <button
-              class="border border-primary text-primary px-8 py-2 rounded hover:bg-red-50 transition-colors duration-200"
+              class="border-2 border-primary text-primary px-8 py-2 rounded hover:bg-[#ff58334b] transition-all duration-200 ease-in-out"
               onclick="closeModal('modalViewItem')"
             >
               Close

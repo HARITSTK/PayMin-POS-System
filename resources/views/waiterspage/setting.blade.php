@@ -192,7 +192,7 @@
                     <div class="flex h-auto w-full mx-5 items-center">
                         <!-- Profile Picture -->
                         <div class="relative w-40 h-40 mb-2">
-                            <img src="" class="rounded-full w-full h-full object-cover bg-gray-200" />
+                            <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('/default.jpg') }}" class="rounded-full w-full h-full object-cover bg-gray-200" />
                             <!-- Edit Icon -->
                             <button
                                 class="absolute bottom-1 right-1 bg-primary text-white rounded-full p-1.5 shadow-md hover:bg-orange-600"

@@ -11,7 +11,7 @@
       href="../../assets/logoMin.png"
       type="image/x-icon"
     />
-    <title>PayMin</title>
+    <title>PayMin-Admin</title>
 
     <link
       rel="shortcut icon"
@@ -156,7 +156,7 @@
             <!-- Buttons -->
             <div class="flex justify-center gap-4">
               <button
-                class="px-4 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50"
+                class="px-4 py-2 border border-primary text-primary rounded-md hover:bg-red-50"
                 onclick="closeModal('logoutModal')"
               >
                 Cancel
@@ -173,11 +173,13 @@
       </nav>
       <!-- Main Content -->
       <section class="h-full w-full p-11 box-border overflow-y-auto">
-        <div class="mb-8">
+        <div class="mb-8 animate-fade-right animate-once">
           <h1 class="text-[36pt] font-bold text-[#353535]">Membership Data</h1>
         </div>
 
-        <div class="flex gap-4 w-full justify-between items-center">
+        <div
+          class="flex gap-4 w-full justify-between items-center animate-fade animate-once animate-delay-300"
+        >
           <!-- Tombol CSV (col-1) -->
           <div class="">
             <button
@@ -208,7 +210,7 @@
         </div>
 
         <div
-          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl"
+          class="mt-3 bg-white shadow-4xl h-[40em] w-full relative rounded-2xl animate-fade animate-once animate-delay-700"
         >
           <div class="w-full h-full flex flex-col overflow-hidden">
             <div class="overflow-y-auto flex-1 rounded-2xl">
@@ -314,12 +316,12 @@
 
       <!-- Modal Delete Member -->
       <div
-        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 animate-fadeIn hidden"
+        class="fixed inset-0 bg-black/25 backdrop-blur-md justify-center items-center z-50 hidden animate-fade animate-once animate-duration-[400ms]"
         id="modalDeleteMember"
       >
         <!-- Modal Container -->
         <div
-          class="bg-white rounded-xl p-6 w-auto modal-content shadow-lg flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-left"
+          class="bg-white rounded-xl p-6 w-auto modal-content shadow-lg flex flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-left animate-jump animate-once animate-duration-[400ms]"
         >
           <h1 class="text-2xl font-semibold text-primary mb-4">
             Delete Member
@@ -342,7 +344,7 @@
               class="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
               onclick="closeModal('modalDeleteMember')"
             >
-              Yes
+              Delete
             </button>
           </div>
         </div>

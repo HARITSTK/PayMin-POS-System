@@ -190,7 +190,7 @@
                 <div
                     class="flex flex-col items-center justify-center bg-white shadow-4xl rounded-xl cursor-pointer transition-all duration-200 p-6 w-full h-[50vh] relative mt-10 itemCard">
                     <div class="relative w-full h-full">
-                        <img src="assets/src/assets/coffee.png" alt="Product"
+                        <img src="{{ $p->image ? asset('storage/' . $p->image) : asset('/assets/src/assets/coffee.png') }}" alt="Product"
                             class="rounded-full mb-3 absolute -top-20 left-1/2 transform -translate-x-1/2" />
                     </div>
                     <h2 class="text-2xl font-semibold item-name ">{{ $p->name }}</h2>

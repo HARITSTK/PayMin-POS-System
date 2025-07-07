@@ -119,8 +119,8 @@
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
             <!-- Page Title -->
-            <div class="mb-8">
-                <h1 class="text-[36pt] font-bold text-[#353535]">
+            <div class="mb-8 animate-fade-right animate-once">
+                <h1 class="text-[36pt] font-bold text-[#353535] animate-fade-right animate-once">
                     <span class="font-medium">Welcome</span> {{ $user->name }} !
                 </h1>
             </div>
@@ -129,7 +129,7 @@
             <div class="grid grid-cols-4 grid-rows-[0.5fr_1fr_0.5fr_1fr_0.2fr] gap-6">
                 <!-- Total Income -->
                 <div
-                    class="bg-gradient-to-b from-white from-70% to-gray-400 to-100% p-3 flex flex-col rounded-xl shadow-4xl border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out">
+                    class="bg-gradient-to-b from-white from-70% to-gray-400 to-100% p-3 flex flex-col rounded-xl shadow-4xl border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out animate-fade-up animate-once animate-delay-[1600ms]">
                     <h1 class="text-gray-400 mb-5 text-[15pt]">Total Income</h1>
                     <div class="flex w-full justify-between items-center mt-auto">
                         <div class="flex flex-col justify-between mb-2">
@@ -146,7 +146,7 @@
                 </div>
                 <!-- Total Items -->
                 <div
-                    class="bg-white p-3 flex flex-col rounded-xl shadow-4xl bg-gradient-to-b from-white from-70% to-gray-400 to-100% border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out">
+                    class="bg-white p-3 flex flex-col rounded-xl shadow-4xl bg-gradient-to-b from-white from-70% to-gray-400 to-100% border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out animate-fade-up animate-once animate-delay-[1800ms]">
                     <h1 class="text-gray-400 mb-5 text-[15pt]">Total Items</h1>
                     <div class="flex w-full justify-between items-center mt-auto">
                         <div class="flex flex-col justify-between mb-2">
@@ -163,7 +163,7 @@
                 </div>
                 <!-- Total Costumers -->
                 <div
-                    class="bg-white p-3 flex flex-col rounded-xl shadow-4xl bg-gradient-to-b from-white from-70% to-gray-400 to-100% border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out">
+                    class="bg-white p-3 flex flex-col rounded-xl shadow-4xl bg-gradient-to-b from-white from-70% to-gray-400 to-100% border-2 border-[#E4E4E4] hover:border-primary transition-all duration-300 ease-in-out animate-fade-up animate-once animate-delay-[2000ms]">
                     <h1 class="text-gray-400 mb-5 text-[15pt]">Total Costumers</h1>
                     <div class="flex w-full justify-between items-center mt-auto">
                         <div class="flex flex-col justify-between mb-2">
@@ -198,15 +198,15 @@
                 @else
                 <!-- Low Stocks -->
                 <div
-                    class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    class="row-span-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content animate-fade-left animate-once animate-delay-1000">
                     <h1 class="text-white mb-5 mt-2 text-2xl font-medium">Low Stock</h1>
                     <div class="grid grid-cols-2 grid-rows-2 gap-2">
                         @foreach ($lowStocks as $ls)
                         <div
                             class="bg-white px-2 py-6 rounded-lg shadow-4xl flex flex-col items-center mb-3 relative w-full h-full">
-                            <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-16 mb-2" />
+                            <img src="/assets/src/assets/coffee.png" class="w-16 mb-2" />
                             <span class="text-gray-500 text-[10pt] w-20 text-center mb-2">{{ $ls->name }}</span>
-                            <span class="font-bold text-l text-[#353535]">{{ $ls->stock }}/span>
+                            <span class="font-bold text-l text-[#353535]">{{ $ls->stock }}</span>
                                 <div
                                     class="text-sm text-[#F4221F] bg-[#FFE5D7] h-auto rounded-2xl gap-1 py-1 px-4 absolute -right-4 -top-2">
                                     <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
@@ -219,10 +219,8 @@
                 @endif
 
                 <!-- Product List -->
-                @if ($products->isEmpty())
-                <!-- Items empty -->
                 <div
-                    class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content animate-fade-right animate-once animate-delay-1000">
                     <div class="flex items-center justify-between mb-1 w-auto p-4">
                         <h1 class="font-medium text-white text-2xl">Product List</h1>
                         <div class="flex items-center justify-between gap-4">
@@ -239,79 +237,53 @@
                     </div>
 
                     <div class="h-full w-full rounded-xl">
+                        @if ($products->isNotEmpty())
                         <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
+                            @foreach ($products as $pl)
+                            <div class="flex flex-col items-center bg-white rounded-lg shadow-4xl w-auto h-full p-3">
+                                <div
+                                    class="flex flex-col items-center bg-white rounded-lg shadow-4xl w-auto h-full p-3">
+                                    <div class="flex mx-auto w-[8rem]">
+                                        <img src="{{ $pl->image ? asset('storage/' . $pl->image) : asset('/assets/src/assets/coffee.png') }}"
+                                            class="object-cover w-full" />
+                                    </div>
+                                    <div class="flex flex-col items-center w-full my-auto">
+                                        <span class="text-gray-500 text-[15pt] mb-1 font-medium">{{ $pl->name }}</span>
+                                        <span class="font-bold text-[13pt] text-[#353535]">Price Rp.
+                                            {{ $pl->price }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @else
+                        <!-- Items empty -->
+                        <div class="flex flex-col items-center justify-center h-full">
                             <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 55px">
                                 cancel
                             </span>
                             <div class="flex flex-col items-center justify-center text-white w-[50%] text-center">
                                 <span class="text-[15pt] mb-1 font-medium">No Data Product List</span>
-                                <span class="font-light text-[11pt]">Start by adding your first product to manage
-                                    your
+                                <span class="font-light text-[11pt]">Start by adding your first product to manage your
                                     inventory.</span>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
-                @else
-                <div
-                    class="col-span-2 row-span-4 bg-linear-[180deg,_#FF5733,_#BB482F] p-4 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
-                    <div class="flex items-center justify-between mb-1 w-auto p-4">
-                        <h1 class="font-medium text-white text-2xl">Product List</h1>
-                        <div class="flex items-center justify-between gap-4">
-                            <span
-                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 flex items-center justify-center shadow-4xl cursor-pointer">
-                                chevron_left
-                            </span>
-
-                            <span
-                                class="material-symbols-outlined text-[#FB8E77] bg-[#E6EEFD] rounded-lg p-2 shadow-4xl cursor-pointer">
-                                chevron_right
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="h-full w-full rounded-xl">
-                        <div class="grid grid-cols-3 grid-rows-2 gap-2 p-2 h-full">
-                            @foreach ($products as $pl)
-                            <div class="flex flex-col items-center bg-white rounded-lg shadow-4xl w-auto h-full p-3">
-                                <div class="flex mx-auto w-[8rem]">
-                                    <img src="assets/src/assets/coffee.png" alt="Coffee" class="object-cover w-full" />
-                                </div>
-                                <div class="flex flex-col items-center w-full my-auto">
-                                    <span class="text-gray-500 text-[15pt] mb-1 font-medium">{{ $pl->name }}</span>
-                                    <span class="font-bold text-[13pt] text-[#353535]">Price Rp. {{ $pl->price }}</span>
-                                </div>
-                            </div>
-                            @endforeach
-
-                        </div>
-                    </div>
-                </div>
-                @endif
                 <!-- Sales Growth -->
-                @if ($salesGrowth->isEmpty())
-                <!-- Items empty -->
-                <div class="flex flex-col items-center justify-center h-full">
-                    <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
-                        cancel
-                    </span>
-                    <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
-                        <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
-                        <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
-                    </div>
-                </div>
-                @else
                 <div
-                    class="row-span-2 col-start-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-6 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content">
+                    class="row-span-2 col-start-3 bg-linear-[180deg,_#FF5733,_#BB482F] p-6 flex flex-col rounded-xl shadow-4xl border-2 border-white box-content animate-fade-up animate-once animate-delay-1000">
                     <div class="flex items-center justify-between mb-5 w-auto">
                         <h1 class="font-medium text-white text-2xl">Sales Growth</h1>
                     </div>
 
+                    @if ($salesGrowth->isNotEmpty())
                     <div class="flex flex-col justify-between gap-3">
                         @foreach ($salesGrowth as $sg)
                         <div
                             class="bg-white p-2 w-full rounded-lg flex items-center shadow-4xl relative border-2 border-[#E4E4E4]">
-                            <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-12" />
+                            <img src="/assets/src/assets/coffee.png" class="w-12" />
                             <div class="flex flex-col">
                                 <span class="text-gray-500 text-sm">{{ $sg->name }}</span>
                                 <span class="font-bold text-[#353535]">{{$sg->stock}}</span>
@@ -324,41 +296,40 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
-                @endif
+                    @else
 
+                    <!-- Items empty -->
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <span class="material-symbols-outlined text-2xl mb-2 text-white" style="font-size: 35px">
+                            cancel
+                        </span>
+                        <div class="flex flex-col items-center justify-center text-white w-[90%] text-center">
+                            <span class="text-[12pt] mb-1 font-medium">No Data Sales Growth</span>
+                            <span class="font-light text-[9pt]">Start selling to view sales growth.</span>
+                        </div>
+                    </div>
+                    @endif
+                </div>
 
                 <!-- Orders Today -->
-                @if ($ordersToday->isEmpty())
-                <!-- Items empty -->
-                <div class="flex flex-col items-center justify-center h-full">
-                    <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
-                        cancel
-                    </span>
-                    <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
-                        <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
-                        <span class="font-light text-[11pt]">New orders will be displayed here once they arrive.</span>
-                    </div>
-                </div>
-                @else
                 <div
-                    class="col-span-2 row-span-2 col-start-3 row-start-4 bg-gradient-to-b from-white from-40% to-gray-300 to-100% border-2 border-white p-3 flex flex-col rounded-xl shadow-4xl">
+                    class="col-span-2 row-span-2 col-start-3 row-start-4 bg-gradient-to-b from-white from-40% to-gray-300 to-100% border-2 border-white p-3 flex flex-col rounded-xl shadow-4xl animate-fade-down animate-once animate-delay-[2300ms]">
                     <div class="flex items-center justify-between mb-2 w-auto px-3 cursor-pointer">
                         <h1 class="font-bold text-textColor text-2xl">Orders Today</h1>
                         <div class="flex items-center justify-between gap-2">
-                            <a href="{{ route('Report') }}" class="flex items-center gap-2">
-                                <h2>View All</h2>
-                                <span class="material-symbols-outlined"> arrow_forward </span>
-                            </a>
+                            <h2>View All</h2>
+                            <span class="material-symbols-outlined"> arrow_forward </span>
                         </div>
                     </div>
+                    @if ($ordersToday->isNotEmpty())
                     <div class="grid grid-cols-2 grid-rows-2 my-auto gap-2">
                         @foreach ($ordersToday as $ot)
                         @foreach ($ot->saleItems as $it)
 
                         <div
                             class="bg-white p-1 w-full rounded-lg shadow-xl flex items-center border-gray-200 border-2 box-border">
-                            <img src="assets/src/assets/coffee.png" alt="Coffee" class="w-18 h-18" />
+                            <img src="{{ $pl->image ? asset('storage/' . $pl->image) : asset('/assets/src/assets/coffee.png') }}"
+                                class="w-18 h-18" />
                             <div class="flex flex-col mr-10">
                                 <span class="text-gray-500 text-base">{{ $it->product->name ?? '-' }}</span>
                                 <span
@@ -368,8 +339,22 @@
                         @endforeach
                         @endforeach
                     </div>
+                    @else
+
+                    <!-- Items empty -->
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <span class="material-symbols-outlined text-2xl mb-2 text-textColor" style="font-size: 35px">
+                            cancel
+                        </span>
+                        <div class="flex flex-col items-center justify-center text-textColor w-[90%] text-center">
+                            <span class="text-[14pt] mb-1 font-medium">No Data Orders Today</span>
+                            <span class="font-light text-[11pt]">New orders will be displayed here once they
+                                arrive.</span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
-                @endif
+
             </div>
         </section>
     </main>

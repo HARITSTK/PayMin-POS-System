@@ -134,12 +134,12 @@
         </nav>
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
-            <div class="">
+            <div class="animate-fade-right animate-once">
                 <h1 class="text-[36pt] font-bold text-[#353535]">Items Management</h1>
             </div>
             <div class="flex gap-4 py-6 w-full">
                 <!-- Card 1 -->
-                <div class="bg-white rounded-lg shadow-4xl w-full">
+                <div class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[300ms]">
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xs text-gray-500">Out of Stock</p>
@@ -148,7 +148,7 @@
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-white rounded-lg shadow-4xl w-full">
+                <div class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[500ms]">
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xs text-gray-500">Low Stock</p>
@@ -157,7 +157,7 @@
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-white rounded-lg shadow-4xl w-full">
+                <div class="bg-white rounded-lg shadow-4xl w-full animate-fade-up animate-once animate-delay-[700ms]">
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xs text-gray-500">Total Items</p>
@@ -166,9 +166,9 @@
                 </div>
             </div>
 
-            <div class="bg-white p-8 shadow-4xl h-[40em] w-full relative rounded-lg">
+            <div class="bg-white p-8 shadow-4xl h-[40em] w-full relative rounded-lg animate-fade animate-once animate-delay-1000">
                 <!-- Items Sorting -->
-                <div class="flex justify-between w-full h-auto border-gray-600 bg-white border-b-[1px] p-2">
+                <div class="flex justify-between w-full h-auto border-gray-600 bg-white border-b-[1px] p-2 animate-fade-up animate-once animate-delay-[1300ms]">
                     <ul class="flex flex-row items-center gap-3">
                         <li data-filter="all"
                             class="filter-btn border-2 border-gray-400 rounded-3xl px-5 hover:text-primary hover:border-primary cursor-pointer hover:bg-[#FFB09F]">
@@ -226,7 +226,7 @@
                     <div class="grid grid-cols-4 lg:grid-cols-4 auto-rows-auto gap-10 justify-items-center"
                         id="orderList">
                         <div id="addItemCard"
-                            class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl cursor-pointer hover:bg-[#FFB09F] transition-all duration-200 p-6 w-full h-[50vh]">
+                            class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl cursor-pointer hover:bg-[#FFB09F] transition-all duration-200 p-6 w-full h-[50vh] animate-fade animate-once animate-delay-[1600ms]">
                             <button class="flex flex-col items-center justify-center focus:outline-none"
                                 onclick="showModal('modalAddItem')">
                                 <span class="flex items-center justify-center w-16 h-16 text-primary rounded-full mb-3">
@@ -241,7 +241,7 @@
                             data-category="{{ strtolower($p->category->name) }}">
                             <div class="flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
-                                <img src="{{ $p->image ? asset('storage/' . $user->image) : '/default.jpg' }}"
+                                <img src="{{ $p->image ? asset('storage/' . $p->image) : '/default.jpg' }}"
                                     alt="{{ $p->name }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />
 
@@ -269,12 +269,15 @@
                                         data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-desc="{{ $p->desc }}"
                                         data-price="{{ $p->price }}" data-stock="{{ $p->stock }}"
                                         data-category="{{ $p->category_id }}"
-                                        data-subcategory="{{ $p->subcategory_id }}" onclick="showModalEdit(this)">
+                                        data-subcategory="{{ $p->subcategory_id }}" data-image="{{ $p->image }}"
+                                        onclick="showModalEdit(this)">
                                         Edit menu
                                     </button>
                                     <button
                                         class="text-gray-500 bg-tertiary hover:text-gray-700 w-[40%] h-full rounded-br-lg"
-                                        onclick="showModalDelete({{ $p->id }}, '{{ $p->name }}', '{{ $p->price }}', '{{ $p->stock }}')">
+                                        data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->price }}"
+                                        data-stock="{{ $p->stock }}" data-image="{{ $p->image }}"
+                                        onclick="showModalDelete(this)">
                                         <div
                                             class="w-full h-full transition-all duration-200 flex items-center justify-center text-white text-lg">
                                             <span class="material-symbols-outlined"> delete </span>
@@ -307,7 +310,8 @@
                 <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
                     <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
 
-                    <img src="/src/assets/coffee.png" class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
+                    <img id="deleteItemImage" src="/src/assets/coffee.png"
+                        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
 
                     <h3 id="deleteItemName" class="text-lg font-semibold text-gray-800">produk</h3>
                     <p id="deleteItemInfo" class="text-sm text-gray-600">Harga | Stock</p>
@@ -356,9 +360,12 @@
                             <p class="text-gray-500 mt-2 text-center">
                                 Drag and drop your image here
                             </p>
-                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
-                            <label for="fileInput"
-                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
+                            <img id="editPreviewImage" class="mt-2 max-w-full max-h-60 hidden rounded" />
+                            <input type="file" name="image" accept="image/*" id="editImageInput" class="hidden"
+                                onchange="handleImageUpload(event, 'edit')" />
+                            <button onclick="document.getElementById('editImageInput').click()" type="button"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</button>
+                            <span id="editFileName" class="mt-1 text-sm text-gray-500"></span>
                         </div>
 
                         <!-- Input fields -->
@@ -440,26 +447,25 @@
                 </div>
 
                 <!-- Modal Content -->
-                <form action="{{ route('SysAddItem') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('SysAddItem') }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    <!-- @method('PUT') -->
                     <!-- Modal Content -->
                     <div class="mt-4 flex justify-between gap-x-4 py-2">
                         <!-- drag and drop image -->
-                        <div id="dropZone"
-                            class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3 bg-center bg-cover relative overflow-hidden">
-
-                            <i class="fa fa-cloud-upload fa-3x text-gray-400 pointer-events-none"></i>
-                            <p class="text-gray-500 mt-2 text-center pointer-events-none">
+                        <div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg w-[15vw] h-auto cursor-pointer hover:bg-gray-100 transition-all duration-200 p-3"
+                            id="imageView">
+                            <i class="fa fa-cloud-upload fa-3x text-gray-400"></i>
+                            <p class="text-gray-500 mt-2 text-center">
                                 Drag and drop your image here
                             </p>
-
-                            <label for="fileInput"
-                            class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer text-sm z-10">Choose
-                            File</label>
-                            <input type="file" accept="image/*" id="fileInput" name="image" />
-                            <img id="imagePreview" class="hidden absolute inset-0 w-full h-full object-cover" />
+                            <img id="addPreviewImage" class="mt-2 max-w-full max-h-60 hidden rounded" />
+                            <input type="file" name="image" accept="image/*" id="addImageInput" class="hidden"
+                                onchange="handleImageUpload(event, 'add')" />
+                            <button onclick="document.getElementById('addImageInput').click()" type="button"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</button>
+                            <span id="addFileName" class="mt-1 text-sm text-gray-500"></span>
                         </div>
-
 
                         <!-- Input fields -->
                         <div class="mt-4">

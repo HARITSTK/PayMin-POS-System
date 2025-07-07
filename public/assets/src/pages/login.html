@@ -23,8 +23,16 @@
         id="firstScreen"
       >
         <div class="flex flex-1 flex-col items-center justify-center">
-          <img src="../assets/logo.png" alt="logo" width="300" />
-          <p class="mt-4 tracking-wide text-textColor">
+          <video
+            src="../assets/logoAnimasi.mp4"
+            width="600"
+            autoplay
+            muted
+            playsinline
+          ></video>
+          <p
+            class="mt-4 tracking-wide text-textColor animate-pulse animate-infinite animate-delay-[800ms]"
+          >
             Click Any Where to Login
           </p>
         </div>
@@ -158,7 +166,9 @@
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-20"
         >
-          <p class="mt-4 tracking-wide text-primary font-bold text-[60pt]">
+          <p
+            class="mt-4 tracking-wide text-primary font-bold text-[60pt] animate-jump-in animate-once"
+          >
             <span class="text-textColor">Login</span> Successful
           </p>
         </div>
@@ -176,8 +186,11 @@
         <div
           class="flex flex-1 flex-col items-center justify-center relative z-10"
         >
-          <p class="mt-4 tracking-wide text-primary font-bold text-[60pt]">
-            <span class="text-textColor">Welcome</span> User
+          <p class="mt-4 text-primary font-bold text-[60pt]">
+            <span class="text-textColor animate-fade-right animate-once"
+              >Welcome</span
+            >
+            <span class="animate-fade-left animate-once">User</span>
           </p>
         </div>
 

@@ -75,8 +75,6 @@ Route::middleware([AuthMiddleware::class])->group(function () {
     Route::get('/OrderKitchen', [Kitchen::class, 'order'])->name('OrderKitchen');
     Route::post('/SysOrderKitchenUpdate', [Kitchen::class, 'orderupdate'])->name('SysOrderKitchenUpdate');
     Route::get('/SettingKitchen', [Kitchen::class, 'setting'])->name('SettingKitchen');
-    // Route::put('/SysEditProfileKitchen', [Kitchen::class, 'SysEditProfile'])->name('SysEditProfileKitchen');
-    // Route::put('/SysUpdatePasswordKitchen', [Kitchen::class, 'SysUpdatePassword'])->name('SysUpdatePasswordKitchen');
 
     // WAITERS ROUTES
     Route::get('/HomeWaiters', [Waiters::class, 'home'])->name('HomeWaiters');

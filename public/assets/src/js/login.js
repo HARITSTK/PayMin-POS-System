@@ -117,6 +117,6 @@ function loginSuccessfull() {
   }, 2000);
 
   setTimeout(() => {
-    window.location.href = "./employeePages/home.html";
+    window.location.href = "./adminPages/home.html";
   }, 4000);
 }

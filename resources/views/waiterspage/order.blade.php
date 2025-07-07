@@ -113,7 +113,7 @@
         <!-- Main Content -->
         <section class="h-full w-full p-11 box-border overflow-y-auto">
             <div class="">
-                <h1 class="text-[36pt] font-bold text-[#353535]">Items Management</h1>
+                <h1 class="text-[36pt] font-bold text-[#353535]">Order Information</h1>
             </div>
             <div class="flex gap-4 py-6 w-full">
                 <!-- Card 1 -->
@@ -198,7 +198,7 @@
                         @foreach ($sales as $p)
                         <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard">
                             <div class="flex flex-col items-center w-full h-full">
-                                <img src="assets/src/assets/coffee.png" alt="Product"
+                                <img src="{{ optional($p->saleItems->first()->product)->image ? asset('storage/' . $p->saleItems->first()->product->image) : asset('/assets/src/assets/coffee.png') }}"
                                     class="w-40 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
@@ -217,11 +217,11 @@
                                         class="bg-linear-[180deg,_#FF5733,_#BB482F] h-[80%] text-white text-lg w-full mt-auto rounded-b-lg"
                                         onclick="showProductDetail(this)" data-id="{{ $p->id }}" A
                                         data-cashier="{{ optional($p->user)->name ?? '-' }}"
-                                        data-table="{{ $p->table ?? '-' }}"
+                                        data-table="{{ $p->table_no ?? '-' }}"
                                         data-customer="{{ optional($p->customer)->name ?? '-' }}"
                                         data-items="@foreach($p->saleItems as $item){{ $item->product->name ?? 'Unknown' }} ({{ $item->quantity }}x){{ !$loop->last ? ', ' : '' }}@endforeach"
-                                        data-note="{{ $p->desc ?? '-' }}"
-                                        data-image="{{ asset('uploads/products/' . ($p->saleItems->first()->product->image ?? 'coffee.png')) }}">
+                                        data-note="{{ $p->note ?? '-' }}"
+                                        data-image="{{ optional($p->saleItems->first()->product)->image ? asset('storage/' . $p->saleItems->first()->product->image) : asset('/assets/src/assets/coffee.png') }}">
                                         Detail
                                     </button>
                                 </div>

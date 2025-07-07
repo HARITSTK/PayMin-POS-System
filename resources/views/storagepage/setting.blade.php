@@ -294,7 +294,7 @@
                         <h1 class="text-3xl font-bold text-red-500 mb-2">Edit Profile</h1>
                         <div class="flex flex-col items-center">
                             <div>
-                                <img src="" id="previewImage"
+                                <img src="{{ $user->image ? asset('storage/' . $user->image) : asset('/default.jpg') }}" id="previewImage"
                                     class="relative w-24 h-24 md:w-32 md:h-32 rounded-full bg-gray-300 flex items-center justify-center" />
                             </div>
                             <input type="file" name="image" id="imageInput" accept="image/*" class="hidden"

@@ -21,3 +21,31 @@ section::-webkit-scrollbar {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
 }
+
+#sidebar {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+#sidebar.active {
+  transform: translateX(0%);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.step.active div {
+  background-color: #ff5733;
+  border: none;
+  color: white;
+}
+
+.step.completed div {
+  background-color: #bb482f;
+  color: white;
+}
+
+.step.completed p,
+.step.active p {
+  color: #ff5733;
+  font-weight: 600;
+}

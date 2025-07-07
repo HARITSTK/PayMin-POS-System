@@ -198,7 +198,7 @@
                         @foreach ($sales as $p)
                         <div class="w-full h-full bg-white rounded-lg shadow-4xl card-container itemCard">
                             <div class="flex flex-col items-center w-full h-full">
-                                <img src="assets/src/assets/coffee.png" alt="Product"
+                                <img src="{{ optional($p->saleItems->first()->product)->image ? asset('storage/' . $p->saleItems->first()->product->image) : asset('/assets/src/assets/coffee.png') }}"
                                     class="w-40 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
@@ -215,12 +215,12 @@
                                 <div class="w-full flex justify-between items-center mt-auto h-16">
                                     <button
                                         class="bg-linear-[180deg,_#FF5733,_#BB482F] h-[80%] text-white text-lg w-full mt-auto rounded-b-lg"
-                                        onclick="showProductDetail(this)" data-id="{{ $p->id }}" A
+                                        onclick="showProductDetail(this)" data-id="{{ $p->id }}"
                                         data-cashier="{{ optional($p->user)->name ?? '-' }}"
                                         data-customer="{{ optional($p->customer)->name ?? '-' }}"
                                         data-items="@foreach($p->saleItems as $item){{ $item->product->name ?? 'Unknown' }} ({{ $item->quantity }}x){{ !$loop->last ? ', ' : '' }}@endforeach"
-                                        data-note="{{ $p->desc ?? '-' }}"
-                                        data-image="{{ asset('uploads/products/' . ($p->saleItems->first()->product->image ?? 'coffee.png')) }}">
+                                        data-note="{{ $p->note ?? '-' }}" data-table="{{ $p->table_no ?? '-' }}"
+                                        data-image="{{ optional($p->saleItems->first()->product)->image ? asset('storage/' . $p->saleItems->first()->product->image) : asset('/assets/src/assets/coffee.png') }}">
                                         Detail
                                     </button>
                                 </div>
@@ -250,7 +250,7 @@
             </div>
         </section>
         <!-- Modal Detail Item -->
-        <div class="fixed inset-0 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
+        <div class="fixed inset-0 bg-black/25 backdrop-blur-md bg-opacity-50 justify-center items-center z-50 animate-fadeIn hidden"
             id="modalDetailItem">
             <!-- Modal Container -->
             <div
@@ -279,6 +279,10 @@
                             <div class="flex justify-between border-b pb-1">
                                 <span>Customers Name</span>
                                 <span class="font-medium" id="modalCustomerName"></span>
+                            </div>
+                            <div class="flex justify-between border-b pb-1">
+                                <span>Customers Table</span>
+                                <span class="font-medium" id="modalCustomerTable"></span>
                             </div>
                             <div class="flex justify-between border-b pb-1">
                                 <span>Items Order</span>
