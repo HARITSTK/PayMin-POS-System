@@ -11,7 +11,7 @@ class Mdl_Payment extends Model
 {
     protected $table = 'payments';
     protected $primaryKey = 'id';
-    protected $fillable = ['sale_id', 'amount', 'payment_method', 'created_at'];
+    protected $fillable = ['sale_id', 'amount', 'payment_method', 'return','created_at'];
     public $timestamps = false;
 
     public function sale(): BelongsTo

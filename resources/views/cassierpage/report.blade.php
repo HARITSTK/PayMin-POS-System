@@ -175,7 +175,7 @@
                     <div class="h-2 bg-primary rounded-t-lg"></div>
                     <div class="p-6">
                         <p class="text-xl text-gray-500">Beginning balance</p>
-                        <p class="text-3xl font-bold text-gray-800" id="cardTotalBegginingBalance" data-value="{{ $beginningBalance }}">Rp. {{ number_format($beginningBalance, 0, ',', '.') }}</p>
+                        <p class="text-3xl font-bold text-gray-800" id="cardTotalBegginingBalance" data-value="{{ $adjustedBeginningBalance }}">Rp. {{ number_format($adjustedBeginningBalance, 0, ',', '.') }}</p>
                     </div>
                 </div>
 

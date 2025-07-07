@@ -89,16 +89,20 @@ class Admin extends BaseController
         'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('admins', 'public');
-            $validated['image'] = $path;
-        }
-
         // dd([
         //     'hasFile' => $request->hasFile('image'),
         //     'file' => $request->file('image'),
         //     'all' => $request->all()
         // ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('uploads/admins', 'public');
+            $validated['image'] = $path;
+        } else {
+            return back()->with('console_log', 'Image tidak ditemukan saat upload');
+        }
+
+        
 
         Mdl_Product::create($validated);
         
@@ -113,7 +117,7 @@ class Admin extends BaseController
 
         // Hapus gambar jika ada
         if ($product->image) {
-            $path = public_path('uploads/products/' . $product->image);
+            $path = public_path('uploads/admins/' . $product->image);
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -140,19 +144,13 @@ class Admin extends BaseController
         $product = Mdl_Product::findOrFail($validated['id']);
 
         if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
             if ($product->image) {
-                $path = public_path('uploads/products/' . $product->image);
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+                Storage::disk('public')->delete($product->image); // jika sebelumnya pakai storage
             }
 
-            $filename = time() . '_' . Str::slug($request->name) . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/products'), $filename);
-            $validated['image'] = $filename;
-        } else {
-            unset($validated['image']);
+            // Simpan dan ambil path-nya
+            $path = $request->file('image')->store('uploads/admins', 'public');
+            $validated['image'] = $path; // akan seperti 'uploads/admins/namafile.jpg'
         }
 
         $product->update($validated);

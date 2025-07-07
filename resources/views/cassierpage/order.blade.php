@@ -850,7 +850,7 @@
                 <!-- Buttons -->
                 <div class="flex justify-end space-x-3">
                     <button class="px-4 py-2 rounded-md border border-primary text-primary hover:bg-red-50"
-                        onclick="closeModal('modalInvoice')">
+                        onclick="closeModal('modalInputCash')">
                         Cancel
                     </button>
                     <button class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary"

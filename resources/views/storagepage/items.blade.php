@@ -219,7 +219,8 @@
                             data-category="{{ strtolower($p->category->name) }}">
                             <div class="flex flex-col items-center w-full h-full">
                                 <!-- Gambar produk -->
-                                <img src="{{ asset('upload/product/'. $p->image) }}" alt="{{ $p->name }}"
+                                <img src="{{ $p->image ? asset('storage/' . $p->image) : asset('default.jpg') }}"
+                                    alt="{{ $p->name }}"
                                     class="w-44 object-cover rounded-full border-4 border-white shadow" />
 
                                 <div class="flex flex-col items-center justify-center w-full mt-auto">
@@ -246,12 +247,14 @@
                                         data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-desc="{{ $p->desc }}"
                                         data-price="{{ $p->price }}" data-stock="{{ $p->stock }}"
                                         data-category="{{ $p->category_id }}"
-                                        data-subcategory="{{ $p->subcategory_id }}" onclick="showModalEdit(this)">
+                                        data-subcategory="{{ $p->subcategory_id }}" data-image="{{ $p->image }}" onclick="showModalEdit(this)">
                                         Edit menu
                                     </button>
                                     <button
                                         class="text-gray-500 bg-tertiary hover:text-gray-700 w-[40%] h-full rounded-br-lg"
-                                        onclick="showModalDelete({{ $p->id }}, '{{ $p->name }}', '{{ $p->price }}', '{{ $p->stock }}')">
+                                        data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-price="{{ $p->price }}"
+                                        data-stock="{{ $p->stock }}" data-image="{{ $p->image }}"
+                                        onclick="showModalDelete(this)">
                                         <div
                                             class="w-full h-full transition-all duration-200 flex items-center justify-center text-white text-lg">
                                             <span class="material-symbols-outlined"> delete </span>
@@ -284,7 +287,8 @@
                 <div class="bg-white rounded-2xl p-6 w-[300px] shadow-lg text-center modal-content">
                     <h2 class="text-lg font-semibold text-primary mb-4">Delete Items</h2>
 
-                    <img src="/src/assets/coffee.png" class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
+                    <img id="deleteItemImage" src="/src/assets/coffee.png"
+                        class="w-24 h-24 mx-auto mb-4 rounded-full object-cover" />
 
                     <h3 id="deleteItemName" class="text-lg font-semibold text-gray-800">produk</h3>
                     <p id="deleteItemInfo" class="text-sm text-gray-600">Harga | Stock</p>
@@ -333,9 +337,12 @@
                             <p class="text-gray-500 mt-2 text-center">
                                 Drag and drop your image here
                             </p>
-                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
-                            <label for="fileInput"
-                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
+                            <img id="editPreviewImage" class="mt-2 max-w-full max-h-60 hidden rounded" />
+                            <input type="file" name="image" accept="image/*" id="editImageInput" class="hidden"
+                                onchange="handleImageUpload(event, 'edit')" />
+                            <button onclick="document.getElementById('editImageInput').click()" type="button"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</button>
+                            <span id="editFileName" class="mt-1 text-sm text-gray-500"></span>
                         </div>
 
                         <!-- Input fields -->
@@ -419,7 +426,7 @@
                 <!-- Modal Content -->
                 <form action="{{ route('SysAddItem') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    <!-- @method('PUT') -->
                     <!-- Modal Content -->
                     <div class="mt-4 flex justify-between gap-x-4 py-2">
                         <!-- drag and drop image -->
@@ -429,9 +436,12 @@
                             <p class="text-gray-500 mt-2 text-center">
                                 Drag and drop your image here
                             </p>
-                            <input type="file" accept="image/*" class="hidden" id="fileInput" name="image" />
-                            <label for="fileInput"
-                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</label>
+                            <img id="addPreviewImage" class="mt-2 max-w-full max-h-60 hidden rounded" />
+                            <input type="file" name="image" accept="image/*" id="addImageInput" class="hidden"
+                                onchange="handleImageUpload(event, 'add')" />
+                            <button onclick="document.getElementById('addImageInput').click()" type="button"
+                                class="mt-2 bg-primary text-white px-4 py-2 rounded cursor-pointer">Choose File</button>
+                            <span id="addFileName" class="mt-1 text-sm text-gray-500"></span>
                         </div>
 
                         <!-- Input fields -->

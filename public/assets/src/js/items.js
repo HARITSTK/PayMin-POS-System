@@ -7,49 +7,64 @@ function showModal(modalId) {
 
 function closeModal(modalId) {
   document.getElementById(modalId).classList.add("hidden");
+
+  if (id === 'modalAddItem') {
+    document.getElementById('addPreviewImage').src = '';
+    document.getElementById('addPreviewImage').classList.add('hidden');
+    document.getElementById('addFileName').textContent = '';
+    document.getElementById('addImageInput').value = '';
+  } else if (id === 'modalEditItem') {
+    document.getElementById('editPreviewImage').src = '';
+    document.getElementById('editPreviewImage').classList.add('hidden');
+    document.getElementById('editFileName').textContent = '';
+    document.getElementById('editImageInput').value = '';
+  }
 }
 
-document.querySelector('form').addEventListener('submit', function (e) {
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0];
-    if (!file) {
-        console.warn("❌ Tidak ada file yang dipilih saat submit!");
-    } else {
-        console.log("✅ File siap dikirim:", file.name, file.type);
-    }
+// Input file for image upload and description of card
+// const inputFile = document.getElementById("fileInput");
+// const imageView = document.getElementById("imageView");
+// let imgLink = "";
+// inputFile.addEventListener("change", uploadImage);
 
-    const formData = new FormData(this);
-    for (let [key, value] of formData.entries()) {
-        if (value instanceof File) {
-            console.log(`${key}: File - ${value.name}`);
-        } else {
-            console.log(`${key}: ${value}`);
+// function uploadImage() {
+//   imgLink = URL.createObjectURL(inputFile.files[0]);
+//   imageView.style.backgroundImage = `url(${imgLink})`;
+//   imageView.style.backgroundSize = "cover";
+//   imageView.style.backgroundPosition = "center";
+//   imageView.style.backgroundRepeat = "no-repeat";
+//   imageView.textContent = "";
+// }
+function handleImageUpload(event, type) {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        const previewId = type === 'edit' ? 'editPreviewImage' : 'addPreviewImage';
+        const fileNameId = type === 'edit' ? 'editFileName' : 'addFileName';
+
+        const preview = document.getElementById(previewId);
+        const fileNameSpan = document.getElementById(fileNameId);
+
+        if (preview) {
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
         }
-    }
-});
+
+        if (fileNameSpan) {
+            fileNameSpan.textContent = file.name;
+        }
+    };
+
+    reader.readAsDataURL(file);
+}
 
 
-document.getElementById("fileInput").addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    const preview = document.getElementById("imagePreview");
 
-    if (file && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            preview.src = event.target.result;
-            preview.classList.remove("hidden");
-        };
-        reader.readAsDataURL(file);
-    } else {
-        preview.src = "";
-        preview.classList.add("hidden");
-    }
-});
 
-document.getElementById("fileInput").addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    console.log("Selected file:", file); // <- ini harus muncul
-});
 
 document.addEventListener("DOMContentLoaded", function () {
   const categorySelect = document.getElementById("itemCategory");
@@ -76,19 +91,23 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    window.showModalDelete = function(id, name, price, stock) {
-        document.getElementById('deleteItemId').value = id;
-        document.getElementById('deleteItemName').textContent = name;
-        document.getElementById('deleteItemInfo').textContent = `Rp ${price} | ${stock} Stock`;
+window.showModalDelete = function(button) {
+    const id = button.dataset.id;
+    const name = button.dataset.name;
+    const price = button.dataset.price;
+    const stock = button.dataset.stock;
+    const image = button.dataset.image;
 
-        document.getElementById('modalDeleteItem').classList.remove('hidden');
-    }
+    document.getElementById('deleteItemId').value = id;
+    document.getElementById('deleteItemName').textContent = name;
+    document.getElementById('deleteItemInfo').textContent = `Rp ${price} | ${stock} Stock`;
 
-    window.closeModal = function(id) {
-        document.getElementById(id).classList.add('hidden');
-    }
-});
+    const img = document.getElementById('deleteItemImage');
+    img.src = image ? `/storage/${image}` : '/default.jpg';
+
+    document.getElementById('modalDeleteItem').classList.remove('hidden');
+};
+
 
 window.showModalEdit = function (btn) {
   const id = btn.dataset.id;
@@ -98,9 +117,12 @@ window.showModalEdit = function (btn) {
   const stock = btn.dataset.stock;
   const category_id = btn.dataset.category;
   const subcategory_id = btn.dataset.subcategory;
+  const image = btn.dataset.image;
 
+  // Tampilkan modal
   document.getElementById('modalEditItem').classList.remove('hidden');
 
+  // Isi form
   document.getElementById('edit_id').value = id;
   document.getElementById('edit_name').value = name;
   document.getElementById('edit_desc').value = desc;
@@ -108,7 +130,17 @@ window.showModalEdit = function (btn) {
   document.getElementById('edit_stock').value = stock;
   document.getElementById('edit_category_id').value = category_id;
   document.getElementById('edit_subcategory_id').value = subcategory_id;
-}
+
+  // Preview gambar
+  const preview = document.getElementById('editPreviewImage');
+  if (image && image !== "null") {
+    preview.src = `/storage/${image}`;
+    preview.classList.remove('hidden');
+  } else {
+    preview.src = '/default.jpg';
+    preview.classList.remove('hidden');
+  }
+};
 
 document.addEventListener("DOMContentLoaded", function () {
   const filterButtons = document.querySelectorAll(".filter-btn");

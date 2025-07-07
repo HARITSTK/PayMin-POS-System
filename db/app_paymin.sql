@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `members` (
   `id` int NOT NULL AUTO_INCREMENT,
   `customer_id` int DEFAULT NULL,
   `type` enum('Silver','Gold','Platinum','Expired') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `last_type` enum('Silver','Gold','Platinum','Expired') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `last_type` enum('Silver','Gold','Platinum') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT '0.00',
   `points` int DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -158,9 +158,12 @@ CREATE TABLE IF NOT EXISTS `members` (
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `members_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.members: ~1 rows (approximately)
+-- Dumping data for table app_paymin.members: ~2 rows (approximately)
+REPLACE INTO `members` (`id`, `customer_id`, `type`, `last_type`, `amount`, `points`, `created_at`, `updated_at`) VALUES
+	(6, 6, 'Silver', NULL, 110000.00, 5, '2025-07-06 10:28:49', '2025-07-06 10:28:49'),
+	(7, 1, 'Platinum', NULL, 230000.00, 10, '2025-07-06 10:30:39', '2025-07-06 14:19:41');
 
 -- Dumping structure for table app_paymin.migrations
 DROP TABLE IF EXISTS `migrations`;
@@ -207,13 +210,16 @@ CREATE TABLE IF NOT EXISTS `payments` (
   KEY `payments_sale_fk` (`sale_id`),
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
   CONSTRAINT `payments_sale_fk` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.payments: ~5 rows (approximately)
+-- Dumping data for table app_paymin.payments: ~6 rows (approximately)
 REPLACE INTO `payments` (`id`, `sale_id`, `payment_method`, `return`, `amount`, `created_at`) VALUES
 	(2, 4, 'cash', NULL, 20000.00, '2025-06-27 10:03:48'),
 	(3, 9, 'cash', NULL, 500.00, '2025-07-05 03:44:03'),
-	(4, 10, 'cash', NULL, 1000.00, '2025-07-05 04:14:24');
+	(4, 10, 'cash', NULL, 1000.00, '2025-07-05 04:14:24'),
+	(8, 14, 'cash', NULL, 120000.00, '2025-07-06 10:28:49'),
+	(9, 15, 'cash', 10000.00, 120000.00, '2025-07-06 10:30:39'),
+	(10, 16, 'cash', 30000.00, 150000.00, '2025-07-06 14:19:41');
 
 -- Dumping structure for table app_paymin.products
 DROP TABLE IF EXISTS `products`;
@@ -234,11 +240,11 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `idx_subcategory_id` (`subcategory_id`),
   CONSTRAINT `fk_products_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE SET NULL,
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.products: ~0 rows (approximately)
+-- Dumping data for table app_paymin.products: ~1 rows (approximately)
 REPLACE INTO `products` (`id`, `name`, `category_id`, `subcategory_id`, `desc`, `price`, `stock`, `image`, `created_at`, `updated_at`) VALUES
-	(4, 'asd', 1, 1, 'asd', 100000.00, 12, NULL, '2025-06-30 04:04:16', '2025-07-06 10:03:23');
+	(4, 'asd', 1, 1, 'asd', 100000.00, 12, '1751828192_asd.jpg', '2025-06-30 04:04:16', '2025-07-06 18:56:32');
 
 -- Dumping structure for table app_paymin.sales
 DROP TABLE IF EXISTS `sales`;
@@ -259,13 +265,16 @@ CREATE TABLE IF NOT EXISTS `sales` (
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.sales: ~5 rows (approximately)
+-- Dumping data for table app_paymin.sales: ~6 rows (approximately)
 REPLACE INTO `sales` (`id`, `user_id`, `customer_id`, `total`, `change_amount`, `sale_date`, `type`, `quantity`, `status`, `table_no`, `note`) VALUES
 	(4, 234083, 1, 20000.00, 0.00, '2025-06-27 10:02:53', 'take_away', 2, 'procced', NULL, NULL),
 	(9, 234083, 6, 132.00, 368.00, '2025-07-05 03:44:03', NULL, NULL, 'procced', NULL, NULL),
-	(10, 234083, 6, 662.00, 338.00, '2025-07-05 04:14:24', 'dine_in', 5, 'procced', 3, NULL);
+	(10, 234083, 6, 662.00, 338.00, '2025-07-05 04:14:24', 'dine_in', 5, 'procced', 3, NULL),
+	(14, 234083, 6, 110000.00, 10000.00, '2025-07-06 10:28:49', 'dine_in', 1, 'procced', 5, 'test'),
+	(15, 234083, 1, 110000.00, 10000.00, '2025-07-06 10:30:39', 'dine_in', 1, 'procced', 5, 'test'),
+	(16, 234083, 1, 120000.00, 30000.00, '2025-07-06 14:19:41', 'take_away', 1, 'procced', NULL, 'asdasdasd');
 
 -- Dumping structure for table app_paymin.sale_items
 DROP TABLE IF EXISTS `sale_items`;
@@ -281,12 +290,15 @@ CREATE TABLE IF NOT EXISTS `sale_items` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `sale_items_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`) ON DELETE CASCADE,
   CONSTRAINT `sale_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table app_paymin.sale_items: ~4 rows (approximately)
+-- Dumping data for table app_paymin.sale_items: ~5 rows (approximately)
 REPLACE INTO `sale_items` (`id`, `sale_id`, `product_id`, `quantity`, `price`, `subtotal`) VALUES
 	(2, 9, 4, 1, 123.00, 123.00),
-	(3, 10, 4, 5, 123.00, 615.00);
+	(3, 10, 4, 5, 123.00, 615.00),
+	(7, 14, 4, 1, 100000.00, 100000.00),
+	(8, 15, 4, 1, 100000.00, 100000.00),
+	(9, 16, 4, 1, 100000.00, 100000.00);
 
 -- Dumping structure for table app_paymin.sessions
 DROP TABLE IF EXISTS `sessions`;
@@ -304,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Dumping data for table app_paymin.sessions: ~1 rows (approximately)
 REPLACE INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-	('1ZxSFVB7vG73zlvKIVny5qjwPv5VvkkpYknoi07v', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMDp7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9PcmRlckNhc3NpZXIiO31zOjY6Il90b2tlbiI7czo0MDoiSDhLeEx3UjlZVUxQU0d1eDFvQVBMdnl6dkRockhUMUdJelFaMkRueCI7czo3OiJ1c2VyX2lkIjtpOjIzNDA4MztzOjE2OiJ1c2VybmFtZV9jYXNzaWVyIjtzOjU6Imthc2lyIjtzOjEyOiJuYW1lX2Nhc3NpZXIiO3M6NToia2FzaXIiO3M6MTM6ImVtYWlsX2Nhc3NpZXIiO047czoxMzoicGhvdG9fY2Fzc2llciI7TjtzOjEyOiJyb2xlX2Nhc3NpZXIiO3M6NzoiY2Fzc2llciI7czoxMToiYmlvX2Nhc3NpZXIiO047fQ==', 1751796221);
+	('TVQJYoGA1dubsdf2Po2NCCOtgMJk3uiEjY1AmqYs', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', 'YToxMjp7czo2OiJfZmxhc2giO2E6Mjp7czozOiJuZXciO2E6MDp7fXM6Mzoib2xkIjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9JdGVtU3RvcmFnZSI7fXM6NjoiX3Rva2VuIjtzOjQwOiJKZzhIQVpRSUo3T1oyMVBLcTdpanRnWUoyREZKaUhjSXdMTkFjQkFHIjtzOjc6InVzZXJfaWQiO2k6NjU5MzEzO3M6MTY6InVzZXJuYW1lX3N0b3JhZ2UiO3M6NjoiZ3VkYW5nIjtzOjEyOiJuYW1lX3N0b3JhZ2UiO3M6NzoiZ3VkYW5nMSI7czoxMjoicm9sZV9zdG9yYWdlIjtzOjc6InN0b3JhZ2UiO3M6MTE6ImJpb19zdG9yYWdlIjtzOjE3OiJndWRhbmcgMSB0ZXN0IDEyMyI7czoxMDoibmFtZV9hZG1pbiI7czo3OiJndWRhbmcxIjtzOjE0OiJ1c2VybmFtZV9hZG1pbiI7czo2OiJndWRhbmciO3M6OToiYmlvX2FkbWluIjtzOjE3OiJndWRhbmcgMSB0ZXN0IDEyMyI7czoxMToiaW1hZ2VfYWRtaW4iO3M6NTk6InVwbG9hZHMvYWRtaW5zLzYwRlowdlRaRjIxZ2pnVjlaSURjNndVNVZBNWdRbjVTb3RRUlRQdlcucG5nIjt9', 1751830366);
 
 -- Dumping structure for table app_paymin.subcategories
 DROP TABLE IF EXISTS `subcategories`;
@@ -357,9 +369,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table app_paymin.users: ~5 rows (approximately)
 REPLACE INTO `users` (`id`, `username`, `name`, `password`, `email`, `image`, `bio`, `shift`, `role`, `is_active`, `created_at`, `updated_at`) VALUES
-	(234083, 'kasir', 'kasir', '$2y$12$h9BMNFIsM9KYeF4t/aMONupyjSE7IN/kvzWxzezXJBYkzgryx4hH6', NULL, NULL, NULL, 'pagi', 'cassier', 'Y', '2025-06-24 16:30:26', '2025-07-06 00:46:00'),
+	(234083, 'kasir', 'kasir', '$2y$12$h9BMNFIsM9KYeF4t/aMONupyjSE7IN/kvzWxzezXJBYkzgryx4hH6', NULL, 'uploads/admins/sKjpyzGRkiZODHNzBPkfOGCUlYbi6tIQe2oJ7AK0.png', NULL, 'pagi', 'cassier', 'Y', '2025-06-24 16:30:26', '2025-07-06 21:38:07'),
 	(519841, 'admin', 'admin', '$2y$12$HbZeTeT5VlEo35/hCRCN/eN3zz5.F/Be8CL08dx4Ey.FL020CdBU2', NULL, 'uploads/admins/52gEnOAfZuMJAXQ6qivGFdOm05VCWZ6TFrTFJDy0.jpg', 'test', NULL, 'admin', 'Y', '2025-06-17 23:40:28', '2025-07-06 01:31:10'),
-	(659313, 'gudang', 'gudang1', '$2y$12$WbpNF7AQBZLFh12bMr9ht.TOOqul0uElZN044979MkawwyBNJFWGG', NULL, NULL, 'gudang 1 test 123', NULL, 'storage', 'Y', '2025-06-28 21:17:52', '2025-06-29 10:45:45'),
+	(659313, 'gudang', 'gudang1', '$2y$12$WbpNF7AQBZLFh12bMr9ht.TOOqul0uElZN044979MkawwyBNJFWGG', NULL, 'uploads/admins/60FZ0vTZF21gjgV9ZIDc6wU5VA5gQn5SotQRTPvW.png', 'gudang 1 test 123', NULL, 'storage', 'Y', '2025-06-28 21:17:52', '2025-07-06 23:50:08'),
 	(899054, 'kitchen', 'kitchen', '$2y$12$.hAO0DWP5Z1b6nIeLyxMjeeORrMxH42U2Ob00iEsWD8UV/44QPkYG', NULL, NULL, NULL, NULL, 'kitchen', 'Y', '2025-06-28 22:06:37', '2025-06-28 22:06:37'),
 	(991475, 'waiters', 'waiters', '$2y$12$oEr7BFUjFVvVIeIbyKLvlO45dDEYPFkkdeZb5mks39DAfz7seQonS', NULL, NULL, NULL, NULL, 'waiters', 'Y', '2025-06-28 23:07:31', '2025-06-28 23:07:31');
 

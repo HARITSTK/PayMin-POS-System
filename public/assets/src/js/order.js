@@ -181,6 +181,7 @@ let membershipUpgradeCost = 0;
 let membershipDiscountRate = 0; // 2.5%
 let customerCash = 0;
 let selectedPaymentMethod = "";
+let lastMembershipType = '-';
 
 function addToOrder(id, name, price, image) {
     price = parseInt(price);
@@ -305,6 +306,11 @@ function checkMembership() {
     .then(res => res.json())
     .then(data => {
       // Sembunyikan semua dulu
+      document.getElementById('cardSilver').classList.add('hidden');
+      document.getElementById('cardGold').classList.add('hidden');
+      document.getElementById('cardPlatinum').classList.add('hidden');
+      document.getElementById('cardExpired').classList.add('hidden');
+      document.getElementById('NoMembership')?.classList.add('hidden');
 
       if (data.status === 'found') {
         if (data.membership === 'Expired') {
@@ -321,7 +327,8 @@ function checkMembership() {
           document.getElementById('formUpdatePhone').value = data.phone;
 
           // Set display Last Type di Modal Update
-          document.getElementById('lastTypeDisplay').textContent = data.last_type ?? '-';
+          lastMembershipType = data.last_type ?? '-';
+          document.getElementById('lastTypeDisplay').textContent = lastMembershipType;
 
         } else if (data.membership === 'Silver') {
           membershipDiscountRate = 0.025;
@@ -347,63 +354,67 @@ function checkMembership() {
 function showUpdateMembershipModal() {
   const name = document.getElementById('name')?.value.trim();
   const phone = document.getElementById('phone')?.value.trim();
-  const lastType = document.getElementById('lastTypeDisplay')?.textContent || '-';
+  document.getElementById('lastTypeDisplay').textContent = lastMembershipType;
 
   // Isi input hidden
   document.getElementById('formUpdateName').value = name;
   document.getElementById('formUpdatePhone').value = phone;
 
-  document.getElementById('lastTypeDisplay').textContent = last;
-
   // Tampilkan modal
   document.getElementById('updateMembershipModal').classList.remove('hidden');
 }
 
-// function updateMembership() {
-//   const name = document.getElementById('formUpdateName').value.trim();
-//   const phone = document.getElementById('formUpdatePhone').value.trim();
+const formatRupiah = n => 'Rp. ' + n.toLocaleString('id-ID');
 
-//   if (!name || !phone) {
-//     alert('Data tidak lengkap');
-//     return;
-//   }
+function updateMembership() {
+  const name = document.getElementById('formUpdateName').value.trim();
+  const phone = document.getElementById('formUpdatePhone').value.trim();
 
-//   fetch('/membership/update', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-//     },
-//     body: JSON.stringify({ name, phone })
-//   })
-//     .then(res => res.json())
-//     .then(data => {
-//       if (data.status === 'updated') {
-//         // Tutup modal
-//         closeModal('updateMembershipModal');
+  if (!name || !phone) {
+    alert('Data tidak lengkap');
+    return;
+  }
 
-//         // Tampilkan kembali sidebar payment
-//         showSidebar('sidebarPayment');
+  fetch('/membership/update', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+  },
+  body: JSON.stringify({ name, phone })
+})
+  .then(res => {
+    if (!res.ok) {
+      // Tangani error status HTTP (bukan 200-299)
+      return res.json().then(err => {
+        throw new Error(err.message || 'Gagal memperbarui membership.');
+      });
+    }
+    return res.json();
+  })
+  .then(data => {
+    if (data.status === 'updated') {
+      membershipUpgradeCost = 20000;
 
-//         // Tambahkan biaya update ke total (jika ada UI untuk itu)
-//         const cost = data.cost || 20000;
-//         document.getElementById('membershipCostSection').style.display = 'flex';
-//         document.getElementById('membershipCost').textContent = formatRupiah(cost);
+      closeModal('updateMembershipModal');
+      showModal('sidebarPayment');
 
-//         // Perbarui total pembayaran
-//         updatePaymentSummary();
+      const cost = data.cost || 20000;
+      document.getElementById('membershipCostSection').style.display = 'flex';
+      document.getElementById('membershipCost').textContent = formatRupiah(cost);
 
-//         // Refresh kartu membership dengan check ulang
-//         checkMembership();
-//       } else {
-//         alert(data.message || 'Membership gagal diperbarui.');
-//       }
-//     })
-//     .catch(err => {
-//       console.error(err);
-//       alert('Terjadi kesalahan saat memperbarui membership.');
-//     });
-// }
+      updatePaymentSummary();
+      checkMembership();
+    } else {
+      alert(data.message || 'Membership gagal diperbarui.');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert(err.message || 'Terjadi kesalahan saat memperbarui membership.');
+  });
+
+}
 
 
 
@@ -417,7 +428,8 @@ function updatePaymentSummary() {
   }
 
   const tax = Math.round(subtotal * taxRate);
-  const total = subtotal + tax + membershipUpgradeCost;
+  const discount = Math.round(subtotal * membershipDiscountRate);
+  const total = subtotal + tax + membershipUpgradeCost - discount;
 
   const formatRupiah = n => 'Rp. ' + n.toLocaleString('id-ID');
 
@@ -491,25 +503,25 @@ function updateSidebarFinish() {
     const item = orders[id];
     const itemSubtotal = item.price * item.qty;
     const itemTax = Math.round(itemSubtotal * 0.1);
-    const itemDiscount = Math.round(itemSubtotal * membershipDiscountRate || 0);
-
+    const itemdiscount = Math.round(subtotal * membershipDiscountRate);
+    
     subtotal += itemSubtotal;
     tax += itemTax;
-    discount += itemDiscount;
-
+    discount += itemdiscount;
+    
     const row = document.createElement("tr");
     row.classList.add("border-b", "border-tertiary", "h-[3rem]");
     row.innerHTML = `
-      <td>${item.name}</td>
-      <td>${item.qty}</td>
-      <td>Rp${itemTax.toLocaleString("id-ID")}</td>
-      <td>Rp${itemSubtotal.toLocaleString("id-ID")}</td>
+    <td>${item.name}</td>
+    <td>${item.qty}</td>
+    <td>Rp${itemTax.toLocaleString("id-ID")}</td>
+    <td>Rp${itemSubtotal.toLocaleString("id-ID")}</td>
     `;
     tbody.appendChild(row);
   }
-
-  const total = subtotal + tax - discount;
-
+  
+  const total = subtotal + tax + membershipUpgradeCost - discount;
+  
   // Update summary
   document.getElementById("sidebarSubtotal").textContent = `Rp${subtotal.toLocaleString("id-ID")}`;
   document.getElementById("sidebarDiscount").textContent = `Rp${discount.toLocaleString("id-ID")}`;
@@ -734,7 +746,8 @@ function submitTransaction() {
     orders: orderItems,
     payment_method: selectedPaymentMethod.toLowerCase(),
     payment_amount: customerCash,
-    note: combinedNotes
+    note: combinedNotes,
+    membership_cost: membershipUpgradeCost,
   };
 
   fetch('/submit-sale', {
